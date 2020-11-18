@@ -1,1 +1,0 @@
-﻿#Install-VirtualPackage 'switcheroo.portable' 'switcheroo.install'
