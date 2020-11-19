@@ -42,5 +42,4 @@ along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 Switcheroo makes use of these projects:
 
 * [Managed Windows API](http://mwinapi.sourceforge.net), Copyright © 2006 Michael Schier, GNU Lesser General Public License (LGPL)
-* [PortableSettingsProvider](https://github.com/crdx/PortableSettingsProvider), Copyright © crdx, The MIT License (MIT)
 * [InnoSetup](https://jrsoftware.org/), This is a modified version. The orginal is on [Github](https://github.com/jrsoftware/issrc). 

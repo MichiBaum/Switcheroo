@@ -7,8 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 
 namespace Switcheroo {
-    // From https://github.com/crdx/PortableSettingsProvider
-    // MIT License
+
     public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider {
         private const string _rootNodeName = "settings";
         private const string _localSettingsNodeName = "localSettings";
