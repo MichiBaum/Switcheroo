@@ -533,6 +533,10 @@ namespace ManagedWinapi.Windows {
         }
 
         private bool _isClosed = false;
+
+        /// <summary>
+        /// Returns _isClosed or GetClassNameFails()
+        /// </summary>
         public bool IsClosed {
             get {
                 _isClosed = _isClosed || GetClassNameFails();
@@ -545,6 +549,9 @@ namespace ManagedWinapi.Windows {
             return GetClassName(HWnd, builder, builder.Capacity) == 0;
         }
 
+        /// <summary>
+        /// Returns IsClosed or not Visible
+        /// </summary>
         public bool IsClosedOrHidden {
             get { return IsClosed || !Visible; }
         }
