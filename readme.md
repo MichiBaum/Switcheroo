@@ -5,6 +5,8 @@ Switcheroo is for anyone who spends more time using a keyboard than a mouse.
 Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows
 you to quickly switch to any window by typing in just a few characters of its title.
 
+This is a improved and extended version of [this project.](https://github.com/kvakulo/Switcheroo)
+
 
 License
 -------
