@@ -1,44 +1,37 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// Collection of miscellaneous actions that cannot be performed as 
     /// a non-administrative user, like shutdown or setting the system time.
     /// </summary>
-    public static class PrivilegedActions
-    {
+    public static class PrivilegedActions {
         /// <summary>
         /// Shutdown the system.
         /// </summary>
-        public static void ShutDown(ShutdownAction action)
-        {
+        public static void ShutDown(ShutdownAction action) {
             ShutDown(action, ShutdownForceMode.NoForce);
         }
 
         /// <summary>
         /// Shutdown the system.
         /// </summary>
-        public static void ShutDown(ShutdownAction action, ShutdownForceMode forceMode)
-        {
+        public static void ShutDown(ShutdownAction action, ShutdownForceMode forceMode) {
             ApiHelper.FailIfZero(ExitWindowsEx((uint)action | (uint)forceMode, SHTDN_REASON_FLAG_PLANNED));
         }
 
         /// <summary>
         /// Get or set the system time in the local timezone.
         /// </summary>
-        public static DateTime LocalTime
-        {
-            get
-            {
+        public static DateTime LocalTime {
+            get {
                 SYSTEMTIME st = new SYSTEMTIME();
                 ApiHelper.FailIfZero(GetLocalTime(ref st));
                 return st.ToDateTime();
             }
 
-            set
-            {
+            set {
                 SYSTEMTIME st = new SYSTEMTIME(value);
                 // Set it twice due to possible daylight savings change
                 ApiHelper.FailIfZero(SetLocalTime(ref st));
@@ -49,17 +42,14 @@ namespace ManagedWinapi
         /// <summary>
         /// Get or set the system time, in UTC.
         /// </summary>
-        public static DateTime SystemTime
-        {
-            get
-            {
+        public static DateTime SystemTime {
+            get {
                 SYSTEMTIME st = new SYSTEMTIME();
                 ApiHelper.FailIfZero(GetSystemTime(ref st));
                 return st.ToDateTime();
             }
 
-            set
-            {
+            set {
                 SYSTEMTIME st = new SYSTEMTIME(value);
                 ApiHelper.FailIfZero(SetLocalTime(ref st));
             }
@@ -68,8 +58,7 @@ namespace ManagedWinapi
         /// <summary>
         /// Actions that can be performed at shutdown.
         /// </summary>
-        public enum ShutdownAction : uint
-        {
+        public enum ShutdownAction : uint {
             /// <summary>
             /// Log off the currently logged-on user.
             /// </summary>
@@ -101,8 +90,7 @@ namespace ManagedWinapi
         /// Whether shutdown should be forced if an application cancels it
         /// or is hung.
         /// </summary>
-        public enum ShutdownForceMode : uint
-        {
+        public enum ShutdownForceMode : uint {
             /// <summary>
             /// Do not force shutdown, applications can cancel it.
             /// </summary>
@@ -126,13 +114,11 @@ namespace ManagedWinapi
 
         const uint SHTDN_REASON_FLAG_PLANNED = 0x80000000;
 
-        struct SYSTEMTIME
-        {
+        struct SYSTEMTIME {
             internal ushort wYear, wMonth, wDayOfWeek, wDay,
                wHour, wMinute, wSecond, wMilliseconds;
 
-            internal SYSTEMTIME(DateTime time)
-            {
+            internal SYSTEMTIME(DateTime time) {
                 wYear = (ushort)time.Year;
                 wMonth = (ushort)time.Month;
                 wDayOfWeek = (ushort)time.DayOfWeek;
@@ -143,8 +129,7 @@ namespace ManagedWinapi
                 wMilliseconds = (ushort)time.Millisecond;
             }
 
-            internal DateTime ToDateTime()
-            {
+            internal DateTime ToDateTime() {
                 return new DateTime(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds);
             }
         }

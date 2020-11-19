@@ -2,22 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Switcheroo.Core
-{
-    public class WindowFilterer
-    {
-        public IEnumerable<FilterResult<T>> Filter<T>(WindowFilterContext<T> context, string query) where T : IWindowText
-        {
+namespace Switcheroo.Core {
+    public class WindowFilterer {
+        public IEnumerable<FilterResult<T>> Filter<T>(WindowFilterContext<T> context, string query) where T : IWindowText {
             var filterText = query;
             string processFilterText = null;
 
-            var queryParts = query.Split(new [] {'.'}, 2);
+            var queryParts = query.Split(new[] { '.' }, 2);
 
-            if (queryParts.Length == 2)
-            {
+            if (queryParts.Length == 2) {
                 processFilterText = queryParts[0];
-                if (processFilterText.Length == 0)
-                {
+                if (processFilterText.Length == 0) {
                     processFilterText = context.ForegroundWindowProcessTitle;
                 }
 
@@ -27,16 +22,13 @@ namespace Switcheroo.Core
             return context.Windows
                 .Select(
                     w =>
-                        new
-                        {
+                        new {
                             Window = w,
                             ResultsTitle = Score(w.WindowTitle, filterText),
                             ResultsProcessTitle = Score(w.ProcessTitle, processFilterText ?? filterText)
                         })
-                .Where(r =>
-                {
-                    if (processFilterText == null)
-                    {
+                .Where(r => {
+                    if (processFilterText == null) {
                         return r.ResultsTitle.Any(wt => wt.Matched) || r.ResultsProcessTitle.Any(pt => pt.Matched);
                     }
                     return r.ResultsTitle.Any(wt => wt.Matched) && r.ResultsProcessTitle.Any(pt => pt.Matched);
@@ -44,16 +36,14 @@ namespace Switcheroo.Core
                 .OrderByDescending(r => r.ResultsTitle.Sum(wt => wt.Score) + r.ResultsProcessTitle.Sum(pt => pt.Score))
                 .Select(
                     r =>
-                        new FilterResult<T>
-                        {
+                        new FilterResult<T> {
                             AppWindow = r.Window,
                             WindowTitleMatchResults = r.ResultsTitle,
                             ProcessTitleMatchResults = r.ResultsProcessTitle
                         });
         }
 
-        private static List<MatchResult> Score(string title, string filterText)
-        {
+        private static List<MatchResult> Score(string title, string filterText) {
             var startsWithMatcher = new StartsWithMatcher();
             var containsMatcher = new ContainsMatcher();
             var significantCharactersMatcher = new SignificantCharactersMatcher();
@@ -71,9 +61,8 @@ namespace Switcheroo.Core
         }
     }
 
-    public class WindowFilterContext<T> where T : IWindowText
-    {
+    public class WindowFilterContext<T> where T : IWindowText {
         public string ForegroundWindowProcessTitle { get; set; }
-        public IEnumerable<T> Windows { get; set; } 
+        public IEnumerable<T> Windows { get; set; }
     }
 }

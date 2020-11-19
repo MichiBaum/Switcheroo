@@ -3,16 +3,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// This component displays a crosshair icon that can be dragged to any point
     /// on screen. This is useful to select other programs by dragging the crosshair
     /// to a program window.
     /// </summary>
     [DefaultEvent("CrosshairDragged")]
-    public partial class Crosshair : UserControl
-    {
+    public partial class Crosshair : UserControl {
         Image myImage;
         Cursor myCursor;
 
@@ -31,36 +29,29 @@ namespace ManagedWinapi
         /// <summary>
         /// Creates a new crosshair control.
         /// </summary>
-        public Crosshair()
-        {
+        public Crosshair() {
             InitializeComponent();
             myImage = new Bitmap(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("ManagedWinapi.crosshair.ico"));
             myCursor = new Cursor(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("ManagedWinapi.crosshair.ico"));
             dragger.Image = myImage;
         }
 
-        private void dragger_MouseDown(object sender, MouseEventArgs e)
-        {
+        private void dragger_MouseDown(object sender, MouseEventArgs e) {
             dragger.Image = null;
             dragger.Cursor = myCursor;
         }
 
-        private void dragger_MouseUp(object sender, MouseEventArgs e)
-        {
+        private void dragger_MouseUp(object sender, MouseEventArgs e) {
             dragger.Image = myImage;
             dragger.Cursor = Cursors.Cross;
-            if (CrosshairDragged != null)
-            {
+            if (CrosshairDragged != null) {
                 CrosshairDragged(this, new EventArgs());
             }
         }
 
-        private void dragger_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (dragger.Cursor == myCursor)
-            {
-                if (CrosshairDragging != null)
-                {
+        private void dragger_MouseMove(object sender, MouseEventArgs e) {
+            if (dragger.Cursor == myCursor) {
+                if (CrosshairDragging != null) {
                     CrosshairDragging(this, new EventArgs());
                 }
             }
@@ -71,8 +62,7 @@ namespace ManagedWinapi
         /// If you hide your window while the crosshair is dragged, invoke
         /// this method afterwards to restore mouse capture.
         /// </summary>
-        public void RestoreMouseCapture()
-        {
+        public void RestoreMouseCapture() {
             dragger.Capture = true;
         }
     }

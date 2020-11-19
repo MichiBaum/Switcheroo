@@ -7,22 +7,19 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// Contains utility functions to determine values that are (almost)
     /// unique on each computer. These values can be useful for locking
     /// software to a machine.
     /// </summary>
-    public static class MachineIdentifiers
-    {
+    public static class MachineIdentifiers {
 
         const uint POLICY_VIEW_LOCAL_INFORMATION = 0x00000001,
                 PolicyAccountDomainInformation = 5;
 
         [StructLayout(LayoutKind.Explicit)]
-        private struct POLICY_ACCOUNT_DOMAIN_INFO
-        {
+        private struct POLICY_ACCOUNT_DOMAIN_INFO {
             [FieldOffset(8)]
             public IntPtr DomainSid;
         }
@@ -51,10 +48,8 @@ namespace ManagedWinapi
         /// and is used to generate security identifiers of local users and to 
         /// authenticate the machine in a domain.
         /// </summary>
-        public static SecurityIdentifier MachineSID
-        {
-            get
-            {
+        public static SecurityIdentifier MachineSID {
+            get {
                 int objectAttributes = 0;
                 IntPtr policyHandle;
                 IntPtr pInfo;
@@ -73,8 +68,7 @@ namespace ManagedWinapi
         /// <summary>
         /// The DNS host name of this machine. Can be easily changed.
         /// </summary>
-        public static string HostName
-        {
+        public static string HostName {
             get { return Dns.GetHostName(); }
         }
 
@@ -83,8 +77,7 @@ namespace ManagedWinapi
         /// machines with same name on the same network can cause trouble with 
         /// shared folders, though.
         /// </summary>
-        public static string MachineName
-        {
+        public static string MachineName {
             get { return Environment.MachineName; }
         }
 
@@ -98,15 +91,11 @@ namespace ManagedWinapi
         /// changes his MAC deliberately (for example) to bypass access 
         /// restrictions.
         /// </summary>
-        public static string[] MacAddresses
-        {
-            get
-            {
+        public static string[] MacAddresses {
+            get {
                 List<string> result = new List<string>();
-                foreach (ManagementObject mo in new ManagementClass("Win32_NetworkAdapterConfiguration").GetInstances())
-                {
-                    if ((bool)mo["IPEnabled"] == true)
-                    {
+                foreach (ManagementObject mo in new ManagementClass("Win32_NetworkAdapterConfiguration").GetInstances()) {
+                    if ((bool)mo["IPEnabled"] == true) {
                         result.Add(mo["MacAddress"].ToString());
                     }
                 }
@@ -119,10 +108,8 @@ namespace ManagedWinapi
         /// addresses, or the MAC address that is used for connecting to a 
         /// specific IP address.
         /// </summary>
-        public static NetworkInterface[] NetworkInterfaces
-        {
-            get
-            {
+        public static NetworkInterface[] NetworkInterfaces {
+            get {
                 return NetworkInterface.GetAllNetworkInterfaces();
             }
         }
@@ -135,13 +122,10 @@ namespace ManagedWinapi
         /// be written). Today these are easily tweakable and of no real use,
         /// except for badly-designed software licensing schemes.
         /// </summary>
-        public static Dictionary<string, string> VolumeSerialNumbers
-        {
-            get
-            {
+        public static Dictionary<string, string> VolumeSerialNumbers {
+            get {
                 Dictionary<string, string> result = new Dictionary<string, string>();
-                foreach (string drive in Directory.GetLogicalDrives())
-                {
+                foreach (string drive in Directory.GetLogicalDrives()) {
                     ManagementObject disk =
                         new ManagementObject("win32_logicaldisk.deviceid=\"" +
                         drive.Substring(0, 2) + "\"");
@@ -157,13 +141,10 @@ namespace ManagedWinapi
         /// Return the ID of all CPUs in this machine. Depending on BIOS configuration,
         /// CPU IDs might not be readable.
         /// </summary>
-        public static string[] CPUIDs
-        {
-            get
-            {
+        public static string[] CPUIDs {
+            get {
                 List<string> result = new List<string>();
-                foreach (ManagementObject mo in new ManagementClass("Win32_Processor").GetInstances())
-                {
+                foreach (ManagementObject mo in new ManagementClass("Win32_Processor").GetInstances()) {
                     result.Add(mo.Properties["ProcessorId"].Value.ToString());
                 }
                 return result.ToArray();

@@ -3,19 +3,14 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace Switcheroo
-{
-    public class IconToBitmapImageConverter
-    {
-        public BitmapImage Convert(Icon icon)
-        {
-            if (icon == null)
-            {
+namespace Switcheroo {
+    public class IconToBitmapImageConverter {
+        public BitmapImage Convert(Icon icon) {
+            if (icon == null) {
                 return null;
             }
 
-            using (var memory = new MemoryStream())
-            {
+            using (var memory = new MemoryStream()) {
                 var bitmap = icon.ToBitmap();
                 bitmap.Save(memory, ImageFormat.Png);
                 memory.Position = 0;

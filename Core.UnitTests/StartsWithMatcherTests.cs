@@ -2,14 +2,11 @@
 using Switcheroo.Core.Matchers;
 using System.Linq;
 
-namespace Switcheroo.Core.UnitTests
-{
+namespace Switcheroo.Core.UnitTests {
     [TestFixture]
-    public class StartsWithMatcherTests
-    {
+    public class StartsWithMatcherTests {
         [Test]
-        public void Evaluate_InputStartsWithPattern_ResultIsMatched()
-        {
+        public void Evaluate_InputStartsWithPattern_ResultIsMatched() {
             var input = "google chrome";
             var pattern = "google";
 
@@ -19,8 +16,7 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_InputStartsWithPattern_ScoreIsFour()
-        {
+        public void Evaluate_InputStartsWithPattern_ScoreIsFour() {
             var input = "google chrome";
             var pattern = "google";
 
@@ -30,8 +26,7 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_InputStartsWithPattern_FirstStringPartIsMatch()
-        {
+        public void Evaluate_InputStartsWithPattern_FirstStringPartIsMatch() {
             var input = "google chrome";
             var pattern = "google";
 
@@ -42,8 +37,7 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_InputStartsWithPattern_SecondStringPartIsNotMatch()
-        {
+        public void Evaluate_InputStartsWithPattern_SecondStringPartIsNotMatch() {
             var input = "google chrome";
             var pattern = "google";
 
@@ -54,22 +48,19 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_NullInput_ReturnsNotMatchingResult()
-        {
+        public void Evaluate_NullInput_ReturnsNotMatchingResult() {
             var result = Evaluate(null, "google");
             Assert.That(result.Matched, Is.False);
         }
 
         [Test]
-        public void Evaluate_NullPattern_ReturnsNotMatchingResult()
-        {
+        public void Evaluate_NullPattern_ReturnsNotMatchingResult() {
             var result = Evaluate("google chrome", null);
             Assert.That(result.Matched, Is.False);
         }
 
         [Test]
-        public void Evaluate_NullPattern_ReturnsOneNonMatchingStringPart()
-        {
+        public void Evaluate_NullPattern_ReturnsOneNonMatchingStringPart() {
             var result = Evaluate("google chrome", null);
             Assert.That(result.StringParts.Count(), Is.EqualTo(1));
             Assert.That(result.StringParts.First().Value, Is.EqualTo("google chrome"));
@@ -77,15 +68,13 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_InputContainsPattern_ReturnsNotMatchingResult()
-        {
+        public void Evaluate_InputContainsPattern_ReturnsNotMatchingResult() {
             var result = Evaluate("google chrome", "chrome");
             Assert.That(result.Matched, Is.False);
         }
 
         [Test]
-        public void Evaluate_InputContainsPattern_ReturnsOneNonMatchingStringPart()
-        {
+        public void Evaluate_InputContainsPattern_ReturnsOneNonMatchingStringPart() {
             var result = Evaluate("google chrome", "chrome");
             Assert.That(result.StringParts.Count(), Is.EqualTo(1));
             Assert.That(result.StringParts.First().Value, Is.EqualTo("google chrome"));
@@ -93,15 +82,13 @@ namespace Switcheroo.Core.UnitTests
         }
 
         [Test]
-        public void Evaluate_InputStartsWithPattern_CasingIsNotChanged()
-        {
+        public void Evaluate_InputStartsWithPattern_CasingIsNotChanged() {
             var result = Evaluate("Google Chrome", "google");
             Assert.That(result.StringParts[0].Value, Is.EqualTo("Google"));
             Assert.That(result.StringParts[1].Value, Is.EqualTo(" Chrome"));
         }
 
-        private static MatchResult Evaluate(string input, string pattern)
-        {
+        private static MatchResult Evaluate(string input, string pattern) {
             var matcher = new StartsWithMatcher();
             return matcher.Evaluate(input, pattern);
         }

@@ -1,8 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// Utility class that can be used to create key events with all current 
     /// locking keys (like Caps Lock) disabled. Other modifier keys (like Ctrl or Shift)
@@ -15,9 +14,8 @@ namespace ManagedWinapi
     /// }
     /// </code>
     /// </example>
-    public class LockKeyResetter :IDisposable
-    {
-        static readonly Keys[] MODIFIER_KEYS = { 
+    public class LockKeyResetter : IDisposable {
+        static readonly Keys[] MODIFIER_KEYS = {
             Keys.RShiftKey, Keys.LShiftKey, Keys.ShiftKey,
             Keys.RMenu, Keys.LMenu, Keys.Menu,
             Keys.RControlKey, Keys.LControlKey, Keys.LMenu,
@@ -31,14 +29,11 @@ namespace ManagedWinapi
         /// Reset all modifier keys and remember in this object which modifier keys
         /// have been set.
         /// </summary>
-        public LockKeyResetter()
-        {
-            for (int i = 0; i < MODIFIER_KEYS.Length; i++)
-            {
+        public LockKeyResetter() {
+            for (int i = 0; i < MODIFIER_KEYS.Length; i++) {
                 KeyboardKey k = new KeyboardKey(MODIFIER_KEYS[i]);
                 short dummy = k.AsyncState; // reset remembered status
-                if (k.AsyncState != 0)
-                {
+                if (k.AsyncState != 0) {
                     simpleModifiers[i] = true;
                     k.Release();
                 }
@@ -46,19 +41,16 @@ namespace ManagedWinapi
             KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
             int capslockstate = capslockKey.State;
             capslock = ((capslockstate & 0x01) == 0x01);
-            if (capslock)
-            {
+            if (capslock) {
                 // press caps lock
                 capslockKey.PressAndRelease();
                 Application.DoEvents();
-                if ((capslockKey.State & 0x01) == 0x01)
-                {
+                if ((capslockKey.State & 0x01) == 0x01) {
                     // press shift
                     new KeyboardKey(Keys.ShiftKey).PressAndRelease();
                 }
                 Application.DoEvents();
-                if ((capslockKey.State & 0x01) == 0x01)
-                {
+                if ((capslockKey.State & 0x01) == 0x01) {
                     throw new Exception("Cannot disable caps lock.");
                 }
             }
@@ -69,8 +61,7 @@ namespace ManagedWinapi
         /// <see cref="IDisposable"/>, you can use the <c>using</c> 
         /// keyword in C# to automatically set modifier keys when you have finished.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             if (capslock) {
                 // press caps lock
                 KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
@@ -79,10 +70,8 @@ namespace ManagedWinapi
                 if ((capslockKey.State & 0x01) != 0x01)
                     throw new Exception("Cannot enable caps lock.");
             }
-            for (int i = MODIFIER_KEYS.Length-1; i >= 0; i--)
-            {
-                if (simpleModifiers[i])
-                {
+            for (int i = MODIFIER_KEYS.Length - 1; i >= 0; i--) {
+                if (simpleModifiers[i]) {
                     new KeyboardKey(MODIFIER_KEYS[i]).Press();
                 }
             }
@@ -92,10 +81,8 @@ namespace ManagedWinapi
         /// Convenience method to send keys with all modifiers disabled.
         /// </summary>
         /// <param name="keys">The keys to send</param>
-        public static void Send(String keys)
-        {
-            using (new LockKeyResetter())
-            {
+        public static void Send(String keys) {
+            using (new LockKeyResetter()) {
                 SendKeys.Send(keys);
             }
         }
@@ -105,10 +92,8 @@ namespace ManagedWinapi
         /// <see cref="SendKeys.SendWait">SendKeys.SendWait</see>) with all modifiers disabled.
         /// </summary>
         /// <param name="keys"></param>
-        public static void SendWait(String keys)
-        {
-            using (new LockKeyResetter())
-            {
+        public static void SendWait(String keys) {
+            using (new LockKeyResetter()) {
                 SendKeys.SendWait(keys);
             }
         }

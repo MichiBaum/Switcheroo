@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Switcheroo.Core.Matchers
-{
-    public class SignificantCharactersMatcher : IMatcher
-    {
-        public MatchResult Evaluate(string input, string pattern)
-        {
-            if (input == null || pattern == null)
-            {
+namespace Switcheroo.Core.Matchers {
+    public class SignificantCharactersMatcher : IMatcher {
+        public MatchResult Evaluate(string input, string pattern) {
+            if (input == null || pattern == null) {
                 return NonMatchResult(input);
             }
 
@@ -16,8 +12,7 @@ namespace Switcheroo.Core.Matchers
 
             var match = Regex.Match(input, regexPattern);
 
-            if (!match.Success)
-            {
+            if (!match.Success) {
                 return NonMatchResult(input);
             }
 
@@ -26,12 +21,10 @@ namespace Switcheroo.Core.Matchers
             var beforeMatch = input.Substring(0, match.Index);
             matchResult.StringParts.Add(new StringPart(beforeMatch));
 
-            for (var groupIndex = 1; groupIndex < match.Groups.Count; groupIndex++)
-            {
+            for (var groupIndex = 1; groupIndex < match.Groups.Count; groupIndex++) {
                 var group = match.Groups[groupIndex];
-                if (group.Value.Length > 0)
-                {
-                    matchResult.StringParts.Add(new StringPart(group.Value, groupIndex%2 == 0));
+                if (group.Value.Length > 0) {
+                    matchResult.StringParts.Add(new StringPart(group.Value, groupIndex % 2 == 0));
                 }
             }
 
@@ -44,11 +37,9 @@ namespace Switcheroo.Core.Matchers
             return matchResult;
         }
 
-        private static string BuildRegexPattern(string pattern)
-        {
+        private static string BuildRegexPattern(string pattern) {
             var regexPattern = "";
-            foreach (var p in pattern)
-            {
+            foreach (var p in pattern) {
                 var lowerP = Char.ToLowerInvariant(p);
                 var upperP = Char.ToUpperInvariant(p);
                 regexPattern += string.Format(@"([^\p{{Lu}}\s]*?\s?)(\b{0}|{1})", Regex.Escape(lowerP + ""),
@@ -57,11 +48,9 @@ namespace Switcheroo.Core.Matchers
             return regexPattern;
         }
 
-        private static MatchResult NonMatchResult(string input)
-        {
+        private static MatchResult NonMatchResult(string input) {
             var matchResult = new MatchResult();
-            if (input != null)
-            {
+            if (input != null) {
                 matchResult.StringParts.Add(new StringPart(input));
             }
             return matchResult;

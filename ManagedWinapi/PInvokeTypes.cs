@@ -3,15 +3,13 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 
 // from www.pinvoke.net
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
 
     /// <summary>
     /// Wrapper around the Winapi POINT type.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
+    public struct POINT {
         /// <summary>
         /// The X Coordinate.
         /// </summary>
@@ -27,8 +25,7 @@ namespace ManagedWinapi.Windows
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public POINT(int x, int y)
-        {
+        public POINT(int x, int y) {
             this.X = x;
             this.Y = y;
         }
@@ -37,8 +34,7 @@ namespace ManagedWinapi.Windows
         /// Implicit cast.
         /// </summary>
         /// <returns></returns>
-        public static implicit operator System.Drawing.Point(POINT p)
-        {
+        public static implicit operator System.Drawing.Point(POINT p) {
             return new System.Drawing.Point(p.X, p.Y);
         }
 
@@ -46,8 +42,7 @@ namespace ManagedWinapi.Windows
         /// Implicit cast.
         /// </summary>
         /// <returns></returns>
-        public static implicit operator POINT(System.Drawing.Point p)
-        {
+        public static implicit operator POINT(System.Drawing.Point p) {
             return new POINT(p.X, p.Y);
         }
     }
@@ -56,8 +51,7 @@ namespace ManagedWinapi.Windows
     /// Wrapper around the Winapi RECT type.
     /// </summary>
     [Serializable, StructLayout(LayoutKind.Sequential)]
-    public struct RECT
-    {
+    public struct RECT {
         /// <summary>
         /// LEFT
         /// </summary>
@@ -81,8 +75,7 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// Creates a new RECT.
         /// </summary>
-        public RECT(int left_, int top_, int right_, int bottom_)
-        {
+        public RECT(int left_, int top_, int right_, int bottom_) {
             Left = left_;
             Top = top_;
             Right = right_;
@@ -113,22 +106,19 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// Convert RECT to a Rectangle.
         /// </summary>
-        public Rectangle ToRectangle()
-        { return Rectangle.FromLTRB(Left, Top, Right, Bottom); }
+        public Rectangle ToRectangle() { return Rectangle.FromLTRB(Left, Top, Right, Bottom); }
 
         /// <summary>
         /// Convert Rectangle to a RECT
         /// </summary>
-        public static RECT FromRectangle(Rectangle rectangle)
-        {
+        public static RECT FromRectangle(Rectangle rectangle) {
             return new RECT(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
         }
 
         /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return Left ^ ((Top << 13) | (Top >> 0x13))
               ^ ((Width << 0x1a) | (Width >> 6))
               ^ ((Height << 7) | (Height >> 0x19));
@@ -139,16 +129,14 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// Implicit Cast.
         /// </summary>
-        public static implicit operator Rectangle(RECT rect)
-        {
+        public static implicit operator Rectangle(RECT rect) {
             return Rectangle.FromLTRB(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
         /// <summary>
         /// Implicit Cast.
         /// </summary>
-        public static implicit operator RECT(Rectangle rect)
-        {
+        public static implicit operator RECT(Rectangle rect) {
             return new RECT(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 

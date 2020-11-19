@@ -2,44 +2,38 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     /// Any list box, including those from other applications.
     /// </summary>
-    public class SystemListBox
-    {
+    public class SystemListBox {
         /// <summary>
         /// Get a SystemListBox reference from a SystemWindow (which is a list box)
         /// </summary>
-        public static SystemListBox FromSystemWindow(SystemWindow sw)
-        {
-            if (sw.SendGetMessage(LB_GETCOUNT) == 0) return null;
+        public static SystemListBox FromSystemWindow(SystemWindow sw) {
+            if (sw.SendGetMessage(LB_GETCOUNT) == 0)
+                return null;
             return new SystemListBox(sw);
         }
 
         private SystemWindow sw;
 
-        private SystemListBox(SystemWindow sw)
-        {
+        private SystemListBox(SystemWindow sw) {
             this.sw = sw;
         }
 
         /// <summary>
         /// The SystemWindow instance that represents this list box.
         /// </summary>
-        public SystemWindow SystemWindow
-        {
+        public SystemWindow SystemWindow {
             get { return sw; }
         }
 
         /// <summary>
         /// The number of elements in this list box.
         /// </summary>
-        public int Count
-        {
-            get
-            {
+        public int Count {
+            get {
                 return sw.SendGetMessage(LB_GETCOUNT);
             }
         }
@@ -47,10 +41,8 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// The index of the selected element in this list box.
         /// </summary>
-        public int SelectedIndex
-        {
-            get
-            {
+        public int SelectedIndex {
+            get {
                 return sw.SendGetMessage(LB_GETCURSEL);
             }
         }
@@ -58,12 +50,11 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// The selected element in this list box.
         /// </summary>
-        public string SelectedItem
-        {
-            get
-            {
+        public string SelectedItem {
+            get {
                 int idx = SelectedIndex;
-                if (idx == -1) return null;
+                if (idx == -1)
+                    return null;
                 return this[idx];
             }
         }
@@ -71,12 +62,9 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// Get an element of this list box by index.
         /// </summary>
-        public string this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= Count)
-                {
+        public string this[int index] {
+            get {
+                if (index < 0 || index >= Count) {
                     throw new ArgumentException("Argument out of range");
                 }
                 int length = sw.SendGetMessage(LB_GETTEXTLEN, (uint)index);
@@ -102,39 +90,34 @@ namespace ManagedWinapi.Windows
     /// <summary>
     /// Any combo box, including those from other applications.
     /// </summary>
-    public class SystemComboBox
-    {
+    public class SystemComboBox {
         /// <summary>
         /// Get a SystemComboBox reference from a SystemWindow (which is a combo box)
         /// </summary>
-        public static SystemComboBox FromSystemWindow(SystemWindow sw)
-        {
-            if (sw.SendGetMessage(CB_GETCOUNT) == 0) return null;
+        public static SystemComboBox FromSystemWindow(SystemWindow sw) {
+            if (sw.SendGetMessage(CB_GETCOUNT) == 0)
+                return null;
             return new SystemComboBox(sw);
         }
 
         SystemWindow sw;
 
-        private SystemComboBox(SystemWindow sw)
-        {
+        private SystemComboBox(SystemWindow sw) {
             this.sw = sw;
         }
 
         /// <summary>
         /// The SystemWindow instance that represents this combo box.
         /// </summary>
-        public SystemWindow SystemWindow
-        {
+        public SystemWindow SystemWindow {
             get { return sw; }
         }
 
         /// <summary>
         /// The number of elements in this combo box.
         /// </summary>
-        public int Count
-        {
-            get
-            {
+        public int Count {
+            get {
                 return sw.SendGetMessage(CB_GETCOUNT);
             }
         }
@@ -142,12 +125,9 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// Gets an element by index.
         /// </summary>
-        public string this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= Count)
-                {
+        public string this[int index] {
+            get {
+                if (index < 0 || index >= Count) {
                     throw new ArgumentException("Argument out of range");
                 }
                 int length = sw.SendGetMessage(CB_GETLBTEXTLEN, (uint)index);

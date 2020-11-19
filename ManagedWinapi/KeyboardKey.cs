@@ -3,13 +3,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// This class contains utility methods related to keys on the keyboard.
     /// </summary>
-    public class KeyboardKey
-    {
+    public class KeyboardKey {
         readonly Keys key;
         readonly bool extended;
 
@@ -17,11 +15,9 @@ namespace ManagedWinapi
         /// Initializes a new instance of this class for a given key.
         /// </summary>
         /// <param name="key"></param>
-        public KeyboardKey(Keys key)
-        {
+        public KeyboardKey(Keys key) {
             this.key = key;
-            switch (key)
-            {
+            switch (key) {
                 case Keys.Insert:
                 case Keys.Delete:
                 case Keys.PageUp:
@@ -53,8 +49,7 @@ namespace ManagedWinapi
         /// <summary>
         /// Press this key and release it.
         /// </summary>
-        public void PressAndRelease()
-        {
+        public void PressAndRelease() {
             Press();
             Release();
         }
@@ -62,16 +57,14 @@ namespace ManagedWinapi
         /// <summary>
         /// Press this key.
         /// </summary>
-        public void Press()
-        {
+        public void Press() {
             keybd_event((byte)key, (byte)MapVirtualKey((int)key, 0), extended ? (uint)0x1 : 0x0, UIntPtr.Zero);
         }
 
         /// <summary>
         /// Release this key.
         /// </summary>
-        public void Release()
-        {
+        public void Release() {
             keybd_event((byte)key, (byte)MapVirtualKey((int)key, 0), extended ? (uint)0x3 : 0x2, UIntPtr.Zero);
         }
 
@@ -79,19 +72,15 @@ namespace ManagedWinapi
         /// Determine the name of a key in the current keyboard layout.
         /// </summary>
         /// <returns>The key's name</returns>
-        public string KeyName
-        {
-            get
-            {
+        public string KeyName {
+            get {
                 StringBuilder sb = new StringBuilder(512);
                 int scancode = MapVirtualKey((int)key, 0);
                 if (extended)
                     scancode += 0x100;
                 GetKeyNameText(scancode << 16, sb, sb.Capacity);
-                if (sb.Length == 0)
-                {
-                    switch (key)
-                    {
+                if (sb.Length == 0) {
+                    switch (key) {
                         case Keys.BrowserBack:
                             sb.Append("Back");
                             break;
@@ -121,8 +110,7 @@ namespace ManagedWinapi
         /// Inject a keyboard event into the event loop, as if the user performed
         /// it with his keyboard.
         /// </summary>
-        public static void InjectKeyboardEvent(Keys key, byte scanCode, uint flags, UIntPtr extraInfo)
-        {
+        public static void InjectKeyboardEvent(Keys key, byte scanCode, uint flags, UIntPtr extraInfo) {
             keybd_event((byte)key, scanCode, flags, extraInfo);
         }
 
@@ -130,8 +118,7 @@ namespace ManagedWinapi
         /// Inject a mouse event into the event loop, as if the user performed
         /// it with his mouse.
         /// </summary>
-        public static void InjectMouseEvent(uint flags, uint dx, uint dy, uint data, UIntPtr extraInfo)
-        {
+        public static void InjectMouseEvent(uint flags, uint dx, uint dy, uint data, UIntPtr extraInfo) {
             mouse_event(flags, dx, dy, data, extraInfo);
         }
 

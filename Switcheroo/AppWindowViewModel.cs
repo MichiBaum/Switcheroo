@@ -3,12 +3,9 @@ using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace Switcheroo
-{
-    public class AppWindowViewModel : INotifyPropertyChanged, IWindowText
-    {
-        public AppWindowViewModel(AppWindow appWindow)
-        {
+namespace Switcheroo {
+    public class AppWindowViewModel : INotifyPropertyChanged, IWindowText {
+        public AppWindowViewModel(AppWindow appWindow) {
             AppWindow = appWindow;
         }
 
@@ -16,13 +13,11 @@ namespace Switcheroo
 
         #region IWindowText Members
 
-        public string WindowTitle
-        {
+        public string WindowTitle {
             get { return AppWindow.Title; }
         }
 
-        public string ProcessTitle
-        {
+        public string ProcessTitle {
             get { return AppWindow.ProcessTitle; }
         }
 
@@ -30,18 +25,15 @@ namespace Switcheroo
 
         #region Bindable properties
 
-        public IntPtr HWnd
-        {
+        public IntPtr HWnd {
             get { return AppWindow.HWnd; }
         }
 
         private string _formattedTitle;
 
-        public string FormattedTitle
-        {
+        public string FormattedTitle {
             get { return _formattedTitle; }
-            set
-            {
+            set {
                 _formattedTitle = value;
                 NotifyOfPropertyChange(() => FormattedTitle);
             }
@@ -49,11 +41,9 @@ namespace Switcheroo
 
         private string _formattedProcessTitle;
 
-        public string FormattedProcessTitle
-        {
+        public string FormattedProcessTitle {
             get { return _formattedProcessTitle; }
-            set
-            {
+            set {
                 _formattedProcessTitle = value;
                 NotifyOfPropertyChange(() => FormattedProcessTitle);
             }
@@ -61,11 +51,9 @@ namespace Switcheroo
 
         private bool _isBeingClosed = false;
 
-        public bool IsBeingClosed
-        {
+        public bool IsBeingClosed {
             get { return _isBeingClosed; }
-            set
-            {
+            set {
                 _isBeingClosed = value;
                 NotifyOfPropertyChange(() => IsBeingClosed);
             }
@@ -77,26 +65,21 @@ namespace Switcheroo
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyOfPropertyChange<T>(Expression<Func<T>> property)
-        {
+        private void NotifyOfPropertyChange<T>(Expression<Func<T>> property) {
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(GetPropertyName(property)));
         }
 
-        private string GetPropertyName<T>(Expression<Func<T>> property)
-        {
-            var lambda = (LambdaExpression) property;
+        private string GetPropertyName<T>(Expression<Func<T>> property) {
+            var lambda = (LambdaExpression)property;
 
             MemberExpression memberExpression;
-            if (lambda.Body is UnaryExpression)
-            {
-                var unaryExpression = (UnaryExpression) lambda.Body;
-                memberExpression = (MemberExpression) unaryExpression.Operand;
-            }
-            else
-            {
-                memberExpression = (MemberExpression) lambda.Body;
+            if (lambda.Body is UnaryExpression) {
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
+            } else {
+                memberExpression = (MemberExpression)lambda.Body;
             }
 
             return memberExpression.Member.Name;

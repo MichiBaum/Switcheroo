@@ -3,14 +3,12 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// Specifies a component that monitors the system clipboard for changes.
     /// </summary>
     [DefaultEvent("ClipboardChanged")]
-    public class ClipboardNotifier : Component
-    {
+    public class ClipboardNotifier : Component {
 
         /// <summary>
         /// Occurs when the clipboard contents have changed.
@@ -28,24 +26,19 @@ namespace ManagedWinapi
         /// </summary>
         /// <param name="container">The container.</param>
         public ClipboardNotifier(IContainer container)
-            : this()
-        {
+            : this() {
             container.Add(this);
         }
 
         /// <summary>
         /// Creates a new clipboard notifier.
         /// </summary>
-        public ClipboardNotifier()
-        {
-            if (instantiated)
-            {
+        public ClipboardNotifier() {
+            if (instantiated) {
                 // use new windows if more than one instance is used.
                 System.Diagnostics.Debug.WriteLine("WARNING: More than one ClipboardNotifier used!");
                 ednw = new EventDispatchingNativeWindow();
-            }
-            else
-            {
+            } else {
                 ednw = EventDispatchingNativeWindow.Instance;
                 instantiated = true;
             }
@@ -57,33 +50,26 @@ namespace ManagedWinapi
         /// <summary>
         /// Frees resources.
         /// </summary>
-        protected override void Dispose(bool disposing)
-        {
+        protected override void Dispose(bool disposing) {
             ChangeClipboardChain(hWnd, nextHWnd);
             ednw.EventHandler -= clipboardEventHandler;
             base.Dispose(disposing);
         }
 
-        void clipboardEventHandler(ref System.Windows.Forms.Message m, ref bool handled)
-        {
-            if (handled) return;
-            if (m.Msg == WM_DRAWCLIPBOARD)
-            {
+        void clipboardEventHandler(ref System.Windows.Forms.Message m, ref bool handled) {
+            if (handled)
+                return;
+            if (m.Msg == WM_DRAWCLIPBOARD) {
                 // notify me
                 if (ClipboardChanged != null)
                     ClipboardChanged(this, EventArgs.Empty);
                 // pass on message
                 SendMessage(nextHWnd, m.Msg, m.WParam, m.LParam);
                 handled = true;
-            }
-            else if (m.Msg == WM_CHANGECBCHAIN)
-            {
-                if (m.WParam == nextHWnd)
-                {
+            } else if (m.Msg == WM_CHANGECBCHAIN) {
+                if (m.WParam == nextHWnd) {
                     nextHWnd = m.LParam;
-                }
-                else
-                {
+                } else {
                     SendMessage(nextHWnd, m.Msg, m.WParam, m.LParam);
                 }
             }
@@ -100,8 +86,8 @@ namespace ManagedWinapi
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
-        private static readonly int 
-            WM_DRAWCLIPBOARD = 0x0308, 
+        private static readonly int
+            WM_DRAWCLIPBOARD = 0x0308,
             WM_CHANGECBCHAIN = 0x030D;
 
         #endregion

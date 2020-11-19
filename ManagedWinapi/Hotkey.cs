@@ -4,15 +4,13 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
 
     /// <summary>
     /// Specifies a component that creates a global keyboard hotkey.
     /// </summary>
     [DefaultEvent("HotkeyPressed")]
-    public class Hotkey : Component
-    {
+    public class Hotkey : Component {
 
         /// <summary>
         /// Occurs when the hotkey is pressed.
@@ -32,19 +30,16 @@ namespace ManagedWinapi
         /// Initializes a new instance of this class with the specified container.
         /// </summary>
         /// <param name="container">The container to add it to.</param>
-        public Hotkey(IContainer container) : this()
-        {
+        public Hotkey(IContainer container) : this() {
             container.Add(this);
         }
 
         /// <summary>
         /// Initializes a new instance of this class.
         /// </summary>
-        public Hotkey() 
-        {
+        public Hotkey() {
             EventDispatchingNativeWindow.Instance.EventHandler += nw_EventHandler;
-            lock(myStaticLock) 
-            {
+            lock (myStaticLock) {
                 hotkeyIndex = ++hotkeyCounter;
             }
             hWnd = EventDispatchingNativeWindow.Instance.Handle;
@@ -55,14 +50,11 @@ namespace ManagedWinapi
         /// <c>HotkeyPressed</c> event instead of being handled by the active 
         /// application.
         /// </summary>
-        public bool Enabled
-        {
-            get
-            {
+        public bool Enabled {
+            get {
                 return isEnabled;
             }
-            set
-            {
+            set {
                 isEnabled = value;
                 updateHotkey(false);
             }
@@ -71,15 +63,12 @@ namespace ManagedWinapi
         /// <summary>
         /// The key code of the hotkey.
         /// </summary>
-        public Keys KeyCode
-        {
-            get
-            {
+        public Keys KeyCode {
+            get {
                 return _keyCode;
             }
 
-            set
-            {
+            set {
                 _keyCode = value;
                 updateHotkey(true);
             }
@@ -90,7 +79,7 @@ namespace ManagedWinapi
         /// </summary>
         public bool Ctrl {
             get { return _ctrl; }
-            set {_ctrl = value; updateHotkey(true);}
+            set { _ctrl = value; updateHotkey(true); }
         }
 
         /// <summary>
@@ -98,17 +87,17 @@ namespace ManagedWinapi
         /// </summary>
         public bool Alt {
             get { return _alt; }
-            set {_alt = value; updateHotkey(true);}
-        }     
-   
+            set { _alt = value; updateHotkey(true); }
+        }
+
         /// <summary>
         /// Whether this shortcut includes the shift modifier.
         /// </summary>
         public bool Shift {
             get { return _shift; }
-            set {_shift = value; updateHotkey(true);}
+            set { _shift = value; updateHotkey(true); }
         }
-        
+
         /// <summary>
         /// Whether this shortcut includes the Windows key modifier. The windows key
         /// is an addition by Microsoft to the keyboard layout. It is located between
@@ -116,14 +105,13 @@ namespace ManagedWinapi
         /// </summary>
         public bool WindowsKey {
             get { return _windows; }
-            set {_windows = value; updateHotkey(true);}
+            set { _windows = value; updateHotkey(true); }
         }
 
-        void nw_EventHandler(ref Message m, ref bool handled)
-        {
-            if (handled) return;
-            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == hotkeyIndex)
-            {
+        void nw_EventHandler(ref Message m, ref bool handled) {
+            if (handled)
+                return;
+            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == hotkeyIndex) {
                 if (HotkeyPressed != null)
                     HotkeyPressed(this, EventArgs.Empty);
                 handled = true;
@@ -134,39 +122,36 @@ namespace ManagedWinapi
         /// Releases all resources used by the System.ComponentModel.Component.
         /// </summary>
         /// <param name="disposing">Whether to dispose managed resources.</param>
-        protected override void Dispose(bool disposing)
-        {
+        protected override void Dispose(bool disposing) {
             isDisposed = true;
             updateHotkey(false);
             EventDispatchingNativeWindow.Instance.EventHandler -= nw_EventHandler;
             base.Dispose(disposing);
         }
 
-        private void updateHotkey(bool reregister)
-        {
+        private void updateHotkey(bool reregister) {
             bool shouldBeRegistered = isEnabled && !isDisposed && !DesignMode;
-            if (isRegistered && (!shouldBeRegistered || reregister))
-            {
+            if (isRegistered && (!shouldBeRegistered || reregister)) {
                 // unregister hotkey
                 UnregisterHotKey(hWnd, hotkeyIndex);
                 isRegistered = false;
             }
-            if (!isRegistered && shouldBeRegistered)
-            {
+            if (!isRegistered && shouldBeRegistered) {
                 // register hotkey
-                bool success = RegisterHotKey(hWnd, hotkeyIndex, 
+                bool success = RegisterHotKey(hWnd, hotkeyIndex,
                     (_shift ? MOD_SHIFT : 0) + (_ctrl ? MOD_CONTROL : 0) +
                     (_alt ? MOD_ALT : 0) + (_windows ? MOD_WIN : 0), (int)_keyCode);
-                if (!success) throw new HotkeyAlreadyInUseException();
+                if (!success)
+                    throw new HotkeyAlreadyInUseException();
                 isRegistered = true;
             }
         }
 
         #region PInvoke Declarations
 
-        [DllImport("user32.dll", SetLastError=true)]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
-        [DllImport("user32.dll", SetLastError=true)]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private static readonly int MOD_ALT = 0x0001,

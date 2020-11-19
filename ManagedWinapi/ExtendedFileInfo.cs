@@ -4,20 +4,17 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     /// Provides methods for getting additional information about
     /// files, like icons or compressed file size.
     /// </summary>
-    public sealed class ExtendedFileInfo
-    {
+    public sealed class ExtendedFileInfo {
         /// <summary>
         /// Get the icon used for folders.
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetFolderIcon(bool small)
-        {
+        public static Icon GetFolderIcon(bool small) {
             return GetIconForFilename(Environment.GetFolderPath(Environment.SpecialFolder.System), small);
         }
 
@@ -25,8 +22,7 @@ namespace ManagedWinapi
         /// Get the icon used for files that do not have their own icon
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetFileIcon(bool small)
-        {
+        public static Icon GetFileIcon(bool small) {
             return GetExtensionIcon("", small);
         }
 
@@ -35,18 +31,14 @@ namespace ManagedWinapi
         /// </summary>
         /// <param name="extension">The extension without leading dot</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetExtensionIcon(string extension, bool small)
-        {
+        public static Icon GetExtensionIcon(string extension, bool small) {
             string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             string fn = tmp + "." + extension;
-            try
-            {
+            try {
                 File.Create(fn).Close();
                 return GetIconForFilename(fn, small);
-            }
-            finally
-            {
+            } finally {
                 File.Delete(fn);
             }
         }
@@ -56,25 +48,22 @@ namespace ManagedWinapi
         /// </summary>
         /// <param name="fileName">Name of the file</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetIconForFilename(string fileName, bool small)
-        {
+        public static Icon GetIconForFilename(string fileName, bool small) {
             SHFILEINFO shinfo = new SHFILEINFO();
 
-            if (small)
-            {
+            if (small) {
                 IntPtr hImgSmall = SHGetFileInfo(fileName, 0, ref shinfo,
                                    (uint)Marshal.SizeOf(shinfo),
                                     SHGFI_ICON |
                                     SHGFI_SMALLICON);
-            }
-            else
-            {
+            } else {
                 IntPtr hImgLarge = SHGetFileInfo(fileName, 0,
                 ref shinfo, (uint)Marshal.SizeOf(shinfo),
                 SHGFI_ICON | SHGFI_LARGEICON);
             }
 
-            if (shinfo.hIcon == IntPtr.Zero) return null;
+            if (shinfo.hIcon == IntPtr.Zero)
+                return null;
 
             System.Drawing.Icon myIcon =
                    System.Drawing.Icon.FromHandle(shinfo.hIcon);
@@ -85,14 +74,12 @@ namespace ManagedWinapi
         /// Get the size a file requires on disk. This takes NTFS
         /// compression into account.
         /// </summary>
-        public static ulong GetPhysicalFileSize(string filename)
-        {
+        public static ulong GetPhysicalFileSize(string filename) {
             uint high;
             uint low;
             low = GetCompressedFileSize(filename, out high);
             int error = Marshal.GetLastWin32Error();
-            if (error == 32)
-            {
+            if (error == 32) {
                 return (ulong)new FileInfo(filename).Length;
             }
             if (high == 0 && low == 0xFFFFFFFF && error != 0)
@@ -104,13 +91,11 @@ namespace ManagedWinapi
         /// <summary>
         /// Get the cluster size for the filesystem that contains the given file.
         /// </summary>
-        public static uint GetClusterSize(string filename)
-        {
+        public static uint GetClusterSize(string filename) {
             uint sectors, bytes, dummy;
             string drive = Path.GetPathRoot(filename);
             if (!GetDiskFreeSpace(drive, out sectors, out bytes,
-                    out dummy, out dummy))
-            {
+                    out dummy, out dummy)) {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
             return sectors * bytes;
@@ -141,8 +126,7 @@ namespace ManagedWinapi
                                     uint uFlags);
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct SHFILEINFO
-        {
+        private struct SHFILEINFO {
             public IntPtr hIcon;
             public IntPtr iIcon;
             public uint dwAttributes;
