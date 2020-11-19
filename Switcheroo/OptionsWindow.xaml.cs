@@ -1,10 +1,10 @@
-﻿using System.Text;
+﻿using ManagedWinapi;
+using Switcheroo.Core;
+using Switcheroo.Properties;
+using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using ManagedWinapi;
-using Switcheroo.Core;
-using Switcheroo.Properties;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;

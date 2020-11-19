@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-using ManagedWinapi;
+﻿using ManagedWinapi;
 using ManagedWinapi.Hooks;
+using System;
+using System.Windows.Forms;
 
 namespace Switcheroo
 {

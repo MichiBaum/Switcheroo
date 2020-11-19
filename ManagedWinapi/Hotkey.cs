@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using ManagedWinapi.Windows;
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ManagedWinapi
 {

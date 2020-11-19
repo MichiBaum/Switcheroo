@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Switcheroo.Core.Matchers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Switcheroo.Core.Matchers;
 
 namespace Switcheroo.Core
 {

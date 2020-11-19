@@ -1,8 +1,8 @@
+using ManagedWinapi.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using ManagedWinapi.Windows;
 
 namespace ManagedWinapi.Audio.Mixer
 {

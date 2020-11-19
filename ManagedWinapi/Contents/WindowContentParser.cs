@@ -1,5 +1,3 @@
-using System;
-
 namespace ManagedWinapi.Windows.Contents
 {
     internal abstract class WindowContentParser

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Switcheroo.Core.Matchers;
+﻿using Switcheroo.Core.Matchers;
+using System.Collections.Generic;
 
 namespace Switcheroo.Core
 {

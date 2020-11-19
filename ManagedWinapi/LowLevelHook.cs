@@ -1,8 +1,8 @@
-using System;
 using ManagedWinapi.Windows;
+using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ManagedWinapi.Hooks
 {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Switcheroo.Properties;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
-using Switcheroo.Properties;
 
 namespace Switcheroo
 {

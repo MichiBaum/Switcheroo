@@ -1,10 +1,10 @@
+using Microsoft.Win32;
+using Switcheroo.Core;
 using System;
 using System.Globalization;
 using System.Runtime.Caching;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using Switcheroo.Core;
 
 namespace Switcheroo
 {

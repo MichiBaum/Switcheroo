@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using ManagedWinapi.Windows;
 
 namespace ManagedWinapi.Audio.Mixer
 {

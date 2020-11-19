@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Switcheroo.Core.Matchers;
+using System.Linq;
 
 namespace Switcheroo.Core.UnitTests
 {

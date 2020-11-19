@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Switcheroo.Core;
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Switcheroo.Core;
 
 namespace Switcheroo
 {

@@ -1,11 +1,7 @@
+using ManagedWinapi.Windows;
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using ManagedWinapi.Windows;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 
 namespace ManagedWinapi
 {

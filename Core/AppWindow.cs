@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagedWinapi.Windows;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
-using ManagedWinapi.Windows;
 
 namespace Switcheroo.Core
 {

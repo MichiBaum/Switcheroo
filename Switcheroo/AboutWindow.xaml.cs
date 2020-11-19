@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
-using System.Diagnostics;
 using System.Windows.Documents;
 
 namespace Switcheroo
