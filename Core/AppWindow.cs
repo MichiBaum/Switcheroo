@@ -16,7 +16,7 @@ namespace Switcheroo.Core {
         public string ProcessTitle {
             get {
                 var key = "ProcessTitle-" + HWnd;
-                var processTitle = MemoryCache.Default.Get(key) as string;
+                string processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null) {
                     if (IsApplicationFrameWindow()) {
                         processTitle = "UWP";
@@ -141,7 +141,7 @@ namespace Switcheroo.Core {
         }
 
         private bool IsOwnerOrOwnerNotVisible() {
-            return Owner == null || !Owner.Visible;
+            return Owner?.Visible != true;
         }
 
         private bool HasITaskListDeletedProperty() {

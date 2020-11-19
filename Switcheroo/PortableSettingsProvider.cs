@@ -51,6 +51,7 @@ namespace Switcheroo {
                         _xmlDocument = new XmlDocument();
                         _xmlDocument.Load(_filePath);
                     } catch (Exception) {
+                        // TODO
                     }
 
                     if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)

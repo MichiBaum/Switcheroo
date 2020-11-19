@@ -175,7 +175,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         CLIENTEDGE = 0x00000200,
         /// <summary>
-        /// Windows XP: Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC. 
+        /// Windows XP: Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
         /// </summary>
         COMPOSITED = 0x02000000,
         /// <summary>
@@ -192,11 +192,11 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         DLGMODALFRAME = 0x00000001,
         /// <summary>
-        /// Windows 2000/XP: Creates a layered window. Note that this cannot be used for child windows. Also, this cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC. 
+        /// Windows 2000/XP: Creates a layered window. Note that this cannot be used for child windows. Also, this cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
         /// </summary>
         LAYERED = 0x00080000,
         /// <summary>
-        /// Arabic and Hebrew versions of Windows 98/Me, Windows 2000/XP: Creates a window whose horizontal origin is on the right edge. Increasing horizontal values advance to the left. 
+        /// Arabic and Hebrew versions of Windows 98/Me, Windows 2000/XP: Creates a window whose horizontal origin is on the right edge. Increasing horizontal values advance to the left.
         /// </summary>
         LAYOUTRTL = 0x00400000,
         /// <summary>
@@ -216,7 +216,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         MDICHILD = 0x00000040,
         /// <summary>
-        /// Windows 2000/XP: A top-level window created with this style does not become the foreground window when the user clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground window. 
+        /// Windows 2000/XP: A top-level window created with this style does not become the foreground window when the user clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground window.
         /// To activate the window, use the SetActiveWindow or SetForegroundWindow function.
         /// The window does not appear on the taskbar by default. To force the window to appear on the taskbar, use the WS_EX_APPWINDOW style.
         /// </summary>
@@ -255,7 +255,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         STATICEDGE = 0x00020000,
         /// <summary>
-        /// Creates a tool window; that is, a window intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE. 
+        /// Creates a tool window; that is, a window intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.
         /// </summary>
         TOOLWINDOW = 0x00000080,
         /// <summary>
@@ -364,13 +364,12 @@ namespace ManagedWinapi.Windows {
                 sw = sw.ParentSymmetric;
             if (toplevel)
                 return sw;
-            int area;
-            area = getArea(sw);
+            int area = GetArea(sw);
             SystemWindow result = sw;
             foreach (SystemWindow w in sw.AllDescendantWindows) {
                 if (w.Visible && (w.Enabled || !enabledOnly)) {
                     if (w.Rectangle.ToRectangle().Contains(x, y)) {
-                        int ar2 = getArea(w);
+                        int ar2 = GetArea(w);
                         if (ar2 <= area) {
                             area = ar2;
                             result = w;
@@ -381,7 +380,7 @@ namespace ManagedWinapi.Windows {
             return result;
         }
 
-        private static int getArea(SystemWindow sw) {
+        private static int GetArea(SystemWindow sw) {
             RECT rr = sw.Rectangle;
             return rr.Height * rr.Width;
         }
@@ -494,7 +493,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Whether this window is currently visible. A window is visible if its 
+        /// Whether this window is currently visible. A window is visible if its
         /// and all ancestor's visibility flags are true.
         /// </summary>
         public bool Visible {
@@ -583,7 +582,6 @@ namespace ManagedWinapi.Windows {
             set {
                 SetWindowLong(_hwnd, (int)GWL.GWL_STYLE, (int)value);
             }
-
         }
 
         /// <summary>
@@ -691,7 +689,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The window's position in absolute screen coordinates. Use 
+        /// The window's position in absolute screen coordinates. Use
         /// <see cref="Position"/> if you want to use the relative position.
         /// </summary>
         public RECT Rectangle {
@@ -716,8 +714,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public Process Process {
             get {
-                int pid;
-                GetWindowThreadProcessId(HWnd, out pid);
+                GetWindowThreadProcessId(HWnd, out int pid);
                 return Process.GetProcessById(pid);
             }
         }
@@ -727,8 +724,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public ProcessThread Thread {
             get {
-                int pid;
-                int tid = GetWindowThreadProcessId(HWnd, out pid);
+                int tid = GetWindowThreadProcessId(HWnd, out int pid);
                 foreach (ProcessThread t in Process.GetProcessById(pid).Threads) {
                     if (t.Id == tid)
                         return t;
@@ -795,8 +791,8 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         /// An image of this window. Unlike a screen shot, this will not
         /// contain parts of other windows (partially) cover this window.
-        /// If you want to create a screen shot, use the 
-        /// <see cref="System.Drawing.Graphics.CopyFromScreen(System.Drawing.Point,System.Drawing.Point,System.Drawing.Size)"/> 
+        /// If you want to create a screen shot, use the
+        /// <see cref="System.Drawing.Graphics.CopyFromScreen(System.Drawing.Point,System.Drawing.Point,System.Drawing.Size)"/>
         /// function and use the <see cref="SystemWindow.Rectangle"/> property for
         /// the range.
         /// </summary>
@@ -943,7 +939,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         /// Post a message to this window that it should close. This is equivalent
         /// to clicking the "X" in the upper right corner or pressing Alt+F4.
-        /// It sometimes works in instances where the <see cref="SendClose"/> function does 
+        /// It sometimes works in instances where the <see cref="SendClose"/> function does
         /// not (for example, Windows Explorer windows.)
         /// </summary>
         public void PostClose() {
@@ -964,8 +960,7 @@ namespace ManagedWinapi.Windows {
         /// Highlights the window with a red border.
         /// </summary>
         public void Highlight() {
-            RECT rect;
-            GetWindowRect(_hwnd, out rect);
+            GetWindowRect(_hwnd, out RECT rect);
             using (WindowDeviceContext windowDC = GetDeviceContext(false)) {
                 using (Graphics g = windowDC.CreateGraphics()) {
                     g.DrawRectangle(new Pen(Color.Red, 4), 0, 0, rect.Right - rect.Left, rect.Bottom - rect.Top);
@@ -974,7 +969,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Forces the window to invalidate its client area and immediately redraw itself and any child controls. 
+        /// Forces the window to invalidate its client area and immediately redraw itself and any child controls.
         /// </summary>
         public void Refresh() {
             // By using parent, we get better results in refreshing old drawing window area.
@@ -985,7 +980,7 @@ namespace ManagedWinapi.Windows {
             }
 
             InvalidateRect(hwndToRefresh, IntPtr.Zero, true);
-            RedrawWindow(hwndToRefresh, IntPtr.Zero, IntPtr.Zero, RDW.RDW_FRAME | RDW.RDW_INVALIDATE | RDW.RDW_UPDATENOW | RDW.RDW_ALLCHILDREN | RDW.RDW_ERASENOW);
+            _ = RedrawWindow(hwndToRefresh, IntPtr.Zero, IntPtr.Zero, flags: RDW.RDW_FRAME | RDW.RDW_INVALIDATE | RDW.RDW_UPDATENOW | RDW.RDW_ALLCHILDREN | RDW.RDW_ERASENOW);
         }
 
         internal int SendGetMessage(uint message) {
@@ -1002,7 +997,10 @@ namespace ManagedWinapi.Windows {
 
         #region Equals and HashCode
 
-        ///
+        /// <summary>
+        /// Convertion of obj to SystemWindow.
+        /// If obj is null returns false and else further to Equals(SystemWindow sw)
+        /// </summary>
         public override bool Equals(System.Object obj) {
             if (obj == null) {
                 return false;
@@ -1011,15 +1009,20 @@ namespace ManagedWinapi.Windows {
             return Equals(sw);
         }
 
-        ///
+        /// <summary>
+        /// Checks if <see langword="null"/> and if true returns null
+        /// Chechs if it's the same as _hwnd
+        /// </summary>
         public bool Equals(SystemWindow sw) {
-            if ((object)sw == null) {
+            if (sw is null) {
                 return false;
             }
             return _hwnd == sw._hwnd;
         }
 
-        ///
+        /// <summary>
+        /// unchecked((int)_hwnd.ToInt64())
+        /// </summary>
         public override int GetHashCode() {
             // avoid exceptions
             return unchecked((int)_hwnd.ToInt64());
@@ -1032,7 +1035,7 @@ namespace ManagedWinapi.Windows {
             if (System.Object.ReferenceEquals(a, b)) {
                 return true;
             }
-            if (((object)a == null) || ((object)b == null)) {
+            if ((a is null) || (b is null)) {
                 return false;
             }
             return a._hwnd == b._hwnd;
@@ -1313,5 +1316,4 @@ namespace ManagedWinapi.Windows {
         [DllImport("user32.dll")]
         private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
     }
-
 }

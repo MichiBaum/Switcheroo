@@ -19,7 +19,7 @@ namespace Switcheroo {
                 try {
                     try {
                         hasHandle = mutex.WaitOne(5000, false);
-                        if (hasHandle == false)
+                        if (!hasHandle)
                             return; //another instance exist
                     } catch (AbandonedMutexException) {
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
@@ -60,6 +60,7 @@ namespace Switcheroo {
             return Settings.Default.RunAsAdmin;
         }
 
+        // TODO unused?
         private static void MakePortable(ApplicationSettingsBase settings) {
             var portableSettingsProvider = new PortableSettingsProvider();
             settings.Providers.Add(portableSettingsProvider);

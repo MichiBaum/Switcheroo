@@ -66,9 +66,7 @@ namespace Switcheroo {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyOfPropertyChange<T>(Expression<Func<T>> property) {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(GetPropertyName(property)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(GetPropertyName(property)));
         }
 
         private string GetPropertyName<T>(Expression<Func<T>> property) {
