@@ -1,5 +1,4 @@
-<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
-==========
+# <img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
 
 Switcheroo is for anyone who spends more time using a keyboard than a mouse.
 Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows
@@ -7,9 +6,12 @@ you to quickly switch to any window by typing in just a few characters of its ti
 
 This is a improved and extended version of [this project.](https://github.com/kvakulo/Switcheroo)
 
+## Code style
 
-License
--------
+There is a .editorconfig for C# in this project.
+Please use it if you Analyze -> code cleanup.
+
+## License
 
 Switcheroo is open source and is licensed under the [GNU GPL v. 3](http://www.gnu.org/licenses/gpl.html).
 
@@ -28,9 +30,7 @@ You should have received a copy of the GNU General Public License
 along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 ```
 
-
-Credits
--------
+## Credits
 
 Switcheroo makes use of these open source projects:
 
