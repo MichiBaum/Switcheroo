@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "dotnet:nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    default_reviewers:
+      - "MichiBaum"
+    default_labels:
+      - "dependabot-update"
+    target_branch: "development"
