@@ -11,11 +11,11 @@ namespace Switcheroo {
         }
 
         private void HandleRequestNavigate(object sender, RoutedEventArgs e) {
-            var hyperlink = e.OriginalSource as Hyperlink;
+            Hyperlink hyperlink = e.OriginalSource as Hyperlink;
             if (hyperlink == null)
                 return;
 
-            var navigateUri = hyperlink.NavigateUri.ToString();
+            string navigateUri = hyperlink.NavigateUri.ToString();
             Process.Start(new ProcessStartInfo(navigateUri));
             e.Handled = true;
         }

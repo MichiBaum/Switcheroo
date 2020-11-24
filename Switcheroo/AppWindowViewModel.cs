@@ -73,8 +73,7 @@ namespace Switcheroo {
             var lambda = (LambdaExpression)property;
 
             MemberExpression memberExpression;
-            if (lambda.Body is UnaryExpression) {
-                var unaryExpression = (UnaryExpression)lambda.Body;
+            if (lambda.Body is UnaryExpression unaryExpression) {
                 memberExpression = (MemberExpression)unaryExpression.Operand;
             } else {
                 memberExpression = (MemberExpression)lambda.Body;

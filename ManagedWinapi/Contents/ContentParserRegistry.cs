@@ -3,6 +3,7 @@ using System.Collections.Generic;
 namespace ManagedWinapi.Windows.Contents {
     internal class ContentParserRegistry {
         static ContentParserRegistry instance = null;
+        List<WindowContentParser> parsers = new List<WindowContentParser>();
 
         public static ContentParserRegistry Instance {
             get {
@@ -11,8 +12,6 @@ namespace ManagedWinapi.Windows.Contents {
                 return instance;
             }
         }
-
-        List<WindowContentParser> parsers = new List<WindowContentParser>();
 
         private ContentParserRegistry() {
             parsers.Add(new ComboBoxParser());

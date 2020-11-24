@@ -694,8 +694,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public RECT Rectangle {
             get {
-                RECT r = new RECT();
-                GetWindowRect(_hwnd, out r);
+                GetWindowRect(_hwnd, out RECT r);
                 return r;
             }
         }

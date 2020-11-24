@@ -96,10 +96,11 @@ namespace Switcheroo {
                 return;
             }
 
-            var previewHotkeyModel = new HotkeyViewModel();
-            previewHotkeyModel.Ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
-            previewHotkeyModel.Shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0;
-            previewHotkeyModel.Alt = (Keyboard.Modifiers & ModifierKeys.Alt) != 0;
+            var previewHotkeyModel = new HotkeyViewModel {
+                Ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0,
+                Shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0,
+                Alt = (Keyboard.Modifiers & ModifierKeys.Alt) != 0
+            };
 
             var winLKey = new KeyboardKey(Keys.LWin);
             var winRKey = new KeyboardKey(Keys.RWin);

@@ -12,7 +12,7 @@ namespace Switcheroo {
             get { return HasShortcut(); }
 
             set {
-                var appLink = GetAppLinkPath();
+                string appLink = GetAppLinkPath();
 
                 if (value) {
                     CreateShortcut(appLink);
@@ -31,25 +31,23 @@ namespace Switcheroo {
         }
 
         private static string GetAppLinkPath() {
-            var appDataStart =
+            string appDataStart =
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     @"Microsoft\Windows\Start Menu\Programs\Startup");
-            var appLink = Path.Combine(appDataStart, "Switcheroo.lnk");
-            return appLink;
+            return Path.Combine(appDataStart, "Switcheroo.lnk");
         }
 
         private static void DeleteShortcut(string appLink) {
             try {
                 File.Delete(appLink);
             } catch {
-                throw new AutoStartException(
-                    "It was not possible to delete the shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException("It was not possible to delete the shortcut to Switcheroo in the startup folder");
             }
         }
 
         private static void CreateShortcut(string appLink) {
             try {
-                var exeLocation = Assembly.GetEntryAssembly().Location;
+                string exeLocation = Assembly.GetEntryAssembly().Location;
 
                 //Windows Script Host Shell Object
                 var t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
@@ -66,15 +64,21 @@ namespace Switcheroo {
                     Marshal.FinalReleaseComObject(shell);
                 }
             } catch {
-                throw new AutoStartException(
-                    "It was not possible to create a shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException("It was not possible to create a shortcut to Switcheroo in the startup folder");
             }
         }
     }
 
     public class AutoStartException : Exception {
+
+        public AutoStartException() {
+        }
+
         public AutoStartException(string message)
             : base(message) {
+        }
+
+        public AutoStartException(string message, Exception innerException) : base(message, innerException) {
         }
     }
 }

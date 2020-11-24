@@ -65,7 +65,7 @@ namespace ManagedWinapi.Windows.Contents {
 
         internal override bool CanParseContent(SystemWindow sw) {
             if (strict) {
-                uint EM_GETLINECOUNT = 0xBA;
+                const uint EM_GETLINECOUNT = 0xBA;
                 return sw.SendGetMessage(EM_GETLINECOUNT) != 0;
             } else {
                 return sw.Title != "";

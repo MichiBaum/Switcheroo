@@ -24,12 +24,10 @@ namespace ManagedWinapi.Windows.Contents {
             this.sw = sw;
         }
 
-        ///
         public string ComponentType {
             get { return "AccessibleWindow"; }
         }
 
-        ///
         public string ShortDescription {
             get {
                 return name + " <AccessibleWindow:" +
@@ -39,7 +37,6 @@ namespace ManagedWinapi.Windows.Contents {
             }
         }
 
-        ///
         public string LongDescription {
             get {
                 ParseIfNeeded();
@@ -76,7 +73,7 @@ namespace ManagedWinapi.Windows.Contents {
         private void ParseSubMenu(StringBuilder menuitems, SystemAccessibleObject sao, int depth) {
             foreach (SystemAccessibleObject c in sao.Children) {
                 if (c.RoleIndex == 11 || c.RoleIndex == 12) {
-                    menuitems.Append(ListContent.Repeat('\t', depth) + c.Name + "\n");
+                    menuitems.Append(ListContent.Repeat('\t', depth)).Append(c.Name).Append('\n');
                     ParseSubMenu(menuitems, c, depth + 1);
                 }
             }
@@ -91,9 +88,9 @@ namespace ManagedWinapi.Windows.Contents {
 
         private void ParseClientAreaElement(StringBuilder sb, SystemAccessibleObject sao, int depth) {
             sb.Append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-            sb.Append(ListContent.Repeat('*', depth) + " " + sao.ToString() + "\n");
+            sb.Append(ListContent.Repeat('*', depth)).Append(' ').Append(sao.ToString()).Append('\n');
             try {
-                sb.Append("D: " + sao.Description + "\n");
+                sb.Append("D: ").Append(sao.Description).Append('\n');
             } catch (COMException) { }
             try {
                 sb.Append("V: " + sao.Value + "\n");

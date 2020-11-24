@@ -34,15 +34,15 @@ namespace ManagedWinapi.Windows.Contents {
         public string LongDescription {
             get {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("<" + type + ">");
+                sb.Append('<').Append(type).Append('>');
                 if (current != null)
-                    sb.Append(" (selected value: \"" + current + "\")");
+                    sb.Append(" (selected value: \"").Append(current).Append("\")");
                 sb.Append("\nAll values:\n");
                 int idx = 0;
                 foreach (string v in values) {
                     if (selected == idx)
                         sb.Append("*");
-                    sb.Append("\t" + v + "\n");
+                    sb.Append('\t').Append(v).Append('\n');
                     idx++;
                 }
                 return sb.ToString();
@@ -145,13 +145,13 @@ namespace ManagedWinapi.Windows.Contents {
     internal class ListViewParser : WindowContentParser {
 
         internal override bool CanParseContent(SystemWindow sw) {
-            uint LVM_GETITEMCOUNT = (0x1000 + 4);
+            const uint LVM_GETITEMCOUNT = (0x1000 + 4);
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
             return cnt != 0;
         }
 
         internal override WindowContent ParseContent(SystemWindow sw) {
-            uint LVM_GETITEMCOUNT = (0x1000 + 4);
+            const uint LVM_GETITEMCOUNT = (0x1000 + 4);
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
             if (cnt == 0)
                 throw new Exception();
@@ -248,7 +248,7 @@ namespace ManagedWinapi.Windows.Contents {
     }
 
     class TreeViewParser : WindowContentParser {
-        uint TVM_GETCOUNT = 0x1100 + 5;
+        readonly uint TVM_GETCOUNT = 0x1100 + 5;
 
         internal override bool CanParseContent(SystemWindow sw) {
             int cnt = sw.SendGetMessage(TVM_GETCOUNT, 0);

@@ -29,7 +29,7 @@
         }
 
         private static bool InputStartsWithPattern(string input, string pattern) {
-            return input.ToLowerInvariant().StartsWith(pattern.ToLowerInvariant());
+            return input.StartsWith(pattern, System.StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

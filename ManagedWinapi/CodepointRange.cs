@@ -28,8 +28,8 @@ namespace ManagedWinapi {
             int tmp = 0;
             int count = Marshal.ReadInt32(glyphSet, 12);
             for (int i = 0; i < count; i++) {
-                char firstIncluded = (char)Marshal.ReadInt16(glyphSet, 16 + i * 4);
-                char firstExcluded = (char)(firstIncluded + Marshal.ReadInt16(glyphSet, 18 + i * 4));
+                char firstIncluded = (char)Marshal.ReadInt16(glyphSet, 16 + (i * 4));
+                char firstExcluded = (char)(firstIncluded + Marshal.ReadInt16(glyphSet, 18 + (i * 4)));
                 tmp += firstExcluded - firstIncluded;
                 rangeList.Add(firstIncluded);
                 rangeList.Add(firstExcluded);
@@ -166,7 +166,10 @@ namespace ManagedWinapi {
 
         ///
         public override int GetHashCode() {
-            return 3 * codepointCount + 7 * ranges.Length + 9 * FirstCodepoint + 11 * LastCodepoint;
+            return (3 * codepointCount) +
+                (7 * ranges.Length) +
+                (9 * FirstCodepoint) +
+                (11 * LastCodepoint);
         }
         #endregion
 

@@ -19,7 +19,7 @@ namespace Switcheroo {
             var key = "IconImage-" + handle;
             var shortCacheKey = key + "-shortCache";
             var longCacheKey = key + "-longCache";
-            var iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
+            BitmapImage iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
             if (iconImage == null) {
                 var window = new AppWindow(handle);
                 var icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
@@ -31,7 +31,7 @@ namespace Switcheroo {
         }
 
         private static bool ShouldUseSmallTaskbarIcons() {
-            var cacheKey = "SmallTaskbarIcons";
+            const string cacheKey = "SmallTaskbarIcons";
 
             var cachedSetting = MemoryCache.Default.Get(cacheKey) as bool?;
             if (cachedSetting != null) {
@@ -50,16 +50,13 @@ namespace Switcheroo {
                     return false;
                 }
 
-                int intValue;
-                int.TryParse(value.ToString(), out intValue);
+                int.TryParse(value.ToString(), out int intValue);
                 var smallTaskbarIcons = intValue == 1;
                 MemoryCache.Default.Set(cacheKey, smallTaskbarIcons, DateTimeOffset.Now.AddMinutes(120));
                 return smallTaskbarIcons;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }

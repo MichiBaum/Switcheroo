@@ -60,7 +60,7 @@ namespace Switcheroo {
             return Settings.Default.RunAsAdmin;
         }
 
-        // TODO unused?
+        // TODO unused method?
         private static void MakePortable(ApplicationSettingsBase settings) {
             var portableSettingsProvider = new PortableSettingsProvider();
             settings.Providers.Add(portableSettingsProvider);

@@ -75,9 +75,7 @@ namespace ManagedWinapi {
         /// compression into account.
         /// </summary>
         public static ulong GetPhysicalFileSize(string filename) {
-            uint high;
-            uint low;
-            low = GetCompressedFileSize(filename, out high);
+            uint low = GetCompressedFileSize(filename, out uint high);
             int error = Marshal.GetLastWin32Error();
             if (error == 32) {
                 return (ulong)new FileInfo(filename).Length;
@@ -92,13 +90,13 @@ namespace ManagedWinapi {
         /// Get the cluster size for the filesystem that contains the given file.
         /// </summary>
         public static uint GetClusterSize(string filename) {
-            uint sectors, bytes, dummy;
             string drive = Path.GetPathRoot(filename);
-            if (!GetDiskFreeSpace(drive, out sectors, out bytes,
-                    out dummy, out dummy)) {
+
+            bool hasFreeDiskSpace = GetDiskFreeSpace(drive, out uint lpSectorsPerCluster, out uint lpBytesPerSector, out _, out _);
+            if (!hasFreeDiskSpace) {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
-            return sectors * bytes;
+            return lpSectorsPerCluster * lpBytesPerSector;
         }
 
         #region PInvoke Declarations

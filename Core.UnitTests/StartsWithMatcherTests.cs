@@ -7,8 +7,8 @@ namespace Switcheroo.Core.UnitTests {
     public class StartsWithMatcherTests {
         [Test]
         public void Evaluate_InputStartsWithPattern_ResultIsMatched() {
-            var input = "google chrome";
-            var pattern = "google";
+            const string input = "google chrome";
+            const string pattern = "google";
 
             var result = Evaluate(input, pattern);
 
@@ -17,8 +17,8 @@ namespace Switcheroo.Core.UnitTests {
 
         [Test]
         public void Evaluate_InputStartsWithPattern_ScoreIsFour() {
-            var input = "google chrome";
-            var pattern = "google";
+            const string input = "google chrome";
+            const string pattern = "google";
 
             var result = Evaluate(input, pattern);
 
@@ -27,8 +27,8 @@ namespace Switcheroo.Core.UnitTests {
 
         [Test]
         public void Evaluate_InputStartsWithPattern_FirstStringPartIsMatch() {
-            var input = "google chrome";
-            var pattern = "google";
+            const string input = "google chrome";
+            const string pattern = "google";
 
             var result = Evaluate(input, pattern);
 
@@ -38,8 +38,8 @@ namespace Switcheroo.Core.UnitTests {
 
         [Test]
         public void Evaluate_InputStartsWithPattern_SecondStringPartIsNotMatch() {
-            var input = "google chrome";
-            var pattern = "google";
+            const string input = "google chrome";
+            const string pattern = "google";
 
             var result = Evaluate(input, pattern);
 

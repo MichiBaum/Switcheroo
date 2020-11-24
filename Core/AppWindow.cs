@@ -171,7 +171,7 @@ namespace Switcheroo.Core {
             //    2 = Program is running on a different virtual desktop
 
             var hasAppropriateApplicationViewCloakType = false;
-            WinApi.EnumPropsEx(HWnd, (hwnd, lpszString, data, dwData) => {
+            WinApi.EnumPropsEx(HWnd, (_, lpszString, data, __) => {
                 var propName = Marshal.PtrToStringAnsi(lpszString);
                 if (propName == "ApplicationViewCloakType") {
                     hasAppropriateApplicationViewCloakType = data != 1;

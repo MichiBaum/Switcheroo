@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ManagedWinapi.Hooks {
     /// <summary>
-    /// Abstract base class for hooks that can be used to create or playback 
+    /// Abstract base class for hooks that can be used to create or playback
     /// a log of keyboard and mouse events.
     /// </summary>
     public abstract class JournalHook : Hook {
@@ -17,19 +17,16 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         /// Creates a new journal hook.
         /// </summary>
-        public JournalHook(HookType type)
-            : base(type, true, false) {
+        public JournalHook(HookType type): base(type, true, false) {
             lmh = new LocalMessageHook();
-            lmh.MessageOccurred += new LocalMessageHook.MessageCallback(lmh_Callback);
+            lmh.MessageOccurred += new LocalMessageHook.MessageCallback(Lmh_Callback);
         }
 
-        private void lmh_Callback(System.Windows.Forms.Message msg) {
+        private void Lmh_Callback(System.Windows.Forms.Message msg) {
             if (msg.Msg == WM_CANCELJOURNAL) {
                 hooked = false;
                 lmh.Unhook();
-                if (JournalCancelled != null) {
-                    JournalCancelled(this, new EventArgs());
-                }
+                JournalCancelled?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -85,12 +82,13 @@ namespace ManagedWinapi.Hooks {
         /// Creates a new journal message.
         /// </summary>
         public JournalMessage(IntPtr hWnd, uint message, uint paramL, uint paramH, uint time) {
-            msg = new JournalHook.EVENTMSG();
-            msg.hWnd = hWnd;
-            msg.message = message;
-            msg.paramL = paramL;
-            msg.paramH = paramH;
-            msg.time = 0;
+            msg = new JournalHook.EVENTMSG {
+                hWnd = hWnd,
+                message = message,
+                paramL = paramL,
+                paramH = paramH,
+                time = 0
+            };
         }
 
         /// <summary>
@@ -134,7 +132,7 @@ namespace ManagedWinapi.Hooks {
     /// Event data for a journal record event.
     /// </summary>
     public class JournalRecordEventArgs : EventArgs {
-        private JournalMessage msg;
+        private readonly JournalMessage msg;
 
         internal JournalRecordEventArgs(JournalMessage msg) {
             this.msg = msg;
@@ -172,26 +170,19 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         /// Creates a new journal record hook.
         /// </summary>
-        public JournalRecordHook()
-            : base(HookType.WH_JOURNALRECORD) {
-            base.Callback += JournalRecordHook_Callback;
+        public JournalRecordHook(): base(HookType.WH_JOURNALRECORD) {
+            Callback += JournalRecordHook_Callback;
         }
 
         private int JournalRecordHook_Callback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext) {
             if (code == HC_ACTION) {
                 EVENTMSG em = (EVENTMSG)Marshal.PtrToStructure(lParam, typeof(EVENTMSG));
                 JournalMessage jm = JournalMessage.Create(em);
-                if (RecordEvent != null) {
-                    RecordEvent(this, new JournalRecordEventArgs(jm));
-                }
+                RecordEvent?.Invoke(this, new JournalRecordEventArgs(jm));
             } else if (code == HC_SYSMODALON) {
-                if (SystemModalDialogAppeared != null) {
-                    SystemModalDialogAppeared(this, new EventArgs());
-                }
+                SystemModalDialogAppeared?.Invoke(this, EventArgs.Empty);
             } else if (code == HC_SYSMODALOFF) {
-                if (SystemModalDialogDisappeared != null) {
-                    SystemModalDialogDisappeared(this, new EventArgs());
-                }
+                SystemModalDialogDisappeared?.Invoke(this, EventArgs.Empty);
             }
             return 0;
         }
@@ -231,9 +222,8 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         /// Creates a new journal playback hook.
         /// </summary>
-        public JournalPlaybackHook()
-            : base(HookType.WH_JOURNALPLAYBACK) {
-            base.Callback += JournalPlaybackHook_Callback;
+        public JournalPlaybackHook(): base(HookType.WH_JOURNALPLAYBACK) {
+            Callback += JournalPlaybackHook_Callback;
         }
 
         private int JournalPlaybackHook_Callback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext) {
@@ -272,11 +262,9 @@ namespace ManagedWinapi.Hooks {
                 nextEvent = null;
                 nextEventTime = 0;
             } else if (code == HC_SYSMODALON) {
-                if (SystemModalDialogAppeared != null)
-                    SystemModalDialogAppeared(this, new EventArgs());
+                SystemModalDialogAppeared?.Invoke(this, EventArgs.Empty);
             } else if (code == HC_SYSMODALOFF) {
-                if (SystemModalDialogDisappeared != null)
-                    SystemModalDialogDisappeared(this, new EventArgs());
+                SystemModalDialogDisappeared?.Invoke(this, EventArgs.Empty);
             }
             return 0;
         }
@@ -287,9 +275,9 @@ namespace ManagedWinapi.Hooks {
     /// and mouse input for some time.
     /// </summary>
     public class InputLocker : IDisposable {
-
-        private int interval, count;
-        private JournalPlaybackHook hook;
+        private readonly int interval;
+        private int count;
+        private readonly JournalPlaybackHook hook;
 
         /// <summary>
         /// Locks the input for <code>interval * count</code> milliseconds. The
@@ -304,19 +292,19 @@ namespace ManagedWinapi.Hooks {
             this.interval = interval;
             this.count = count;
             hook = new JournalPlaybackHook();
-            hook.GetNextJournalMessage += new JournalPlaybackHook.JournalQuery(hook_GetNextJournalMessage);
+            hook.GetNextJournalMessage += new JournalPlaybackHook.JournalQuery(Hook_GetNextJournalMessage);
             if (force)
-                hook.JournalCancelled += new EventHandler(hook_JournalCancelled);
+                hook.JournalCancelled += new EventHandler(Hook_JournalCancelled);
             hook.StartHook();
         }
 
-        private void hook_JournalCancelled(object sender, EventArgs e) {
+        private void Hook_JournalCancelled(object sender, EventArgs e) {
             if (count >= 0)
                 count++;
             hook.StartHook();
         }
 
-        private JournalMessage hook_GetNextJournalMessage(ref int timestamp) {
+        private JournalMessage Hook_GetNextJournalMessage(ref int timestamp) {
             if (count == 0)
                 return null;
             timestamp = Environment.TickCount + interval;

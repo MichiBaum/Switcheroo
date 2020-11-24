@@ -164,11 +164,11 @@ namespace Switcheroo {
                 if (latestVersion != null && latestVersion > currentVersion) {
                     var result = MessageBox.Show(
                         string.Format(
-                            "Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
-                            latestVersion, currentVersion),
-                        "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            "Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?", latestVersion, currentVersion),
+                            "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
                     if (result == MessageBoxResult.Yes) {
-                        Process.Start("https://github.com/kvakulo/Switcheroo/releases/latest");
+                        // TODO can throw exception like https://stackoverflow.com/a/53245993/10258204
+                        Process.Start("https://github.com/MichiBaum/Switcheroo/releases/latest");
                     }
                 } else {
                     timer.Interval = new TimeSpan(24, 0, 0);
@@ -182,12 +182,9 @@ namespace Switcheroo {
 
         private static async Task<Version> GetLatestVersion() {
             try {
-                var versionAsString =
-                    await
-                        new WebClient().DownloadStringTaskAsync(
-                            "https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
-                Version newVersion;
-                if (Version.TryParse(versionAsString, out newVersion)) {
+                // TODO add own versioning
+                var versionAsString = await new WebClient().DownloadStringTaskAsync("https://raw.github.com/kvakulo/Switcheroo/update/version.txt").ConfigureAwait(false);
+                if (Version.TryParse(versionAsString, out Version newVersion)) {
                     return newVersion;
                 }
             } catch (WebException) {
@@ -199,7 +196,7 @@ namespace Switcheroo {
         /// Populates the window list with the current running windows.
         /// </summary>
         private void LoadData(InitialFocus focus) {
-            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList = new WindowFinder().GetWindows().ConvertAll(window => new AppWindowViewModel(window));
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 

@@ -17,7 +17,7 @@ namespace Switcheroo.Core {
                     xDocument.Root.Add(new XText(stringPart.Value));
                 }
             }
-            return string.Join("", xDocument.Root.Nodes().Select(x => x.ToString()).ToArray());
+            return string.Concat(xDocument.Root.Nodes().Select(x => x.ToString()).ToArray());
         }
     }
 }
