@@ -14,14 +14,14 @@ namespace ManagedWinapi.Windows.Contents {
         readonly string name;
         string menu, sysmenu, clientarea;
         readonly bool hasMenu, hasSysMenu, hasClientArea;
-        SystemWindow sw;
+        SystemWindow systemWindow;
 
-        internal AccessibleWindowContent(string name, bool hasMenu, bool hasSysMenu, bool hasClientArea, SystemWindow sw) {
+        internal AccessibleWindowContent(string name, bool hasMenu, bool hasSysMenu, bool hasClientArea, SystemWindow systemWindow) {
             this.name = name;
             this.hasMenu = hasMenu;
             this.hasSysMenu = hasSysMenu;
             this.hasClientArea = hasClientArea;
-            this.sw = sw;
+            this.systemWindow = systemWindow;
         }
 
         public string ComponentType {
@@ -55,11 +55,11 @@ namespace ManagedWinapi.Windows.Contents {
             if (parsed)
                 return;
             if (hasSysMenu)
-                sysmenu = ParseMenu(sw, AccessibleObjectID.OBJID_SYSMENU);
+                sysmenu = ParseMenu(systemWindow, AccessibleObjectID.OBJID_SYSMENU);
             if (hasMenu)
-                menu = ParseMenu(sw, AccessibleObjectID.OBJID_MENU);
+                menu = ParseMenu(systemWindow, AccessibleObjectID.OBJID_MENU);
             if (hasClientArea)
-                clientarea = ParseClientArea(sw);
+                clientarea = ParseClientArea(systemWindow);
             parsed = true;
         }
 

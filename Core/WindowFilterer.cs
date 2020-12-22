@@ -49,15 +49,13 @@ namespace Switcheroo.Core {
             var significantCharactersMatcher = new SignificantCharactersMatcher();
             var individualCharactersMatcher = new IndividualCharactersMatcher();
 
-            var results = new List<MatchResult>
+            return new List<MatchResult>
             {
                 startsWithMatcher.Evaluate(title, filterText),
                 significantCharactersMatcher.Evaluate(title, filterText),
                 containsMatcher.Evaluate(title, filterText),
                 individualCharactersMatcher.Evaluate(title, filterText)
             };
-
-            return results;
         }
     }
 

@@ -51,13 +51,9 @@ namespace ManagedWinapi {
         public static SecurityIdentifier MachineSID {
             get {
                 int objectAttributes = 0;
-                IntPtr policyHandle;
-                IntPtr pInfo;
-                POLICY_ACCOUNT_DOMAIN_INFO info;
-                LsaOpenPolicy(IntPtr.Zero, ref objectAttributes, POLICY_VIEW_LOCAL_INFORMATION,
-                    out policyHandle);
-                LsaQueryInformationPolicy(policyHandle, PolicyAccountDomainInformation, out pInfo);
-                info = (POLICY_ACCOUNT_DOMAIN_INFO)Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO));
+                LsaOpenPolicy(IntPtr.Zero, ref objectAttributes, POLICY_VIEW_LOCAL_INFORMATION, out IntPtr policyHandle);
+                LsaQueryInformationPolicy(policyHandle, PolicyAccountDomainInformation, out IntPtr pInfo);
+                POLICY_ACCOUNT_DOMAIN_INFO info = (POLICY_ACCOUNT_DOMAIN_INFO)Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO));
                 SecurityIdentifier sid = new SecurityIdentifier(info.DomainSid);
                 LsaFreeMemory(ref info);
                 LsaClose(policyHandle);
@@ -95,7 +91,7 @@ namespace ManagedWinapi {
             get {
                 List<string> result = new List<string>();
                 foreach (ManagementObject mo in new ManagementClass("Win32_NetworkAdapterConfiguration").GetInstances()) {
-                    if ((bool)mo["IPEnabled"] == true) {
+                    if ((bool)mo["IPEnabled"]) {
                         result.Add(mo["MacAddress"].ToString());
                     }
                 }
@@ -126,12 +122,9 @@ namespace ManagedWinapi {
             get {
                 Dictionary<string, string> result = new Dictionary<string, string>();
                 foreach (string drive in Directory.GetLogicalDrives()) {
-                    ManagementObject disk =
-                        new ManagementObject("win32_logicaldisk.deviceid=\"" +
-                        drive.Substring(0, 2) + "\"");
+                    ManagementObject disk = new ManagementObject("win32_logicaldisk.deviceid=\"" + drive.Substring(0, 2) + "\"");
                     disk.Get();
-                    result.Add(drive, disk["VolumeSerialNumber"] == null ? null :
-                        disk["VolumeSerialNumber"].ToString());
+                    result.Add(drive, disk["VolumeSerialNumber"]?.ToString());
                 }
                 return result;
             }

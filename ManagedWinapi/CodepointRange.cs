@@ -17,8 +17,8 @@ namespace ManagedWinapi {
         /// </summary>
         public CodepointRange(Font font) {
             List<char> rangeList = new List<char>();
-            Graphics g = Graphics.FromImage(new Bitmap(1, 1));
-            IntPtr hdc = g.GetHdc();
+            Graphics graphics = Graphics.FromImage(new Bitmap(1, 1));
+            IntPtr hdc = graphics.GetHdc();
             IntPtr hFont = font.ToHfont();
             IntPtr oldFont = SelectObject(hdc, hFont);
             uint size = GetFontUnicodeRanges(hdc, IntPtr.Zero);
@@ -37,8 +37,8 @@ namespace ManagedWinapi {
             SelectObject(hdc, oldFont);
             DeleteObject(hFont);
             Marshal.FreeHGlobal(glyphSet);
-            g.ReleaseHdc(hdc);
-            g.Dispose();
+            graphics.ReleaseHdc(hdc);
+            graphics.Dispose();
             if (tmp != codepointCount)
                 throw new Exception(font.FontFamily.Name);
             ranges = rangeList.ToArray();

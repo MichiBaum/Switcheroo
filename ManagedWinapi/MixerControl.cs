@@ -157,16 +157,15 @@ namespace ManagedWinapi.Audio.Mixer {
         private static MixerControl GetControl(Mixer mx, MixerLine ml, MIXERCONTROL mc) {
             MixerControl result = new MixerControl(mx, ml, mc);
             if (result.Class == MixerControlClass.FADER && ((uint)result.ControlType & MIXERCONTROL_CT_UNITS_MASK) == (uint)MixerControlType.MIXERCONTROL_CT_UNITS_UNSIGNED) {
-                result = new FaderMixerControl(mx, ml, mc);
+                return new FaderMixerControl(mx, ml, mc);
             } else if (result.Class == MixerControlClass.SWITCH && ((uint)result.ControlType & MIXERCONTROL_CT_SUBCLASS_MASK) == (uint)MixerControlType.MIXERCONTROL_CT_SC_SWITCH_BOOLEAN && ((uint)result.ControlType & MIXERCONTROL_CT_UNITS_MASK) == (uint)MixerControlType.MIXERCONTROL_CT_UNITS_BOOLEAN) {
-                result = new BooleanMixerControl(mx, ml, mc);
+                return new BooleanMixerControl(mx, ml, mc);
             }
             return result;
         }
 
         internal void OnChanged() {
-            if (Changed != null)
-                Changed(this, EventArgs.Empty);
+            Changed?.Invoke(this, EventArgs.Empty);
         }
 
         #region PInvoke Declarations

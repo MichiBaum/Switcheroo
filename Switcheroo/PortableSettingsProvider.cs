@@ -113,9 +113,9 @@ namespace Switcheroo {
 
             XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
-            if (settingNode != null)
+            if (settingNode != null) {
                 settingNode.InnerText = propertyValue.SerializedValue.ToString();
-            else {
+            } else {
                 settingNode = RootDocument.CreateElement("setting");
 
                 XmlAttribute nameAttribute = RootDocument.CreateAttribute("name");

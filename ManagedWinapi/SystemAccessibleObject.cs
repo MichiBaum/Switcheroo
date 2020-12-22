@@ -53,9 +53,7 @@ namespace ManagedWinapi.Accessibility {
         /// Gets an accessibility object for given screen coordinates.
         /// </summary>
         public static SystemAccessibleObject FromPoint(int x, int y) {
-            IAccessible iacc;
-            object ci;
-            IntPtr result = AccessibleObjectFromPoint(new ManagedWinapi.Windows.POINT(x, y), out iacc, out ci);
+            IntPtr result = AccessibleObjectFromPoint(new ManagedWinapi.Windows.POINT(x, y), out IAccessible iacc, out object ci);
             if (result != IntPtr.Zero)
                 throw new Exception("AccessibleObjectFromPoint returned " + result.ToInt32());
             return new SystemAccessibleObject(iacc, (int)(ci ?? 0));
@@ -198,10 +196,8 @@ namespace ManagedWinapi.Accessibility {
         /// </summary>
         public Rectangle Location {
             get {
-                int x, y, w, h;
-                iacc.accLocation(out x, out y, out w, out h, childID);
+                iacc.accLocation(out int x, out int y, out int w, out int h, childID);
                 return new Rectangle(x, y, w, h);
-
             }
         }
 
@@ -262,7 +258,13 @@ namespace ManagedWinapi.Accessibility {
             get {
                 try {
                     return iacc.get_accKeyboardShortcut(childID);
-                } catch (ArgumentException) { return ""; } catch (NotImplementedException) { return ""; } catch (COMException) { return null; }
+                } catch (ArgumentException) {
+                    return "";
+                } catch (NotImplementedException) {
+                    return "";
+                } catch (COMException) {
+                    return null;
+                }
             }
         }
 
@@ -274,7 +276,9 @@ namespace ManagedWinapi.Accessibility {
             get {
                 try {
                     return iacc.get_accDefaultAction(childID);
-                } catch (COMException) { return null; }
+                } catch (COMException) {
+                    return null;
+                }
             }
         }
 
@@ -302,8 +306,8 @@ namespace ManagedWinapi.Accessibility {
                 }
                 if (sel == null)
                     return new SystemAccessibleObject[0];
-                if (sel is IEnumVARIANT) {
-                    IEnumVARIANT e = (IEnumVARIANT)sel;
+                if (sel is IEnumVARIANT enumVARIANT) {
+                    IEnumVARIANT e = enumVARIANT;
                     e.Reset();
                     List<SystemAccessibleObject> retval = new List<SystemAccessibleObject>();
                     object[] tmp = new object[1];
@@ -314,7 +318,7 @@ namespace ManagedWinapi.Accessibility {
                     }
                     return retval.ToArray();
                 } else {
-                    if (sel is int && (int)sel < 0) {
+                    if (sel is int x && x < 0) {
                         return new SystemAccessibleObject[0];
                     }
                     return new SystemAccessibleObject[] { ObjectToSAO(sel) };
@@ -323,8 +327,8 @@ namespace ManagedWinapi.Accessibility {
         }
 
         private SystemAccessibleObject ObjectToSAO(object obj) {
-            if (obj is int) {
-                return new SystemAccessibleObject(iacc, (int)obj);
+            if (obj is int x) {
+                return new SystemAccessibleObject(iacc, x);
             } else {
                 return new SystemAccessibleObject((IAccessible)obj, 0);
             }
@@ -335,8 +339,7 @@ namespace ManagedWinapi.Accessibility {
         /// </summary>
         public SystemWindow Window {
             get {
-                IntPtr hwnd;
-                WindowFromAccessibleObject(iacc, out hwnd);
+                WindowFromAccessibleObject(iacc, out IntPtr hwnd);
                 return new SystemWindow(hwnd);
             }
         }

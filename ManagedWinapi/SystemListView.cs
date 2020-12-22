@@ -201,8 +201,7 @@ namespace ManagedWinapi.Windows {
                 RECT r = new RECT();
                 ProcessMemoryChunk c = ProcessMemoryChunk.AllocStruct(sw.Process, r);
                 SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_GETITEMRECT, new IntPtr(index), c.Location);
-                r = (RECT)c.ReadToStructure(0, typeof(RECT));
-                return r;
+                return (RECT)c.ReadToStructure(0, typeof(RECT));
             }
         }
     }

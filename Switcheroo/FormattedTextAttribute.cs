@@ -20,7 +20,7 @@ namespace Switcheroo {
         }
 
         private static void FormattedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var textBlock = d as TextBlock;
+            TextBlock textBlock = d as TextBlock;
             if (textBlock == null) {
                 return;
             }

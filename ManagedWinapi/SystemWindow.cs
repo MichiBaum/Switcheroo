@@ -320,7 +320,7 @@ namespace ManagedWinapi.Windows {
         /// <returns>The filtered toplevel windows</returns>
         public static SystemWindow[] FilterToplevelWindows(Predicate<SystemWindow> predicate) {
             List<SystemWindow> wnds = new List<SystemWindow>();
-            EnumWindows(new EnumWindowsProc(delegate (IntPtr hwnd, IntPtr lParam) {
+            EnumWindows(new EnumWindowsProc((IntPtr hwnd, IntPtr _) => {
                 SystemWindow tmp = new SystemWindow(hwnd);
                 if (predicate(tmp))
                     wnds.Add(tmp);

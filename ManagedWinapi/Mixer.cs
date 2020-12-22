@@ -65,9 +65,7 @@ namespace ManagedWinapi.Audio.Mixer {
                 int ctrlID = m.LParam.ToInt32();
                 MixerControl c = FindControl(ctrlID);
                 if (c != null) {
-                    if (ControlChanged != null) {
-                        ControlChanged(this, new MixerEventArgs(this, c.Line, c));
-                    }
+                    ControlChanged?.Invoke(this, new MixerEventArgs(this, c.Line, c));
                     c.OnChanged();
                 }
             } else if (m.Msg == MM_MIXM_LINE_CHANGE && m.WParam == hMixer) {
@@ -154,7 +152,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <returns>The line, or <code>null</code> if no line was found.</returns>
         public MixerLine FindLine(int lineId) {
             foreach (DestinationLine dl in DestinationLines) {
-                MixerLine found = dl.findLine(lineId);
+                MixerLine found = dl.FindLine(lineId);
                 if (found != null)
                     return found;
             }
@@ -168,7 +166,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <returns>The control, or <code>null</code> if no control was found.</returns>
         public MixerControl FindControl(int ctrlId) {
             foreach (DestinationLine dl in DestinationLines) {
-                MixerControl found = dl.findControl(ctrlId);
+                MixerControl found = dl.FindControl(ctrlId);
                 if (found != null)
                     return found;
             }

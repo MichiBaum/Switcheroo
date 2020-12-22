@@ -32,8 +32,7 @@ namespace Switcheroo {
         }
 
         private void OnMessageIntercepted(LowLevelMessage lowLevelMessage, ref bool handled) {
-            var keyboardMessage = lowLevelMessage as LowLevelKeyboardMessage;
-            if (handled || keyboardMessage == null) {
+            if (handled || !(lowLevelMessage is LowLevelKeyboardMessage keyboardMessage)) {
                 return;
             }
 
@@ -64,17 +63,12 @@ namespace Switcheroo {
 
         private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown) {
             var altTabHookEventArgs = new AltTabHookEventArgs { ShiftDown = shiftDown, CtrlDown = ctrlDown };
-            var handler = Pressed;
-            if (handler != null) {
-                handler(this, altTabHookEventArgs);
-            }
+            Pressed?.Invoke(this, altTabHookEventArgs);
             return altTabHookEventArgs;
         }
 
         public void Dispose() {
-            if (_lowLevelKeyboardHook != null) {
-                _lowLevelKeyboardHook.Dispose();
-            }
+            _lowLevelKeyboardHook?.Dispose();
         }
     }
 }

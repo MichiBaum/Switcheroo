@@ -21,7 +21,6 @@ namespace ManagedWinapi.Audio.Mixer {
             this.line = line;
         }
 
-        ///
         public virtual void Dispose() {
         }
 
@@ -30,10 +29,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// </summary>
         public MixerControl[] Controls {
             get {
-                if (controls == null) {
-                    controls = MixerControl.GetControls(mixer, this, ControlCount);
-                }
-                return controls;
+                return controls ?? (controls = MixerControl.GetControls(mixer, this, ControlCount));
             }
         }
 
@@ -105,10 +101,10 @@ namespace ManagedWinapi.Audio.Mixer {
         /// </summary>
         public Mixer Mixer { get { return mixer; } }
 
-        internal MixerLine findLine(int lineId) {
+        internal MixerLine FindLine(int lineId) {
             if (Id == lineId) { return this; }
             foreach (MixerLine ml in ChildLines) {
-                MixerLine found = ml.findLine(lineId);
+                MixerLine found = ml.FindLine(lineId);
                 if (found != null)
                     return found;
             }
@@ -124,13 +120,13 @@ namespace ManagedWinapi.Audio.Mixer {
             }
         }
 
-        internal MixerControl findControl(int ctrlId) {
+        internal MixerControl FindControl(int ctrlId) {
             foreach (MixerControl c in Controls) {
                 if (c.Id == ctrlId)
                     return c;
             }
             foreach (MixerLine l in ChildLines) {
-                MixerControl found = l.findControl(ctrlId);
+                MixerControl found = l.FindControl(ctrlId);
                 if (found != null)
                     return found;
             }
@@ -138,8 +134,7 @@ namespace ManagedWinapi.Audio.Mixer {
         }
 
         internal void OnChanged() {
-            if (Changed != null)
-                Changed(this, EventArgs.Empty);
+            Changed?.Invoke(this, EventArgs.Empty);
         }
 
         #region PInvoke Declarations
