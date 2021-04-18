@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Switcheroo;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -14,6 +15,17 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2009, 2010, 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+// Log4net config
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
+// PostSharp LogExecutionTime config
+[assembly: 
+    LogExecutionTime(AttributeTargetTypes = "Switcheroo.*"),
+    LogExecutionTime(AttributeTargetTypes = "Core.*"),
+    LogExecutionTime(AttributeTargetTypes = "ManagedWinapi.*"),
+    LogExecutionTime(AspectPriority = 0, AttributeExclude = true, AttributeTargetMembers = "regex:get_.*|set_.*")
+]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
