@@ -107,6 +107,7 @@
     <Compile Include="IconToBitmapConverter.cs" />
     <Compile Include="BoolToWhateverConverter.cs" />
     <Compile Include="LogExecutionTimeAttribute.cs" />
+    <Compile Include="LoggingConfigurator.cs" />
     <Compile Include="WindowCloser.cs" />
     <Compile Include="WindowHandleToCachedIconConverter.cs" />
     <Compile Include="WindowHandleToIconConverter.cs" />
@@ -171,6 +172,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

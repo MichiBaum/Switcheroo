@@ -16,9 +16,6 @@ using System.Windows;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Log4net config
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-
 // PostSharp LogExecutionTime config
 [assembly: 
     LogExecutionTime(AttributeTargetTypes = "Switcheroo.*"),

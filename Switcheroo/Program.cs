@@ -15,6 +15,7 @@ namespace Switcheroo {
 
         [STAThread]
         private static void Main() {
+            LoggingConfigurator.ConfigureLogging();
             logger.Info("Program starting through main Method");
             RunAsAdministratorIfConfigured();
 
