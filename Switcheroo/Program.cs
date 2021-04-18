@@ -1,4 +1,7 @@
-﻿using Switcheroo.Properties;
+﻿using log4net;
+using PostSharp.Aspects;
+using Switcheroo;
+using Switcheroo.Properties;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -6,12 +9,23 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
 
+[assembly:
+    log4net.Config.XmlConfigurator(Watch = true),
+    LogExecutionTime(AttributeTargetTypes = "Switcheroo.*"),
+    LogExecutionTime(AttributeTargetTypes = "Core.*"),
+    LogExecutionTime(AttributeTargetTypes = "ManagedWinapi.*"),
+    LogExecutionTime(AspectPriority = 0, AttributeExclude = true, AttributeTargetMembers = "regex:get_.*|set_.*")
+]
+
 namespace Switcheroo {
     internal class Program {
+
         private const string mutex_id = "DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo";
+        protected static ILog logger = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         private static void Main() {
+            logger.Info("Program starting through main Method");
             RunAsAdministratorIfConfigured();
 
             using (var mutex = new Mutex(false, mutex_id)) {
@@ -21,7 +35,8 @@ namespace Switcheroo {
                         hasHandle = mutex.WaitOne(5000, false);
                         if (!hasHandle)
                             return; //another instance exist
-                    } catch (AbandonedMutexException) {
+                    } catch (AbandonedMutexException amex) {
+                        logger.Error("Bla", amex);
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
                     }
 
@@ -31,9 +46,7 @@ namespace Switcheroo {
 
                     MigrateUserSettings();
 
-                    var app = new App {
-                        MainWindow = new MainWindow()
-                    };
+                    var app = new App { MainWindow = new MainWindow() };
                     app.Run();
                 } finally {
                     if (hasHandle)
