@@ -47,3 +47,13 @@ Switcheroo makes use of these projects:
 
 * [Managed Windows API](http://mwinapi.sourceforge.net), Copyright © 2006 Michael Schier, GNU Lesser General Public License (LGPL)
 * [InnoSetup](https://jrsoftware.org/), This is a modified version. The orginal is on [Github](https://github.com/jrsoftware/issrc). 
+
+## Collaborators
+
+<!-- readme: collaborators -start --> 
+<!-- readme: collaborators -end -->
+
+## Contributors
+
+<!-- readme: contributors -start --> 
+<!-- readme: contributors -end -->
