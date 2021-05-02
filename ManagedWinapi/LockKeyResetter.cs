@@ -29,7 +29,7 @@ namespace ManagedWinapi {
         /// </summary>
         public LockKeyResetter() {
             for (int i = 0; i < MODIFIER_KEYS.Length; i++) {
-                KeyboardKey k = new KeyboardKey(MODIFIER_KEYS[i]);
+                KeyboardKey k = new(MODIFIER_KEYS[i]);
                 short dummy = k.AsyncState; // reset remembered status
                 if (k.AsyncState != 0) {
                     simpleModifiers[i] = true;
@@ -37,7 +37,7 @@ namespace ManagedWinapi {
                 }
             }
 
-            KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
+            KeyboardKey capslockKey = new(Keys.CapsLock);
             int capslockstate = capslockKey.State;
             capslock = (capslockstate & 0x01) == 0x01;
             if (capslock) {
@@ -59,7 +59,7 @@ namespace ManagedWinapi {
         public void Dispose() {
             if (capslock) {
                 // press caps lock
-                KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
+                KeyboardKey capslockKey = new(Keys.CapsLock);
                 capslockKey.PressAndRelease();
                 Application.DoEvents();
                 if ((capslockKey.State & 0x01) != 0x01)

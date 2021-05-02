@@ -52,7 +52,7 @@ namespace ManagedWinapi {
         /// <returns>The key's name</returns>
         public string KeyName {
             get {
-                StringBuilder sb = new StringBuilder(512);
+                StringBuilder sb = new(512);
                 int scancode = MapVirtualKey((int)key, 0);
                 if (extended)
                     scancode += 0x100;

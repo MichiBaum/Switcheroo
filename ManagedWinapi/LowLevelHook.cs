@@ -115,7 +115,7 @@ namespace ManagedWinapi.Hooks {
                             .State; // will refresh CAPS LOCK state for current thread
                         byte[] kbdState = new byte[256];
                         ApiHelper.FailIfZero(GetKeyboardState(kbdState));
-                        StringBuilder buff = new StringBuilder(64);
+                        StringBuilder buff = new(64);
                         int length = ToUnicode(llh.vkCode, llh.scanCode, kbdState, buff, 64, 0);
                         if (length == -1) {
                             currentDeadChar = buff[0];

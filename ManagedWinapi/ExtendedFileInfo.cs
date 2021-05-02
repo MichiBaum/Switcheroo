@@ -49,7 +49,7 @@ namespace ManagedWinapi {
         /// <param name="fileName">Name of the file</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
         public static Icon GetIconForFilename(string fileName, bool small) {
-            SHFILEINFO shinfo = new SHFILEINFO();
+            SHFILEINFO shinfo = new();
 
             if (small) {
                 IntPtr hImgSmall = SHGetFileInfo(fileName, 0, ref shinfo,

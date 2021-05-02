@@ -72,7 +72,7 @@ namespace Switcheroo {
 
         public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property) {
             // do nothing
-            return new SettingsPropertyValue(property);
+            return new(property);
         }
 
         public void Upgrade(SettingsContext context, SettingsPropertyCollection properties) {
@@ -100,7 +100,7 @@ namespace Switcheroo {
 
         public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context,
             SettingsPropertyCollection collection) {
-            SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
+            SettingsPropertyValueCollection values = new();
 
             foreach (SettingsProperty property in collection)
                 values.Add(new SettingsPropertyValue(property) {SerializedValue = GetValue(property)});
@@ -161,7 +161,7 @@ namespace Switcheroo {
         }
 
         public XmlDocument GetBlankXmlDocument() {
-            XmlDocument blankXmlDocument = new XmlDocument();
+            XmlDocument blankXmlDocument = new();
             blankXmlDocument.AppendChild(blankXmlDocument.CreateXmlDeclaration("1.0", "utf-8", string.Empty));
             blankXmlDocument.AppendChild(blankXmlDocument.CreateElement(_rootNodeName));
 

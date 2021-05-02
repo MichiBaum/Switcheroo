@@ -12,7 +12,7 @@ namespace Switcheroo.Core.Matchers {
 
             if (!match.Success) return NonMatchResult(input);
 
-            MatchResult matchResult = new MatchResult();
+            MatchResult matchResult = new();
 
             string beforeMatch = input.Substring(0, match.Index);
             matchResult.StringParts.Add(new StringPart(beforeMatch));
@@ -45,7 +45,7 @@ namespace Switcheroo.Core.Matchers {
         }
 
         private static MatchResult NonMatchResult(string input) {
-            MatchResult matchResult = new MatchResult();
+            MatchResult matchResult = new();
             if (input != null) matchResult.StringParts.Add(new StringPart(input));
             return matchResult;
         }

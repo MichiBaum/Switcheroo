@@ -15,12 +15,12 @@ namespace Switcheroo {
     public class AltTabHook : IDisposable {
         private const int AltKey = 32;
         private const int CtrlKey = 11;
-        private readonly KeyboardKey _altKey = new KeyboardKey(Keys.LMenu);
-        private readonly KeyboardKey _ctrlKey = new KeyboardKey(Keys.LControlKey);
+        private readonly KeyboardKey _altKey = new(Keys.LMenu);
+        private readonly KeyboardKey _ctrlKey = new(Keys.LControlKey);
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardHook _lowLevelKeyboardHook;
-        private readonly KeyboardKey _shiftKey = new KeyboardKey(Keys.LShiftKey);
+        private readonly KeyboardKey _shiftKey = new(Keys.LShiftKey);
         private readonly int WM_KEYDOWN = 0x0100;
         private readonly int WM_SYSKEYDOWN = 0x0104;
 
@@ -62,7 +62,7 @@ namespace Switcheroo {
 
         private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown) {
             AltTabHookEventArgs altTabHookEventArgs =
-                new AltTabHookEventArgs {ShiftDown = shiftDown, CtrlDown = ctrlDown};
+                new() {ShiftDown = shiftDown, CtrlDown = ctrlDown};
             Pressed?.Invoke(this, altTabHookEventArgs);
             return altTabHookEventArgs;
         }

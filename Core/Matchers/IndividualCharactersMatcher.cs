@@ -11,7 +11,7 @@ namespace Switcheroo.Core.Matchers {
 
             if (!match.Success) return NonMatchResult(input);
 
-            MatchResult matchResult = new MatchResult();
+            MatchResult matchResult = new();
             for (int groupIndex = 1; groupIndex < match.Groups.Count; groupIndex++) {
                 Group group = match.Groups[groupIndex];
                 if (group.Value.Length > 0)
@@ -40,7 +40,7 @@ namespace Switcheroo.Core.Matchers {
         }
 
         private static MatchResult NonMatchResult(string input) {
-            MatchResult matchResult = new MatchResult();
+            MatchResult matchResult = new();
             if (input != null) matchResult.StringParts.Add(new StringPart(input));
             return matchResult;
         }

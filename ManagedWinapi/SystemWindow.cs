@@ -331,7 +331,7 @@ namespace ManagedWinapi.Windows {
     public class SystemWindow {
         private static readonly Predicate<SystemWindow> ALL = delegate { return true; };
 
-        private IntPtr _hwnd;
+        private readonly IntPtr _hwnd;
 
         private bool _isClosed;
 
@@ -355,7 +355,7 @@ namespace ManagedWinapi.Windows {
         ///     Allows getting the current foreground window and setting it.
         /// </summary>
         public static SystemWindow ForegroundWindow {
-            get => new SystemWindow(GetForegroundWindow());
+            get => new(GetForegroundWindow());
             set => SetForegroundWindow(value.HWnd);
         }
 
@@ -363,7 +363,7 @@ namespace ManagedWinapi.Windows {
         ///     The Desktop window, i. e. the window that covers the
         ///     complete desktop.
         /// </summary>
-        public static SystemWindow DesktopWindow => new SystemWindow(GetDesktopWindow());
+        public static SystemWindow DesktopWindow => new(GetDesktopWindow());
 
         /// <summary>
         ///     Returns all available toplevel windows.
@@ -390,7 +390,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public string Title {
             get {
-                StringBuilder sb = new StringBuilder(GetWindowTextLength(_hwnd) + 1);
+                StringBuilder sb = new(GetWindowTextLength(_hwnd) + 1);
                 GetWindowText(_hwnd, sb, sb.Capacity);
                 return sb.ToString();
             }
@@ -406,7 +406,7 @@ namespace ManagedWinapi.Windows {
         public string Text {
             get {
                 int length = SendGetMessage(WM_GETTEXTLENGTH);
-                StringBuilder sb = new StringBuilder(length + 1);
+                StringBuilder sb = new(length + 1);
                 SendMessage(new HandleRef(this, HWnd), WM_GETTEXT, new IntPtr(sb.Capacity), sb);
                 return sb.ToString();
             }
@@ -420,7 +420,7 @@ namespace ManagedWinapi.Windows {
             get {
                 int length = 64;
                 while (true) {
-                    StringBuilder sb = new StringBuilder(length);
+                    StringBuilder sb = new(length);
                     ApiHelper.FailIfZero(GetClassName(_hwnd, sb, sb.Capacity));
                     if (sb.Length != length - 1) return sb.ToString();
                     length *= 2;
@@ -505,7 +505,7 @@ namespace ManagedWinapi.Windows {
         ///     This window's parent. A dialog's parent is its owner, a component's parent is
         ///     the window that contains it.
         /// </summary>
-        public SystemWindow Parent => new SystemWindow(GetParent(_hwnd));
+        public SystemWindow Parent => new(GetParent(_hwnd));
 
         /// <summary>
         ///     The window's parent, but only if this window is its parent child. Some
@@ -536,14 +536,14 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public RECT Position {
             get {
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(_hwnd, ref wp);
                 return wp.rcNormalPosition;
             }
 
             set {
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(_hwnd, ref wp);
                 wp.rcNormalPosition = value;
@@ -558,7 +558,7 @@ namespace ManagedWinapi.Windows {
             get => Position.Location;
 
             set {
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(_hwnd, ref wp);
                 wp.rcNormalPosition.Bottom = value.Y + wp.rcNormalPosition.Height;
@@ -576,7 +576,7 @@ namespace ManagedWinapi.Windows {
             get => Position.Size;
 
             set {
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(_hwnd, ref wp);
                 wp.rcNormalPosition.Right = wp.rcNormalPosition.Left + value.Width;
@@ -624,7 +624,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public FormWindowState WindowState {
             get {
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(HWnd, ref wp);
                 switch (wp.showCmd % 4) {
@@ -677,7 +677,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public Image Image {
             get {
-                Bitmap bmp = new Bitmap(Position.Width, Position.Height);
+                Bitmap bmp = new(Position.Width, Position.Height);
                 Graphics g = Graphics.FromImage(bmp);
                 IntPtr pTarget = g.GetHdc();
                 IntPtr pSource = CreateCompatibleDC(pTarget);
@@ -704,7 +704,7 @@ namespace ManagedWinapi.Windows {
                 return Region.FromHrgn(rgn);
             }
             set {
-                Bitmap bmp = new Bitmap(1, 1);
+                Bitmap bmp = new(1, 1);
                 Graphics g = Graphics.FromImage(bmp);
                 SetWindowRgn(HWnd, value.GetHrgn(g), true);
                 g.Dispose();
@@ -773,9 +773,9 @@ namespace ManagedWinapi.Windows {
         /// <param name="predicate">The predicate to filter.</param>
         /// <returns>The filtered toplevel windows</returns>
         public static SystemWindow[] FilterToplevelWindows(Predicate<SystemWindow> predicate) {
-            List<SystemWindow> wnds = new List<SystemWindow>();
+            List<SystemWindow> wnds = new();
             EnumWindows((hwnd, _) => {
-                SystemWindow tmp = new SystemWindow(hwnd);
+                SystemWindow tmp = new(hwnd);
                 if (predicate(tmp))
                     wnds.Add(tmp);
                 return 1;
@@ -843,9 +843,9 @@ namespace ManagedWinapi.Windows {
         /// <param name="predicate">The predicate to filter.</param>
         /// <returns>The list of child windows.</returns>
         public SystemWindow[] FilterDescendantWindows(bool directOnly, Predicate<SystemWindow> predicate) {
-            List<SystemWindow> wnds = new List<SystemWindow>();
+            List<SystemWindow> wnds = new();
             EnumChildWindows(_hwnd, delegate(IntPtr hwnd, IntPtr lParam) {
-                SystemWindow tmp = new SystemWindow(hwnd);
+                SystemWindow tmp = new(hwnd);
                 bool add = true;
                 if (directOnly) add = tmp.Parent._hwnd == _hwnd;
                 if (add && predicate(tmp))
@@ -856,7 +856,7 @@ namespace ManagedWinapi.Windows {
         }
 
         private bool GetClassNameFails() {
-            StringBuilder builder = new StringBuilder(2);
+            StringBuilder builder = new(2);
             return GetClassName(HWnd, builder, builder.Capacity) == 0;
         }
 
@@ -1192,7 +1192,7 @@ namespace ManagedWinapi.Windows {
 
         private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14, WM_SYSCOMMAND = 274;
 
-        private readonly IntPtr SC_CLOSE = new IntPtr(61536);
+        private readonly IntPtr SC_CLOSE = new(61536);
 
         private enum GetWindow_Cmd {
             GW_HWNDFIRST = 0,

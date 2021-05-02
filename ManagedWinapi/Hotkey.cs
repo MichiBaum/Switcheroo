@@ -10,7 +10,7 @@ namespace ManagedWinapi {
     /// </summary>
     [DefaultEvent("HotkeyPressed")]
     public class Hotkey : Component {
-        private static readonly Object myStaticLock = new Object();
+        private static readonly Object myStaticLock = new();
         private static int hotkeyCounter = 0xA000;
 
         private readonly int hotkeyIndex;

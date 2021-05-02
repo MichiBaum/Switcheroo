@@ -25,10 +25,10 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
     public partial class MainWindow : Window {
-        public static readonly RoutedUICommand CloseWindowCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand CloseWindowCommand = new();
+        public static readonly RoutedUICommand SwitchToWindowCommand = new();
+        public static readonly RoutedUICommand ScrollListDownCommand = new();
+        public static readonly RoutedUICommand ScrollListUpCommand = new();
         private AboutWindow _aboutWindow;
         private bool _altTabAutoSwitch;
         private AltTabHook _altTabHook;
@@ -120,40 +120,36 @@ namespace Switcheroo {
             _altTabHook.Pressed += AltTabPressed;
         }
 
-        private void SetUpNotifyIcon() { // TODO doesnt work as intended
-            
+        private void SetUpNotifyIcon() {
+            // TODO doesnt work as intended
+
             Icon icon = Properties.Resources.icon;
-            
-            ToolStripMenuItem runOnStartupMenuItem = new("Run on Startup") {
-                Checked = new AutoStart().IsEnabled
-            };
-            runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem) s);
-            
+
+            ToolStripMenuItem runOnStartupMenuItem = new("Run on Startup") {Checked = new AutoStart().IsEnabled};
+            runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem)s);
+
             ToolStripMenuItem optionsMenuItem = new("Options");
             runOnStartupMenuItem.Click += (s, e) => Options();
-            
+
             ToolStripMenuItem aboutMenuItem = new("About");
             runOnStartupMenuItem.Click += (s, e) => About();
-            
+
             ToolStripMenuItem exitMenuItem = new("Exit");
             runOnStartupMenuItem.Click += (s, e) => Quit();
-            
+
             _notifyIcon = new NotifyIcon {
                 Text = "Switcheroo",
                 Icon = icon,
                 Visible = true,
-                ContextMenuStrip = new ContextMenuStrip(){Items = {
-                    runOnStartupMenuItem,
-                    optionsMenuItem,
-                    aboutMenuItem,
-                    exitMenuItem
-                }}
+                ContextMenuStrip = new ContextMenuStrip {
+                    Items = {runOnStartupMenuItem, optionsMenuItem, aboutMenuItem, exitMenuItem}
+                }
             };
         }
 
         private static void RunOnStartup(ToolStripMenuItem menuItem) {
             try {
-                AutoStart autoStart = new AutoStart {IsEnabled = !menuItem.Checked};
+                AutoStart autoStart = new() {IsEnabled = !menuItem.Checked};
                 menuItem.Checked = autoStart.IsEnabled;
             } catch (AutoStartException e) {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -164,7 +160,7 @@ namespace Switcheroo {
             Version currentVersion = Assembly.GetEntryAssembly().GetName().Version;
             if (currentVersion == new Version(0, 0, 0, 0)) return;
 
-            DispatcherTimer timer = new DispatcherTimer();
+            DispatcherTimer timer = new();
 
             timer.Tick += async (sender, args) => {
                 timer.Stop();
@@ -412,9 +408,9 @@ namespace Switcheroo {
             // http://www.codeproject.com/Tips/76427/How-to-bring-window-to-top-with-SetForegroundWindo
 
             IntPtr thisWindowHandle = new WindowInteropHelper(this).Handle;
-            AppWindow thisWindow = new AppWindow(thisWindowHandle);
+            AppWindow thisWindow = new(thisWindowHandle);
 
-            KeyboardKey altKey = new KeyboardKey(Keys.Alt);
+            KeyboardKey altKey = new(Keys.Alt);
             bool altKeyPressed = false;
 
             // Press the Alt key if it is not already being pressed
@@ -437,7 +433,7 @@ namespace Switcheroo {
 
             string query = tb.Text;
 
-            WindowFilterContext<AppWindowViewModel> context = new WindowFilterContext<AppWindowViewModel> {
+            WindowFilterContext<AppWindowViewModel> context = new() {
                 Windows = _unfilteredWindowList,
                 ForegroundWindowProcessTitle = new AppWindow(_foregroundWindow.HWnd).ProcessTitle
             };
@@ -550,12 +546,12 @@ namespace Switcheroo {
 
         private void DisableSystemMenu() {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-            SystemWindow window = new SystemWindow(windowHandle);
+            SystemWindow window = new(windowHandle);
             window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
         }
 
         private void ShowHelpTextBlock_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {
-            Duration duration = new Duration(TimeSpan.FromSeconds(0.150));
+            Duration duration = new(TimeSpan.FromSeconds(0.150));
             int newHeight = HelpPanel.Height > 0 ? 0 : +17;
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }

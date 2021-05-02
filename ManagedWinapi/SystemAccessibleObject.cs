@@ -206,7 +206,7 @@ namespace ManagedWinapi.Accessibility {
                 if (sel is IEnumVARIANT enumVARIANT) {
                     IEnumVARIANT e = enumVARIANT;
                     e.Reset();
-                    List<SystemAccessibleObject> retval = new List<SystemAccessibleObject>();
+                    List<SystemAccessibleObject> retval = new();
                     object[] tmp = new object[1];
                     while (e.Next(1, tmp, IntPtr.Zero) == 0) {
                         if (tmp[0] is int && (int)tmp[0] < 0)
@@ -249,7 +249,7 @@ namespace ManagedWinapi.Accessibility {
                     return new SystemAccessibleObject[0];
                 if (csReal == 1 && children[0] is int && (int)children[0] < 0)
                     return new SystemAccessibleObject[0];
-                List<SystemAccessibleObject> values = new List<SystemAccessibleObject>();
+                List<SystemAccessibleObject> values = new();
                 for (int i = 0; i < children.Length; i++)
                     if (children[i] != null)
                         try {
@@ -286,7 +286,7 @@ namespace ManagedWinapi.Accessibility {
         ///     Convert a role number to a localized string.
         /// </summary>
         public static string RoleToString(int roleNumber) {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new(1024);
             uint result = GetRoleText((uint)roleNumber, sb, 1024);
             if (result == 0)
                 throw new Exception("Invalid role number");
@@ -312,7 +312,7 @@ namespace ManagedWinapi.Accessibility {
         ///     Convert a single state bit to a localized string.
         /// </summary>
         public static string StateBitToString(int stateBit) {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new(1024);
             uint result = GetStateText((uint)stateBit, sb, 1024);
             if (result == 0)
                 throw new Exception("Invalid role number");
@@ -354,8 +354,8 @@ namespace ManagedWinapi.Accessibility {
                 return true;
             if (ia1.accChildCount != ia2.accChildCount)
                 return false;
-            SystemAccessibleObject sa1 = new SystemAccessibleObject(ia1, 0);
-            SystemAccessibleObject sa2 = new SystemAccessibleObject(ia2, 0);
+            SystemAccessibleObject sa1 = new(ia1, 0);
+            SystemAccessibleObject sa2 = new(ia2, 0);
             if (sa1.Window.HWnd != sa2.Window.HWnd)
                 return false;
             if (sa1.Location != sa2.Location)

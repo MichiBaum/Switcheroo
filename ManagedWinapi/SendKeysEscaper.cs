@@ -49,7 +49,7 @@ namespace ManagedWinapi {
         /// </param>
         /// <returns>The escaped string.</returns>
         public string escape(string literal, bool preferBraced) {
-            StringBuilder sb = new StringBuilder(literal.Length);
+            StringBuilder sb = new(literal.Length);
             foreach (char c in literal)
                 switch (getEscapableState(c)) {
                     case EscapableState.NOT_AT_ALL:

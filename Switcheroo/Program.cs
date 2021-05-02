@@ -14,7 +14,7 @@ namespace Switcheroo {
         private static void Main() {
             RunAsAdministratorIfConfigured();
 
-            using (Mutex mutex = new Mutex(false, mutex_id)) {
+            using (Mutex mutex = new(false, mutex_id)) {
                 bool hasHandle = false;
                 try {
                     try {
@@ -31,7 +31,7 @@ namespace Switcheroo {
 
                     MigrateUserSettings();
 
-                    App app = new App {MainWindow = new MainWindow()};
+                    App app = new() {MainWindow = new MainWindow()};
                     app.Run();
                 } finally {
                     if (hasHandle)
@@ -42,7 +42,7 @@ namespace Switcheroo {
 
         private static void RunAsAdministratorIfConfigured() {
             if (RunAsAdminRequested() && !IsRunAsAdmin()) {
-                ProcessStartInfo proc = new ProcessStartInfo {
+                ProcessStartInfo proc = new() {
                     UseShellExecute = true,
                     WorkingDirectory = Environment.CurrentDirectory,
                     FileName = Assembly.GetEntryAssembly().CodeBase,
@@ -60,7 +60,7 @@ namespace Switcheroo {
 
         // TODO unused method?
         private static void MakePortable(ApplicationSettingsBase settings) {
-            PortableSettingsProvider portableSettingsProvider = new PortableSettingsProvider();
+            PortableSettingsProvider portableSettingsProvider = new();
             settings.Providers.Add(portableSettingsProvider);
             foreach (SettingsProperty prop in settings.Properties) prop.Provider = portableSettingsProvider;
             settings.Reload();
@@ -77,7 +77,7 @@ namespace Switcheroo {
 
         private static bool IsRunAsAdmin() {
             WindowsIdentity id = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(id);
+            WindowsPrincipal principal = new(id);
 
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }

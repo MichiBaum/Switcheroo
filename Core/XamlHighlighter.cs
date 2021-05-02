@@ -9,7 +9,7 @@ namespace Switcheroo.Core {
             if (stringParts == null)
                 return string.Empty;
 
-            XDocument xDocument = new XDocument(new XElement("Root"));
+            XDocument xDocument = new(new XElement("Root"));
             foreach (StringPart stringPart in stringParts)
                 if (stringPart.IsMatch)
                     xDocument.Root.Add(new XElement("Bold", stringPart.Value));

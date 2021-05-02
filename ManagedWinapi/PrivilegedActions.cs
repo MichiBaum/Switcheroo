@@ -64,13 +64,13 @@ namespace ManagedWinapi {
         /// </summary>
         public static DateTime LocalTime {
             get {
-                SYSTEMTIME st = new SYSTEMTIME();
+                SYSTEMTIME st = new();
                 ApiHelper.FailIfZero(GetLocalTime(ref st));
                 return st.ToDateTime();
             }
 
             set {
-                SYSTEMTIME st = new SYSTEMTIME(value);
+                SYSTEMTIME st = new(value);
                 // Set it twice due to possible daylight savings change
                 ApiHelper.FailIfZero(SetLocalTime(ref st));
                 ApiHelper.FailIfZero(SetLocalTime(ref st));
@@ -82,13 +82,13 @@ namespace ManagedWinapi {
         /// </summary>
         public static DateTime SystemTime {
             get {
-                SYSTEMTIME st = new SYSTEMTIME();
+                SYSTEMTIME st = new();
                 ApiHelper.FailIfZero(GetSystemTime(ref st));
                 return st.ToDateTime();
             }
 
             set {
-                SYSTEMTIME st = new SYSTEMTIME(value);
+                SYSTEMTIME st = new(value);
                 ApiHelper.FailIfZero(SetLocalTime(ref st));
             }
         }
@@ -140,7 +140,7 @@ namespace ManagedWinapi {
             }
 
             internal DateTime ToDateTime() {
-                return new DateTime(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds);
+                return new(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds);
             }
         }
 

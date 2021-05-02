@@ -57,7 +57,7 @@ namespace ManagedWinapi.Windows {
             get {
                 if (index < 0 || index >= Count) throw new ArgumentException("Argument out of range");
                 int length = SystemWindow.SendGetMessage(LB_GETTEXTLEN, (uint)index);
-                StringBuilder sb = new StringBuilder(length);
+                StringBuilder sb = new(length);
                 SystemWindow.SendMessage(new HandleRef(this, SystemWindow.HWnd), LB_GETTEXT, new IntPtr(index), sb);
                 return sb.ToString();
             }
@@ -106,7 +106,7 @@ namespace ManagedWinapi.Windows {
             get {
                 if (index < 0 || index >= Count) throw new ArgumentException("Argument out of range");
                 int length = SystemWindow.SendGetMessage(CB_GETLBTEXTLEN, (uint)index);
-                StringBuilder sb = new StringBuilder(length);
+                StringBuilder sb = new(length);
                 SystemWindow.SendMessage(new HandleRef(this, SystemWindow.HWnd), CB_GETLBTEXT, new IntPtr(index), sb);
                 return sb.ToString();
             }

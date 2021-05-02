@@ -120,7 +120,7 @@ namespace ManagedWinapi.Hooks {
         }
 
         internal static JournalMessage Create(JournalHook.EVENTMSG msg) {
-            return new JournalMessage(msg);
+            return new(msg);
         }
 
         /// <summary>

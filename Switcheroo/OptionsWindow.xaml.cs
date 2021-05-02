@@ -94,14 +94,14 @@ namespace Switcheroo {
                                      || key == Key.LWin || key == Key.RWin)
                 return;
 
-            HotkeyViewModel previewHotkeyModel = new HotkeyViewModel {
+            HotkeyViewModel previewHotkeyModel = new() {
                 Ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0,
                 Shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0,
                 Alt = (Keyboard.Modifiers & ModifierKeys.Alt) != 0
             };
 
-            KeyboardKey winLKey = new KeyboardKey(Keys.LWin);
-            KeyboardKey winRKey = new KeyboardKey(Keys.RWin);
+            KeyboardKey winLKey = new(Keys.LWin);
+            KeyboardKey winRKey = new(Keys.RWin);
             previewHotkeyModel.Windows = (winLKey.State & 0x8000) == 0x8000 || (winRKey.State & 0x8000) == 0x8000;
             previewHotkeyModel.KeyCode = key;
 
@@ -155,7 +155,7 @@ namespace Switcheroo {
             public bool Windows { get; set; }
 
             public override string ToString() {
-                StringBuilder shortcutText = new StringBuilder();
+                StringBuilder shortcutText = new();
 
                 if (Ctrl) shortcutText.Append("Ctrl + ");
 

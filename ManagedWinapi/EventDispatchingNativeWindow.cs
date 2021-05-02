@@ -20,7 +20,7 @@ namespace ManagedWinapi.Windows {
     ///     is useful when writing your own components.
     /// </summary>
     public class EventDispatchingNativeWindow : NativeWindow {
-        private static readonly Object myLock = new Object();
+        private static readonly Object myLock = new();
         private static EventDispatchingNativeWindow _instance;
 
         /// <summary>

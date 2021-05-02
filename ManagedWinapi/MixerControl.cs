@@ -109,7 +109,7 @@ namespace ManagedWinapi.Audio.Mixer {
                 throw new Exception("" + mxsize);
             //mxsize = 148;
 
-            MIXERLINECONTROLS mlc = new MIXERLINECONTROLS();
+            MIXERLINECONTROLS mlc = new();
             mlc.cbStruct = Marshal.SizeOf(mlc);
             mlc.cControls = controlCount;
             mlc.dwLineID = line.Id;
@@ -130,7 +130,7 @@ namespace ManagedWinapi.Audio.Mixer {
         }
 
         private static MixerControl GetControl(Mixer mx, MixerLine ml, MIXERCONTROL mc) {
-            MixerControl result = new MixerControl(mx, ml, mc);
+            MixerControl result = new(mx, ml, mc);
             if (result.Class == MixerControlClass.FADER && ((uint)result.ControlType & MIXERCONTROL_CT_UNITS_MASK) ==
                 (uint)MixerControlType.MIXERCONTROL_CT_UNITS_UNSIGNED)
                 return new FaderMixerControl(mx, ml, mc);
@@ -243,8 +243,8 @@ namespace ManagedWinapi.Audio.Mixer {
         public int[] Values {
             get {
                 int[] result = new int[RawValueMultiplicity];
-                MIXERCONTROLDETAILS mcd = new MIXERCONTROLDETAILS();
-                MIXERCONTROLDETAILS_UNSIGNED mcdu = new MIXERCONTROLDETAILS_UNSIGNED();
+                MIXERCONTROLDETAILS mcd = new();
+                MIXERCONTROLDETAILS_UNSIGNED mcdu = new();
                 mcd.cbStruct = Marshal.SizeOf(mcd);
                 mcd.dwControlID = ctrl.dwControlID;
                 mcd.cChannels = ChannelCount;
@@ -267,8 +267,8 @@ namespace ManagedWinapi.Audio.Mixer {
                 if (value.Length != RawValueMultiplicity)
                     throw new ArgumentException("Incorrect dimension");
 
-                MIXERCONTROLDETAILS mcd = new MIXERCONTROLDETAILS();
-                MIXERCONTROLDETAILS_UNSIGNED mcdu = new MIXERCONTROLDETAILS_UNSIGNED();
+                MIXERCONTROLDETAILS mcd = new();
+                MIXERCONTROLDETAILS_UNSIGNED mcdu = new();
                 mcd.cbStruct = Marshal.SizeOf(mcd);
                 mcd.dwControlID = ctrl.dwControlID;
                 mcd.cChannels = ChannelCount;
@@ -301,8 +301,8 @@ namespace ManagedWinapi.Audio.Mixer {
         public bool[] Values {
             get {
                 bool[] result = new bool[RawValueMultiplicity];
-                MIXERCONTROLDETAILS mcd = new MIXERCONTROLDETAILS();
-                MIXERCONTROLDETAILS_BOOLEAN mcdb = new MIXERCONTROLDETAILS_BOOLEAN();
+                MIXERCONTROLDETAILS mcd = new();
+                MIXERCONTROLDETAILS_BOOLEAN mcdb = new();
                 mcd.cbStruct = Marshal.SizeOf(mcd);
                 mcd.dwControlID = ctrl.dwControlID;
                 mcd.cChannels = ChannelCount;
@@ -325,8 +325,8 @@ namespace ManagedWinapi.Audio.Mixer {
                 if (value.Length != RawValueMultiplicity)
                     throw new ArgumentException("Incorrect dimension");
 
-                MIXERCONTROLDETAILS mcd = new MIXERCONTROLDETAILS();
-                MIXERCONTROLDETAILS_BOOLEAN mcdb = new MIXERCONTROLDETAILS_BOOLEAN();
+                MIXERCONTROLDETAILS mcd = new();
+                MIXERCONTROLDETAILS_BOOLEAN mcdb = new();
                 mcd.cbStruct = Marshal.SizeOf(mcd);
                 mcd.dwControlID = ctrl.dwControlID;
                 mcd.cChannels = ChannelCount;

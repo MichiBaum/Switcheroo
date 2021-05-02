@@ -22,7 +22,7 @@ namespace Switcheroo {
             string longCacheKey = key + "-longCache";
             BitmapImage iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
             if (iconImage == null) {
-                AppWindow window = new AppWindow(handle);
+                AppWindow window = new(handle);
                 Icon icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
                 iconImage = _iconToBitmapConverter.Convert(icon) ?? new BitmapImage();
                 MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));

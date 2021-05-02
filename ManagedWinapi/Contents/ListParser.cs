@@ -52,7 +52,7 @@ namespace ManagedWinapi.Windows.Contents {
         ///
         public string LongDescription {
             get {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 sb.Append('<').Append(ComponentType).Append('>');
                 if (SelectedValue != null)
                     sb.Append(" (selected value: \"").Append(SelectedValue).Append("\")");
@@ -72,7 +72,7 @@ namespace ManagedWinapi.Windows.Contents {
         ///
         public Dictionary<string, string> PropertyList {
             get {
-                Dictionary<string, string> result = new Dictionary<string, string>();
+                Dictionary<string, string> result = new();
                 result.Add("SelectedValue", SelectedValue);
                 result.Add("SelectedIndex", "" + SelectedIndex);
                 result.Add("Count", "" + values.Length);
@@ -152,7 +152,7 @@ namespace ManagedWinapi.Windows.Contents {
                     }
                 }
 
-                List<string> values = new List<string>();
+                List<string> values = new();
                 for (int i = 0; i < cs; i++)
                     if (o.Children[i].RoleIndex == 34) {
                         string name = o.Children[i].Name;
@@ -161,7 +161,7 @@ namespace ManagedWinapi.Windows.Contents {
                                 string cols = o.Children[i].Description;
                                 if (cols == null && values.Count == 0) { hdr = null; } else {
                                     string tmpCols = "; " + cols;
-                                    List<string> usedHdr = new List<string>();
+                                    List<string> usedHdr = new();
                                     foreach (string header in hdr) {
                                         string h = "; " + header + ": ";
                                         if (tmpCols.Contains(h)) {
@@ -235,7 +235,7 @@ namespace ManagedWinapi.Windows.Contents {
         internal override WindowContent ParseContent(SystemWindow sw) {
             SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             if (sao.RoleIndex == 35) {
-                List<string> treeNodes = new List<string>();
+                List<string> treeNodes = new();
                 int selected = -1;
                 foreach (SystemAccessibleObject n in sao.Children)
                     if (n.RoleIndex == 36) {

@@ -19,7 +19,7 @@ namespace Switcheroo.Core {
 
             uint scanCode = WinApi.MapVirtualKeyEx(virtualKey, WinApi.MapVirtualKeyMapTypes.MAPVK_VK_TO_CHAR, hkl);
 
-            StringBuilder sb = new StringBuilder(10);
+            StringBuilder sb = new(10);
 
             _ = WinApi.ToUnicodeEx(virtualKey, scanCode, new Keys[0], sb, sb.Capacity, 0, hkl);
             return sb.ToString();

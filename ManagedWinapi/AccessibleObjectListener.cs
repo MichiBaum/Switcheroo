@@ -125,7 +125,7 @@ namespace ManagedWinapi.Accessibility {
             if (hWinEventHook != handle)
                 return;
             AccessibleEventArgs aea =
-                new AccessibleEventArgs(eventType, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
+                new(eventType, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
             if (EventOccurred != null)
                 EventOccurred(this, aea);
         }

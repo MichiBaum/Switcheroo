@@ -50,7 +50,7 @@ namespace ManagedWinapi.Windows.Contents {
         ///
         public Dictionary<string, string> PropertyList {
             get {
-                Dictionary<string, string> result = new Dictionary<string, string>();
+                Dictionary<string, string> result = new();
                 return result;
             }
         }
@@ -69,7 +69,7 @@ namespace ManagedWinapi.Windows.Contents {
 
         private string ParseMenu(SystemWindow sw, AccessibleObjectID accessibleObjectID) {
             SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, accessibleObjectID);
-            StringBuilder menuitems = new StringBuilder();
+            StringBuilder menuitems = new();
             ParseSubMenu(menuitems, sao, 1);
             return menuitems.ToString();
         }
@@ -84,7 +84,7 @@ namespace ManagedWinapi.Windows.Contents {
 
         private string ParseClientArea(SystemWindow sw) {
             SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             ParseClientAreaElement(sb, sao, 1);
             return sb.ToString();
         }

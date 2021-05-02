@@ -34,7 +34,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         /// <returns></returns>
         public static implicit operator Point(POINT p) {
-            return new Point(p.X, p.Y);
+            return new(p.X, p.Y);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         /// <returns></returns>
         public static implicit operator POINT(Point p) {
-            return new POINT(p.X, p.Y);
+            return new(p.X, p.Y);
         }
     }
 
@@ -95,12 +95,12 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     SIZE
         /// </summary>
-        public Size Size => new Size(Width, Height);
+        public Size Size => new(Width, Height);
 
         /// <summary>
         ///     LOCATION
         /// </summary>
-        public Point Location => new Point(Left, Top);
+        public Point Location => new(Left, Top);
 
         // Handy method for converting to a System.Drawing.Rectangle
         /// <summary>
@@ -112,7 +112,7 @@ namespace ManagedWinapi.Windows {
         ///     Convert Rectangle to a RECT
         /// </summary>
         public static RECT FromRectangle(Rectangle rectangle) {
-            return new RECT(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
+            return new(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace ManagedWinapi.Windows {
         ///     Implicit Cast.
         /// </summary>
         public static implicit operator RECT(Rectangle rect) {
-            return new RECT(rect.Left, rect.Top, rect.Right, rect.Bottom);
+            return new(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
         #endregion

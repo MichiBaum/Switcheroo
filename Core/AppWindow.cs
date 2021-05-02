@@ -178,7 +178,7 @@ namespace Switcheroo.Core {
 
         // This method only works on Windows >= Windows Vista
         private static string GetExecutablePath(int processId) {
-            StringBuilder buffer = new StringBuilder(1024);
+            StringBuilder buffer = new(1024);
             IntPtr hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
             if (hprocess == IntPtr.Zero)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
