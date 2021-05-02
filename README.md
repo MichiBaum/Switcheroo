@@ -11,12 +11,14 @@ This is a improved and extended version of [this project.](https://github.com/kv
 There is a .editorconfig for C# in this project.
 Please use it if you Analyze -> code cleanup.
 
+
 ## Create Switcheroo Installer & Portable
 
 1. move into ./Installer
 2. run MSBuild.exe Build.xml ([Solution](https://stackoverflow.com/a/13819332/10258204) if MSBuild.exe not found)
 
 You will get an switcheroo-setup.exe & switcheroo-portable.zip in ./Installer/Output
+
 
 ## License
 
