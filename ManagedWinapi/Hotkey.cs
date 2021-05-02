@@ -12,11 +12,11 @@ namespace ManagedWinapi {
     public class Hotkey : Component {
         private static readonly Object myStaticLock = new Object();
         private static int hotkeyCounter = 0xA000;
+
+        private readonly int hotkeyIndex;
         private readonly IntPtr hWnd;
         private bool _ctrl, _alt, _shift, _windows;
         private Keys _keyCode;
-
-        private readonly int hotkeyIndex;
         private bool isDisposed, isEnabled, isRegistered;
 
         /// <summary>

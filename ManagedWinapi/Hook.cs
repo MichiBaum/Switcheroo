@@ -15,12 +15,13 @@ namespace ManagedWinapi.Hooks {
         /// </summary>
         public delegate int HookCallback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext);
 
+        private readonly bool global;
+
         private readonly HookProc managedDelegate;
+        private readonly bool wrapCallback;
         private IntPtr hHook;
         internal bool hooked;
         private IntPtr hWrapperInstance;
-        private readonly bool wrapCallback;
-        private readonly bool global;
         private IntPtr wrappedDelegate;
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace ManagedWinapi.Hooks {
         /// </summary>
         public Hook(HookType type, bool wrapCallback, bool global)
             : this() {
-            this.Type = type;
+            Type = type;
             this.wrapCallback = wrapCallback;
             this.global = global;
         }

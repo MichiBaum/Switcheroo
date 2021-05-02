@@ -1240,7 +1240,7 @@ namespace ManagedWinapi.Windows {
 
         internal WindowDeviceContext(SystemWindow sw, IntPtr hDC) {
             this.sw = sw;
-            this.HDC = hDC;
+            HDC = hDC;
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace Switcheroo.Core.Matchers {
             for (int groupIndex = 1; groupIndex < match.Groups.Count; groupIndex++) {
                 Group group = match.Groups[groupIndex];
                 if (group.Value.Length > 0)
-                    matchResult.StringParts.Add(new StringPart(@group.Value, groupIndex % 2 == 0));
+                    matchResult.StringParts.Add(new StringPart(group.Value, groupIndex % 2 == 0));
             }
 
             string afterMatch = input.Substring(match.Index + match.Length);

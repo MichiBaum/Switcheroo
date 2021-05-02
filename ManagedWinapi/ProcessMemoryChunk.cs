@@ -17,21 +17,21 @@ namespace ManagedWinapi {
         ///     Mostly used to read that memory.
         /// </summary>
         public ProcessMemoryChunk(Process process, IntPtr location, int size) {
-            this.Process = process;
+            Process = process;
             hProcess = OpenProcess(
                 ProcessAccessFlags.VMOperation | ProcessAccessFlags.VMRead | ProcessAccessFlags.VMWrite, false,
                 process.Id);
             ApiHelper.FailIfZero(hProcess);
-            this.Location = location;
-            this.Size = size;
+            Location = location;
+            Size = size;
             free = false;
         }
 
         private ProcessMemoryChunk(Process process, IntPtr hProcess, IntPtr location, int size, bool free) {
-            this.Process = process;
+            Process = process;
             this.hProcess = hProcess;
-            this.Location = location;
-            this.Size = size;
+            Location = location;
+            Size = size;
             this.free = free;
         }
 

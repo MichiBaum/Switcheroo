@@ -12,6 +12,8 @@ namespace ManagedWinapi.Audio.Mixer {
     ///     each has multiple source lines (Wave, MIDI, Mic, etc.).
     /// </summary>
     public class Mixer : IDisposable {
+        private readonly MIXERCAPS mc;
+
         /// <summary>
         ///     Occurs when a control of this mixer changes value.
         /// </summary>
@@ -25,8 +27,6 @@ namespace ManagedWinapi.Audio.Mixer {
         ///     Occurs when a line of this mixer changes.
         /// </summary>
         public MixerEventHandler LineChanged;
-
-        private readonly MIXERCAPS mc;
 
         private Mixer(IntPtr hMixer) {
             this.hMixer = hMixer;

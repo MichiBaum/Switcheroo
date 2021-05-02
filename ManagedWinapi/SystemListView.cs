@@ -152,9 +152,9 @@ namespace ManagedWinapi.Windows {
         internal SystemListViewItem(SystemWindow sw, int index, string title, uint state, int image) {
             this.sw = sw;
             this.index = index;
-            this.Title = title;
-            this.State = state;
-            this.Image = image;
+            Title = title;
+            State = state;
+            Image = image;
         }
 
         /// <summary>
@@ -207,10 +207,10 @@ namespace ManagedWinapi.Windows {
     /// </summary>
     public class SystemListViewColumn {
         internal SystemListViewColumn(int format, int width, int subIndex, string title) {
-            this.Format = format;
-            this.Width = width;
-            this.SubIndex = subIndex;
-            this.Title = title;
+            Format = format;
+            Width = width;
+            SubIndex = subIndex;
+            Title = title;
         }
 
         /// <summary>

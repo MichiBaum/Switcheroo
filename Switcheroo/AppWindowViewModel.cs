@@ -64,7 +64,7 @@ namespace Switcheroo {
         }
 
         private string GetPropertyName<T>(Expression<Func<T>> property) {
-            LambdaExpression lambda = (LambdaExpression)property;
+            LambdaExpression lambda = property;
 
             MemberExpression memberExpression;
             if (lambda.Body is UnaryExpression unaryExpression)

@@ -11,10 +11,10 @@ namespace ManagedWinapi.Windows.Contents {
     public class AccessibleWindowContent : WindowContent {
         private readonly bool hasMenu, hasSysMenu, hasClientArea;
         private readonly string name;
+        private readonly SystemWindow systemWindow;
         private string menu, sysmenu, clientarea;
 
         private bool parsed;
-        private readonly SystemWindow systemWindow;
 
         internal AccessibleWindowContent(string name, bool hasMenu, bool hasSysMenu, bool hasClientArea,
             SystemWindow systemWindow) {

@@ -125,7 +125,7 @@ namespace ManagedWinapi {
             if (IsSupported(from) == supported)
                 return from;
             foreach (char c in ranges)
-                if (c > @from)
+                if (c > from)
                     return c;
             return (char)0xFFFF;
         }

@@ -9,10 +9,10 @@ namespace ManagedWinapi.Accessibility {
     ///     if you want to write a screenreader or similar program.
     /// </summary>
     public class AccessibleEventListener : Component {
+        private readonly WinEventDelegate internalDelegate;
         private bool enabled;
         private GCHandle gch;
         private IntPtr handle = IntPtr.Zero;
-        private readonly WinEventDelegate internalDelegate;
         private AccessibleEventType max = AccessibleEventType.EVENT_MAX;
         private AccessibleEventType min = AccessibleEventType.EVENT_MIN;
         private UInt32 processId;
