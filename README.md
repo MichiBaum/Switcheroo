@@ -37,6 +37,10 @@ You should have received a copy of the GNU General Public License
 along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 ```
 
+## Branch
+
+This is a Branch from [kvakulo](https://github.com/kvakulo/Switcheroo).
+
 ## Credits
 
 Switcheroo makes use of these projects:
