@@ -21,8 +21,6 @@ using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Application = System.Windows.Application;
-using ContextMenu = System.Windows.Forms.ContextMenu;
-using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
@@ -122,25 +120,38 @@ namespace Switcheroo {
             _altTabHook.Pressed += AltTabPressed;
         }
 
-        private void SetUpNotifyIcon() {
+        private void SetUpNotifyIcon() { // TODO doesnt work as intended
+            
             Icon icon = Properties.Resources.icon;
-
-            MenuItem runOnStartupMenuItem = new MenuItem("Run on Startup", (s, e) => RunOnStartup(s as MenuItem)) {
+            
+            ToolStripMenuItem runOnStartupMenuItem = new("Run on Startup") {
                 Checked = new AutoStart().IsEnabled
             };
-
+            runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem) s);
+            
+            ToolStripMenuItem optionsMenuItem = new("Options");
+            runOnStartupMenuItem.Click += (s, e) => Options();
+            
+            ToolStripMenuItem aboutMenuItem = new("About");
+            runOnStartupMenuItem.Click += (s, e) => About();
+            
+            ToolStripMenuItem exitMenuItem = new("Exit");
+            runOnStartupMenuItem.Click += (s, e) => Quit();
+            
             _notifyIcon = new NotifyIcon {
                 Text = "Switcheroo",
                 Icon = icon,
                 Visible = true,
-                ContextMenu = new ContextMenu(new[] {
-                    new MenuItem("Options", (s, e) => Options()), runOnStartupMenuItem,
-                    new MenuItem("About", (s, e) => About()), new MenuItem("Exit", (s, e) => Quit())
-                })
+                ContextMenuStrip = new ContextMenuStrip(){Items = {
+                    runOnStartupMenuItem,
+                    optionsMenuItem,
+                    aboutMenuItem,
+                    exitMenuItem
+                }}
             };
         }
 
-        private static void RunOnStartup(MenuItem menuItem) {
+        private static void RunOnStartup(ToolStripMenuItem menuItem) {
             try {
                 AutoStart autoStart = new AutoStart {IsEnabled = !menuItem.Checked};
                 menuItem.Checked = autoStart.IsEnabled;
