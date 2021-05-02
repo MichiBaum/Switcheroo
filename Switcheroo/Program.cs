@@ -1,5 +1,4 @@
-﻿using log4net;
-using Switcheroo.Properties;
+﻿using Switcheroo.Properties;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -10,12 +9,9 @@ using System.Threading;
 namespace Switcheroo {
     internal class Program {
         private const string mutex_id = "DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo";
-        protected static ILog logger = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         private static void Main() {
-            LoggingConfigurator.ConfigureLogging();
-            logger.Info("Program starting through main Method");
             RunAsAdministratorIfConfigured();
 
             using (Mutex mutex = new Mutex(false, mutex_id)) {
@@ -26,7 +22,6 @@ namespace Switcheroo {
                         if (!hasHandle)
                             return; //another instance exist
                     } catch (AbandonedMutexException amex) {
-                        logger.Error("Bla", amex);
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
                     }
 
