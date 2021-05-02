@@ -1,7 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Switcheroo
-{
+namespace Switcheroo {
     public class BoolToColorConverter : BoolConverter<Color> {
     }
 }

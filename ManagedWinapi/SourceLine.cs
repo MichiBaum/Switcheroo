@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Represents a source line. Source lines represent way sound for one
     ///     destination enters the mixer. So, if you can both record and playback

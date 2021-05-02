@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Hooks
-{
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     Event data for a journal record event.
     /// </summary>

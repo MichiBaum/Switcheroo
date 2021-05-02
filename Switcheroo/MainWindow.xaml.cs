@@ -107,11 +107,15 @@ namespace Switcheroo {
             try {
                 _hotkey.Enabled = Settings.Default.EnableHotKey;
             } catch (HotkeyAlreadyInUseException) {
-                string boxText = language_en.MainWindow_SetUpHotKey_The_current_hotkey_for_activating_Switcheroo_is_in_use_by_another_program_ +
-                                 Environment.NewLine +
-                                 Environment.NewLine +
-                                 language_en.MainWindow_SetUpHotKey_You_can_change_the_hotkey_by_right_clicking_the_Switcheroo_icon_in_the_system_tray_and_choosing__Options__;
-                MessageBox.Show(boxText, language_en.MainWindow_SetUpHotKey_Hotkey_already_in_use, MessageBoxButton.OK, MessageBoxImage.Warning);
+                string boxText =
+                    language_en
+                        .MainWindow_SetUpHotKey_The_current_hotkey_for_activating_Switcheroo_is_in_use_by_another_program_ +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    language_en
+                        .MainWindow_SetUpHotKey_You_can_change_the_hotkey_by_right_clicking_the_Switcheroo_icon_in_the_system_tray_and_choosing__Options__;
+                MessageBox.Show(boxText, language_en.MainWindow_SetUpHotKey_Hotkey_already_in_use, MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
@@ -125,7 +129,8 @@ namespace Switcheroo {
 
             Icon icon = Properties.Resources.icon;
 
-            ToolStripMenuItem runOnStartupMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Run_on_Startup) {Checked = new AutoStart().IsEnabled};
+            ToolStripMenuItem runOnStartupMenuItem =
+                new(language_en.MainWindow_SetUpNotifyIcon_Run_on_Startup) {Checked = new AutoStart().IsEnabled};
             runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem)s);
 
             ToolStripMenuItem optionsMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Options);

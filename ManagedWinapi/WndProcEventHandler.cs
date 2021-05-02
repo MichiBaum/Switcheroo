@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     Called by an EventDispatchingNativeWindow when a window message is received
     /// </summary>

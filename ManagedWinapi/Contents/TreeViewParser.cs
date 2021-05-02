@@ -1,8 +1,7 @@
 ﻿using ManagedWinapi.Accessibility;
 using System.Collections.Generic;
 
-namespace ManagedWinapi.Windows.Contents
-{
+namespace ManagedWinapi.Windows.Contents {
     internal class TreeViewParser : WindowContentParser {
         private readonly uint TVM_GETCOUNT = 0x1100 + 5;
 

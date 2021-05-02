@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace Switcheroo
-{
+namespace Switcheroo {
     public class AutoStartException : Exception {
         public AutoStartException() {
         }

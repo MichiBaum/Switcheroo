@@ -2,8 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     A mixer control that is adjusted by a vertical fader, with a linear scale
     ///     of positive values (ie, 0 is the lowest possible value).

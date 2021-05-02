@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Hooks
-{
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     Convenience class that uses a journal playback hook to block keyboard
     ///     and mouse input for some time.

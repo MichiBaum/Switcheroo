@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     Extended Window Style Flags. The original constants started with WS_EX_.
     /// </summary>

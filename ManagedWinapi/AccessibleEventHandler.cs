@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Accessibility
-{
+﻿namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     Represents the method that will handle accessibility events.
     /// </summary>

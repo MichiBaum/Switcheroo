@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Flags of a mixer control.
     /// </summary>

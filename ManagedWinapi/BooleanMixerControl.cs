@@ -2,8 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     A control that is has only two states (ie, values),
     ///     and is therefore adjusted via a button.

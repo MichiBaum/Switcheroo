@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Provides data for the LineChanged and ControlChanged events of a
     ///     <see cref="Mixer">Mixer</see>.

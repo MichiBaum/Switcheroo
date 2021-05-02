@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Accessibility
-{
+namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     Provides data for accessible events.
     /// </summary>

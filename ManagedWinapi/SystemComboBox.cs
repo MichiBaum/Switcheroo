@@ -2,8 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     Any combo box, including those from other applications.
     /// </summary>

@@ -2,8 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     An item of a list view.
     /// </summary>

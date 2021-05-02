@@ -2,8 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Hooks
-{
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     A hook that intercepts mouse events
     /// </summary>

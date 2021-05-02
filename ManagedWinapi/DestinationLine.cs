@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Audio.Mixer
-{
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Represents a destination line. There is one destination line for
     ///     each way sound can leave the mixer. Usually there are two destination lines,

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ManagedWinapi.Windows.Contents
-{
+namespace ManagedWinapi.Windows.Contents {
     /// <summary>
     ///     The content of an object that supports the Accessibility API
     ///     (used by screen readers and similar programs).

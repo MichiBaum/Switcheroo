@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Hooks
-{
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     A message that has been intercepted by a low-level hook
     /// </summary>

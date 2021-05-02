@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Audio.Mixer
-{
+﻿namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Mixer control type classes. These classes are roughly based upon what type of
     ///     value a control adjusts, and therefore what kind of graphical user interface

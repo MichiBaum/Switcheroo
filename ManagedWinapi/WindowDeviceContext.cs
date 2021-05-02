@@ -2,8 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     A device context of a window that allows you to draw onto that window.
     /// </summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace Switcheroo
-{
+namespace Switcheroo {
     public class AltTabHookEventArgs : EventArgs {
         public bool CtrlDown { get; set; }
         public bool ShiftDown { get; set; }

@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Accessibility
-{
+﻿namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     This enumeration lists known accessible event types.
     /// </summary>

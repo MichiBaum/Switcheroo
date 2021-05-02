@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Windows.Contents
-{
+﻿namespace ManagedWinapi.Windows.Contents {
     internal class ComboBoxParser : WindowContentParser {
         internal override bool CanParseContent(SystemWindow sw) {
             return SystemComboBox.FromSystemWindow(sw) != null;

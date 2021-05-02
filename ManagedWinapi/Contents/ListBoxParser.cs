@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Windows.Contents
-{
+﻿namespace ManagedWinapi.Windows.Contents {
     internal class ListBoxParser : WindowContentParser {
         internal override bool CanParseContent(SystemWindow sw) {
             return SystemListBox.FromSystemWindow(sw) != null;

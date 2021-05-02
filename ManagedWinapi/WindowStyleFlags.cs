@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi.Windows
-{
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     Window Style Flags. The original constants started with WS_.
     /// </summary>

@@ -1,5 +1,4 @@
-﻿namespace Switcheroo.Core
-{
+﻿namespace Switcheroo.Core {
     public enum WindowIconSize {
         Small,
         Large

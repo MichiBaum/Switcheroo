@@ -1,5 +1,4 @@
-﻿namespace ManagedWinapi.Windows
-{
+﻿namespace ManagedWinapi.Windows {
     /// <summary>
     ///     A column of a list view.
     /// </summary>

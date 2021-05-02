@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ManagedWinapi.Hooks
-{
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     A message that has been intercepted by a low-level mouse hook
     /// </summary>

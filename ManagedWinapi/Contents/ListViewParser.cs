@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ManagedWinapi.Windows.Contents
-{
+namespace ManagedWinapi.Windows.Contents {
     internal class ListViewParser : WindowContentParser {
         internal override bool CanParseContent(SystemWindow sw) {
             const uint LVM_GETITEMCOUNT = 0x1000 + 4;

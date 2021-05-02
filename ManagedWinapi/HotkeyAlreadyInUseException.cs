@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace ManagedWinapi
-{
+namespace ManagedWinapi {
     /// <summary>
     ///     The exception is thrown when a hotkey should be registered that
     ///     has already been registered by another application.

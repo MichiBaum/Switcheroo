@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ManagedWinapi.Windows.Contents
-{
+namespace ManagedWinapi.Windows.Contents {
     /// <summary>
     ///     The content of a text box.
     /// </summary>
