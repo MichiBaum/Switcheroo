@@ -107,11 +107,11 @@ namespace Switcheroo {
             try {
                 _hotkey.Enabled = Settings.Default.EnableHotKey;
             } catch (HotkeyAlreadyInUseException) {
-                string boxText = "The current hotkey for activating Switcheroo is in use by another program." +
+                string boxText = language_en.MainWindow_SetUpHotKey_The_current_hotkey_for_activating_Switcheroo_is_in_use_by_another_program_ +
                                  Environment.NewLine +
                                  Environment.NewLine +
-                                 "You can change the hotkey by right-clicking the Switcheroo icon in the system tray and choosing 'Options'.";
-                MessageBox.Show(boxText, "Hotkey already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                 language_en.MainWindow_SetUpHotKey_You_can_change_the_hotkey_by_right_clicking_the_Switcheroo_icon_in_the_system_tray_and_choosing__Options__;
+                MessageBox.Show(boxText, language_en.MainWindow_SetUpHotKey_Hotkey_already_in_use, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -125,20 +125,20 @@ namespace Switcheroo {
 
             Icon icon = Properties.Resources.icon;
 
-            ToolStripMenuItem runOnStartupMenuItem = new("Run on Startup") {Checked = new AutoStart().IsEnabled};
+            ToolStripMenuItem runOnStartupMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Run_on_Startup) {Checked = new AutoStart().IsEnabled};
             runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem)s);
 
-            ToolStripMenuItem optionsMenuItem = new("Options");
+            ToolStripMenuItem optionsMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Options);
             runOnStartupMenuItem.Click += (s, e) => Options();
 
-            ToolStripMenuItem aboutMenuItem = new("About");
+            ToolStripMenuItem aboutMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_About);
             runOnStartupMenuItem.Click += (s, e) => About();
 
-            ToolStripMenuItem exitMenuItem = new("Exit");
+            ToolStripMenuItem exitMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Exit);
             runOnStartupMenuItem.Click += (s, e) => Quit();
 
             _notifyIcon = new NotifyIcon {
-                Text = "Switcheroo",
+                Text = language_en.MainWindow_SetUpNotifyIcon_Switcheroo,
                 Icon = icon,
                 Visible = true,
                 ContextMenuStrip = new ContextMenuStrip {
@@ -168,7 +168,7 @@ namespace Switcheroo {
                 if (latestVersion != null && latestVersion > currentVersion) {
                     MessageBoxResult result = MessageBox.Show(
                         string.Format(
-                            "Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
+                            language_en.MainWindow_CheckForUpdates_,
                             latestVersion, currentVersion),
                         "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
                     if (result ==
@@ -189,7 +189,7 @@ namespace Switcheroo {
             try {
                 // TODO add own versioning
                 string versionAsString = await new WebClient()
-                    .DownloadStringTaskAsync("https://raw.github.com/kvakulo/Switcheroo/update/version.txt")
+                    .DownloadStringTaskAsync("https://raw.github.com/MichiBaum/Switcheroo/update/version.txt")
                     .ConfigureAwait(false);
                 if (Version.TryParse(versionAsString, out Version newVersion)) return newVersion;
             } catch (WebException) {
@@ -388,7 +388,7 @@ namespace Switcheroo {
                 if (Settings.Default.AutoSwitch && !e.CtrlDown) {
                     _altTabAutoSwitch = true;
                     tb.IsEnabled = false;
-                    tb.Text = "Press Alt + S to search";
+                    tb.Text = language_en.MainWindow_AltTabPressed_Press_Alt___S_to_search;
                 }
 
                 Opacity = 1;

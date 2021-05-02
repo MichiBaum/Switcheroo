@@ -65,9 +65,9 @@ namespace Switcheroo {
                 _hotkey.SaveSettings();
             } catch (HotkeyAlreadyInUseException) {
                 string boxText =
-                    "Sorry! The selected shortcut for activating Switcheroo is in use by another program. " +
-                    "Please choose another.";
-                MessageBox.Show(boxText, "Shortcut already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    language_en.OptionsWindow_Ok_Click_Sorry__The_selected_shortcut_for_activating_Switcheroo_is_in_use_by_another_program_ +
+                    language_en.OptionsWindow_Ok_Click_Please_choose_another_;
+                MessageBox.Show(boxText, language_en.OptionsWindow_Ok_Click_Shortcut_already_in_use, MessageBoxButton.OK, MessageBoxImage.Warning);
                 closeOptionsWindow = false;
             }
 
