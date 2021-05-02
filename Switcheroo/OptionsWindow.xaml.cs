@@ -47,7 +47,7 @@ namespace Switcheroo {
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e) {
-            var closeOptionsWindow = true;
+            bool closeOptionsWindow = true;
 
             try {
                 _hotkey.Enabled = false;
@@ -64,8 +64,9 @@ namespace Switcheroo {
 
                 _hotkey.SaveSettings();
             } catch (HotkeyAlreadyInUseException) {
-                var boxText = "Sorry! The selected shortcut for activating Switcheroo is in use by another program. " +
-                              "Please choose another.";
+                string boxText =
+                    "Sorry! The selected shortcut for activating Switcheroo is in use by another program. " +
+                    "Please choose another.";
                 MessageBox.Show(boxText, "Shortcut already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
                 closeOptionsWindow = false;
             }
@@ -76,9 +77,7 @@ namespace Switcheroo {
             Settings.Default.RunAsAdmin = RunAsAdministrator.IsChecked.GetValueOrDefault();
             Settings.Default.Save();
 
-            if (closeOptionsWindow) {
-                Close();
-            }
+            if (closeOptionsWindow) Close();
         }
 
         private void HotkeyPreview_OnPreviewKeyDown(object sender, KeyEventArgs e) {
@@ -86,28 +85,27 @@ namespace Switcheroo {
             e.Handled = true;
 
             // Fetch the actual shortcut key
-            var key = (e.Key == Key.System ? e.SystemKey : e.Key);
+            Key key = e.Key == Key.System ? e.SystemKey : e.Key;
 
             // Ignore modifier keys
             if (key == Key.LeftShift || key == Key.RightShift
-                || key == Key.LeftCtrl || key == Key.RightCtrl
-                || key == Key.LeftAlt || key == Key.RightAlt
-                || key == Key.LWin || key == Key.RWin) {
+                                     || key == Key.LeftCtrl || key == Key.RightCtrl
+                                     || key == Key.LeftAlt || key == Key.RightAlt
+                                     || key == Key.LWin || key == Key.RWin)
                 return;
-            }
 
-            var previewHotkeyModel = new HotkeyViewModel {
+            HotkeyViewModel previewHotkeyModel = new HotkeyViewModel {
                 Ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0,
                 Shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0,
                 Alt = (Keyboard.Modifiers & ModifierKeys.Alt) != 0
             };
 
-            var winLKey = new KeyboardKey(Keys.LWin);
-            var winRKey = new KeyboardKey(Keys.RWin);
+            KeyboardKey winLKey = new KeyboardKey(Keys.LWin);
+            KeyboardKey winRKey = new KeyboardKey(Keys.RWin);
             previewHotkeyModel.Windows = (winLKey.State & 0x8000) == 0x8000 || (winRKey.State & 0x8000) == 0x8000;
             previewHotkeyModel.KeyCode = key;
 
-            var previewText = previewHotkeyModel.ToString();
+            string previewText = previewHotkeyModel.ToString();
 
             // Jump to the next element if the user presses only the Tab key
             if (previewText == "Tab") {
@@ -117,48 +115,6 @@ namespace Switcheroo {
 
             HotkeyPreview.Text = previewText;
             _hotkeyViewModel = previewHotkeyModel;
-        }
-
-        private class HotkeyViewModel {
-            public Key KeyCode { get; set; }
-            public bool Shift { get; set; }
-            public bool Alt { get; set; }
-            public bool Ctrl { get; set; }
-            public bool Windows { get; set; }
-
-            public override string ToString() {
-                var shortcutText = new StringBuilder();
-
-                if (Ctrl) {
-                    shortcutText.Append("Ctrl + ");
-                }
-
-                if (Shift) {
-                    shortcutText.Append("Shift + ");
-                }
-
-                if (Alt) {
-                    shortcutText.Append("Alt + ");
-                }
-
-                if (Windows) {
-                    shortcutText.Append("Win + ");
-                }
-
-                var keyString =
-                    KeyboardHelper.CodeToString((uint)KeyInterop.VirtualKeyFromKey(KeyCode)).ToUpper().Trim();
-                if (keyString.Length == 0) {
-                    keyString = new KeysConverter().ConvertToString(KeyCode);
-                }
-
-                // If the user presses "Escape" then show "Escape" :)
-                if (keyString == "\u001B") {
-                    keyString = "Escape";
-                }
-
-                shortcutText.Append(keyString);
-                return shortcutText.ToString();
-            }
         }
 
         private void HotkeyPreview_OnGotFocus(object sender, RoutedEventArgs e) {
@@ -189,6 +145,36 @@ namespace Switcheroo {
 
         private void HotKeyCheckBox_OnUnchecked(object sender, RoutedEventArgs e) {
             HotkeyPreview.IsEnabled = false;
+        }
+
+        private class HotkeyViewModel {
+            public Key KeyCode { get; set; }
+            public bool Shift { get; set; }
+            public bool Alt { get; set; }
+            public bool Ctrl { get; set; }
+            public bool Windows { get; set; }
+
+            public override string ToString() {
+                StringBuilder shortcutText = new StringBuilder();
+
+                if (Ctrl) shortcutText.Append("Ctrl + ");
+
+                if (Shift) shortcutText.Append("Shift + ");
+
+                if (Alt) shortcutText.Append("Alt + ");
+
+                if (Windows) shortcutText.Append("Win + ");
+
+                string keyString =
+                    KeyboardHelper.CodeToString((uint)KeyInterop.VirtualKeyFromKey(KeyCode)).ToUpper().Trim();
+                if (keyString.Length == 0) keyString = new KeysConverter().ConvertToString(KeyCode);
+
+                // If the user presses "Escape" then show "Escape" :)
+                if (keyString == "\u001B") keyString = "Escape";
+
+                shortcutText.Append(keyString);
+                return shortcutText.ToString();
+            }
         }
     }
 }

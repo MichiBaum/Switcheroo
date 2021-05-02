@@ -6,44 +6,27 @@ using System.Text;
 
 namespace ManagedWinapi.Windows {
     /// <summary>
-    /// Any list view, including those from other applications.
+    ///     Any list view, including those from other applications.
     /// </summary>
     public class SystemListView {
-        /// <summary>
-        /// Get a SystemListView reference from a SystemWindow (which is a list view)
-        /// </summary>
-        public static SystemListView FromSystemWindow(SystemWindow sw) {
-            if (sw.SendGetMessage(LVM_GETITEMCOUNT) == 0)
-                return null;
-            return new SystemListView(sw);
-        }
-
-        readonly SystemWindow sw;
+        private readonly SystemWindow sw;
 
         private SystemListView(SystemWindow sw) {
             this.sw = sw;
         }
 
         /// <summary>
-        /// The number of items (icons) in this list view.
+        ///     The number of items (icons) in this list view.
         /// </summary>
-        public int Count {
-            get {
-                return sw.SendGetMessage(LVM_GETITEMCOUNT);
-            }
-        }
+        public int Count => sw.SendGetMessage(LVM_GETITEMCOUNT);
 
         /// <summary>
-        /// An item of this list view.
+        ///     An item of this list view.
         /// </summary>
-        public SystemListViewItem this[int index] {
-            get {
-                return this[index, 0];
-            }
-        }
+        public SystemListViewItem this[int index] => this[index, 0];
 
         /// <summary>
-        /// A subitem (a column value) of an item of this list view.
+        ///     A subitem (a column value) of an item of this list view.
         /// </summary>
         public SystemListViewItem this[int index, int subIndex] {
             get {
@@ -56,13 +39,15 @@ namespace ManagedWinapi.Windows {
                 ProcessMemoryChunk tc = ProcessMemoryChunk.Alloc(sw.Process, 301);
                 lvi.pszText = tc.Location;
                 ProcessMemoryChunk lc = ProcessMemoryChunk.AllocStruct(sw.Process, lvi);
-                ApiHelper.FailIfZero(SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_GETITEM, IntPtr.Zero, lc.Location));
+                ApiHelper.FailIfZero(SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_GETITEM, IntPtr.Zero,
+                    lc.Location));
                 lvi = (LVITEM)lc.ReadToStructure(0, typeof(LVITEM));
                 lc.Dispose();
                 if (lvi.pszText != tc.Location) {
                     tc.Dispose();
                     tc = new ProcessMemoryChunk(sw.Process, lvi.pszText, lvi.cchTextMax);
                 }
+
                 byte[] tmp = tc.Read();
                 string title = Encoding.Default.GetString(tmp);
                 if (title.IndexOf('\0') != -1)
@@ -75,7 +60,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// All columns of this list view, if it is in report view.
+        ///     All columns of this list view, if it is in report view.
         /// </summary>
         public SystemListViewColumn[] Columns {
             get {
@@ -86,8 +71,9 @@ namespace ManagedWinapi.Windows {
                 ProcessMemoryChunk tc = ProcessMemoryChunk.Alloc(sw.Process, 301);
                 lvc.pszText = tc.Location;
                 ProcessMemoryChunk lc = ProcessMemoryChunk.AllocStruct(sw.Process, lvc);
-                for (int i = 0; ; i++) {
-                    IntPtr ok = SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_GETCOLUMN, new IntPtr(i), lc.Location);
+                for (int i = 0;; i++) {
+                    IntPtr ok = SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_GETCOLUMN, new IntPtr(i),
+                        lc.Location);
                     if (ok == IntPtr.Zero)
                         break;
                     lvc = (LVCOLUMN)lc.ReadToStructure(0, typeof(LVCOLUMN));
@@ -97,20 +83,30 @@ namespace ManagedWinapi.Windows {
                         title = title.Substring(0, title.IndexOf('\0'));
                     result.Add(new SystemListViewColumn(lvc.fmt, lvc.cx, lvc.iSubItem, title));
                 }
+
                 tc.Dispose();
                 lc.Dispose();
                 return result.ToArray();
             }
         }
 
+        /// <summary>
+        ///     Get a SystemListView reference from a SystemWindow (which is a list view)
+        /// </summary>
+        public static SystemListView FromSystemWindow(SystemWindow sw) {
+            if (sw.SendGetMessage(LVM_GETITEMCOUNT) == 0)
+                return null;
+            return new SystemListView(sw);
+        }
+
         #region PInvoke Declarations
 
-        internal static readonly uint LVM_GETITEMRECT = (0x1000 + 14),
-            LVM_SETITEMPOSITION = (0x1000 + 15),
-            LVM_GETITEMPOSITION = (0x1000 + 16),
-            LVM_GETITEMCOUNT = (0x1000 + 4),
+        internal static readonly uint LVM_GETITEMRECT = 0x1000 + 14,
+            LVM_SETITEMPOSITION = 0x1000 + 15,
+            LVM_GETITEMPOSITION = 0x1000 + 16,
+            LVM_GETITEMCOUNT = 0x1000 + 4,
             LVM_GETITEM = 0x1005,
-            LVM_GETCOLUMN = (0x1000 + 25);
+            LVM_GETCOLUMN = 0x1000 + 25;
 
         private static readonly uint LVIF_TEXT = 0x1,
             LVIF_IMAGE = 0x2,
@@ -123,11 +119,11 @@ namespace ManagedWinapi.Windows {
         [StructLayout(LayoutKind.Sequential)]
         private struct LVCOLUMN {
             public UInt32 mask;
-            public Int32 fmt;
-            public Int32 cx;
+            public readonly Int32 fmt;
+            public readonly Int32 cx;
             public IntPtr pszText;
             public Int32 cchTextMax;
-            public Int32 iSubItem;
+            public readonly Int32 iSubItem;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -135,121 +131,108 @@ namespace ManagedWinapi.Windows {
             public UInt32 mask;
             public Int32 iItem;
             public Int32 iSubItem;
-            public UInt32 state;
+            public readonly UInt32 state;
             public UInt32 stateMask;
             public IntPtr pszText;
             public Int32 cchTextMax;
-            public Int32 iImage;
-            public IntPtr lParam;
+            public readonly Int32 iImage;
+            public readonly IntPtr lParam;
         }
+
         #endregion
     }
 
     /// <summary>
-    /// An item of a list view.
+    ///     An item of a list view.
     /// </summary>
     public class SystemListViewItem {
-        readonly string title;
-        readonly uint state;
-        readonly int image, index;
-        readonly SystemWindow sw;
+        private readonly int index;
+        private readonly SystemWindow sw;
 
         internal SystemListViewItem(SystemWindow sw, int index, string title, uint state, int image) {
             this.sw = sw;
             this.index = index;
-            this.title = title;
-            this.state = state;
-            this.image = image;
+            this.Title = title;
+            this.State = state;
+            this.Image = image;
         }
 
         /// <summary>
-        /// The title of this item
+        ///     The title of this item
         /// </summary>
-        public string Title { get { return title; } }
+        public string Title { get; }
 
         /// <summary>
-        /// The index of this item's image in the image list of this list view.
+        ///     The index of this item's image in the image list of this list view.
         /// </summary>
-        public int Image { get { return image; } }
+        public int Image { get; }
 
         /// <summary>
-        /// State bits of this item.
+        ///     State bits of this item.
         /// </summary>
-        public uint State { get { return state; } }
+        public uint State { get; }
 
         /// <summary>
-        /// Position of the upper left corner of this item.
+        ///     Position of the upper left corner of this item.
         /// </summary>
         public Point Position {
             get {
                 POINT pt = new POINT();
                 ProcessMemoryChunk c = ProcessMemoryChunk.AllocStruct(sw.Process, pt);
-                ApiHelper.FailIfZero(SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_GETITEMPOSITION, new IntPtr(index), c.Location));
+                ApiHelper.FailIfZero(SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd),
+                    SystemListView.LVM_GETITEMPOSITION, new IntPtr(index), c.Location));
                 pt = (POINT)c.ReadToStructure(0, typeof(POINT));
                 return new Point(pt.X, pt.Y);
             }
-            set {
-                SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_SETITEMPOSITION, new IntPtr(index), new IntPtr(value.X + (value.Y << 16)));
-            }
+            set => SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_SETITEMPOSITION,
+                new IntPtr(index), new IntPtr(value.X + (value.Y << 16)));
         }
 
         /// <summary>
-        /// Bounding rectangle of this item.
+        ///     Bounding rectangle of this item.
         /// </summary>
         public RECT Rectangle {
             get {
                 RECT r = new RECT();
                 ProcessMemoryChunk c = ProcessMemoryChunk.AllocStruct(sw.Process, r);
-                SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_GETITEMRECT, new IntPtr(index), c.Location);
+                SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), SystemListView.LVM_GETITEMRECT, new IntPtr(index),
+                    c.Location);
                 return (RECT)c.ReadToStructure(0, typeof(RECT));
             }
         }
     }
 
     /// <summary>
-    /// A column of a list view.
+    ///     A column of a list view.
     /// </summary>
     public class SystemListViewColumn {
-        readonly int format;
-        readonly int width;
-        readonly int subIndex;
-        readonly string title;
-
         internal SystemListViewColumn(int format, int width, int subIndex, string title) {
-            this.format = format;
-            this.width = width;
-            this.subIndex = subIndex;
-            this.title = title;
+            this.Format = format;
+            this.Width = width;
+            this.SubIndex = subIndex;
+            this.Title = title;
         }
 
         /// <summary>
-        /// The format (like left justified) of this column.
+        ///     The format (like left justified) of this column.
         /// </summary>
-        public int Format {
-            get { return format; }
-        }
+        public int Format { get; }
 
         /// <summary>
-        /// The width of this column.
+        ///     The width of this column.
         /// </summary>
-        public int Width {
-            get { return width; }
-        }
+        public int Width { get; }
 
         /// <summary>
-        /// The subindex of the subitem displayed in this column. Note
-        /// that the second column does not necessarily display the second
-        /// subitem - especially when the columns can be reordered by the user.
+        ///     The subindex of the subitem displayed in this column. Note
+        ///     that the second column does not necessarily display the second
+        ///     subitem - especially when the columns can be reordered by the user.
         /// </summary>
-        public int SubIndex {
-            get { return subIndex; }
-        }
+        public int SubIndex { get; }
 
         /// <summary>
-        /// The title of this column.
+        ///     The title of this column.
         /// </summary>
-        public string Title {
-            get { return title; }
-        }
+        public string Title { get; }
     }
 }

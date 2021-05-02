@@ -21,18 +21,16 @@ namespace Switcheroo {
 
         private static void FormattedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             TextBlock textBlock = d as TextBlock;
-            if (textBlock == null) {
-                return;
-            }
+            if (textBlock == null) return;
 
-            var formattedText = (string)e.NewValue ?? string.Empty;
+            string formattedText = (string)e.NewValue ?? string.Empty;
             formattedText =
                 @"<Span xml:space=""preserve"" xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">" +
                 formattedText +
                 "</Span>";
 
             textBlock.Inlines.Clear();
-            var result = (Span)XamlReader.Parse(formattedText);
+            Span result = (Span)XamlReader.Parse(formattedText);
             textBlock.Inlines.Add(result);
         }
     }

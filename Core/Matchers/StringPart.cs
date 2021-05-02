@@ -1,8 +1,5 @@
 ﻿namespace Switcheroo.Core.Matchers {
     public class StringPart {
-        public string Value { get; set; }
-        public bool IsMatch { get; set; }
-
         public StringPart() {
         }
 
@@ -10,5 +7,8 @@
             Value = value;
             IsMatch = isMatch;
         }
+
+        public string Value { get; set; }
+        public bool IsMatch { get; set; }
     }
 }

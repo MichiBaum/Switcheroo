@@ -1,20 +1,24 @@
-﻿namespace Switcheroo {
-    public class HotKey : ManagedWinapi.Hotkey {
+﻿using ManagedWinapi;
+using Switcheroo.Properties;
+using System.Windows.Forms;
+
+namespace Switcheroo {
+    public class HotKey : Hotkey {
         public void LoadSettings() {
-            KeyCode = (System.Windows.Forms.Keys)Properties.Settings.Default.HotKey;
-            WindowsKey = Properties.Settings.Default.WindowsKey;
-            Alt = Properties.Settings.Default.Alt;
-            Ctrl = Properties.Settings.Default.Ctrl;
-            Shift = Properties.Settings.Default.Shift;
+            KeyCode = (Keys)Settings.Default.HotKey;
+            WindowsKey = Settings.Default.WindowsKey;
+            Alt = Settings.Default.Alt;
+            Ctrl = Settings.Default.Ctrl;
+            Shift = Settings.Default.Shift;
         }
 
         public void SaveSettings() {
-            Properties.Settings.Default.HotKey = (int)KeyCode;
-            Properties.Settings.Default.WindowsKey = WindowsKey;
-            Properties.Settings.Default.Alt = Alt;
-            Properties.Settings.Default.Ctrl = Ctrl;
-            Properties.Settings.Default.Shift = Shift;
-            Properties.Settings.Default.Save();
+            Settings.Default.HotKey = (int)KeyCode;
+            Settings.Default.WindowsKey = WindowsKey;
+            Settings.Default.Alt = Alt;
+            Settings.Default.Ctrl = Ctrl;
+            Settings.Default.Shift = Shift;
+            Settings.Default.Save();
         }
     }
 }

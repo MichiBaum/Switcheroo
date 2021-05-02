@@ -6,14 +6,13 @@ using System.Text;
 
 namespace ManagedWinapi {
     /// <summary>
-    /// The unicode range of codepoints supported by a font.
+    ///     The unicode range of codepoints supported by a font.
     /// </summary>
     public class CodepointRange {
-        char[] ranges;
-        readonly int codepointCount;
+        private readonly char[] ranges;
 
         /// <summary>
-        /// Creates a new CodepointRange object for a font.
+        ///     Creates a new CodepointRange object for a font.
         /// </summary>
         public CodepointRange(Font font) {
             List<char> rangeList = new List<char>();
@@ -24,7 +23,7 @@ namespace ManagedWinapi {
             uint size = GetFontUnicodeRanges(hdc, IntPtr.Zero);
             IntPtr glyphSet = Marshal.AllocHGlobal((int)size);
             GetFontUnicodeRanges(hdc, glyphSet);
-            codepointCount = Marshal.ReadInt32(glyphSet, 8);
+            SupportedCodepointCount = Marshal.ReadInt32(glyphSet, 8);
             int tmp = 0;
             int count = Marshal.ReadInt32(glyphSet, 12);
             for (int i = 0; i < count; i++) {
@@ -34,12 +33,13 @@ namespace ManagedWinapi {
                 rangeList.Add(firstIncluded);
                 rangeList.Add(firstExcluded);
             }
+
             SelectObject(hdc, oldFont);
             DeleteObject(hFont);
             Marshal.FreeHGlobal(glyphSet);
             graphics.ReleaseHdc(hdc);
             graphics.Dispose();
-            if (tmp != codepointCount)
+            if (tmp != SupportedCodepointCount)
                 throw new Exception(font.FontFamily.Name);
             ranges = rangeList.ToArray();
             if (ranges.Length < 2)
@@ -47,64 +47,65 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Returns a dictionary containing codepoint ranges of all fonts.
-        /// If multiple fonts of one family (bold, italic, etc.) share their
-        /// codepoint range, only their base font is included in this list,
-        /// otherwise all different variants are included.
+        ///     The number of codepoints supported by this font.
+        /// </summary>
+        public int SupportedCodepointCount { get; }
+
+        /// <summary>
+        ///     The first (lowest) supported codepoint.
+        /// </summary>
+        public char FirstCodepoint => ranges[0];
+
+        /// <summary>
+        ///     The last (highest) supported codepoint.
+        /// </summary>
+        public char LastCodepoint => (char)(ranges[ranges.Length - 1] - 1);
+
+        /// <summary>
+        ///     Returns a dictionary containing codepoint ranges of all fonts.
+        ///     If multiple fonts of one family (bold, italic, etc.) share their
+        ///     codepoint range, only their base font is included in this list,
+        ///     otherwise all different variants are included.
         /// </summary>
         public static Dictionary<Font, CodepointRange> GetRangesForAllFonts() {
             Dictionary<Font, CodepointRange> result = new Dictionary<Font, CodepointRange>();
             foreach (FontFamily ff in FontFamily.Families) {
                 Font[] fonts = new Font[16];
                 CodepointRange[] range = new CodepointRange[fonts.Length];
-                for (int i = 0; i < fonts.Length; i++) {
+                for (int i = 0; i < fonts.Length; i++)
                     if (ff.IsStyleAvailable((FontStyle)i)) {
                         fonts[i] = new Font(ff, 10, (FontStyle)i);
                         range[i] = new CodepointRange(fonts[i]);
                     }
-                }
+
                 int importantBits = 0;
-                for (int bit = 1; bit < fonts.Length; bit <<= 1) {
-                    for (int i = 0; i < fonts.Length; i++) {
-                        if ((i & bit) != 0)
-                            continue;
-                        if (range[i] != null && range[i | bit] != null) {
-                            if (!range[i].Equals(range[i | bit])) {
-                                importantBits |= bit;
-                                break;
-                            }
-                        } else if (range[i] != null || range[i | bit] != null) {
+                for (int bit = 1; bit < fonts.Length; bit <<= 1)
+                for (int i = 0; i < fonts.Length; i++) {
+                    if ((i & bit) != 0)
+                        continue;
+                    if (range[i] != null && range[i | bit] != null) {
+                        if (!range[i].Equals(range[i | bit])) {
                             importantBits |= bit;
                             break;
                         }
+                    } else if (range[i] != null || range[i | bit] != null) {
+                        importantBits |= bit;
+                        break;
                     }
                 }
+
                 for (int i = 0; i < fonts.Length; i++) {
                     if ((i & importantBits) != i || fonts[i] == null)
                         continue;
                     result.Add(fonts[i], range[i]);
                 }
             }
+
             return result;
         }
 
         /// <summary>
-        /// The number of codepoints supported by this font.
-        /// </summary>
-        public int SupportedCodepointCount { get { return codepointCount; } }
-
-        /// <summary>
-        /// The first (lowest) supported codepoint.
-        /// </summary>
-        public char FirstCodepoint { get { return ranges[0]; } }
-
-        /// <summary>
-        /// The last (highest) supported codepoint.
-        /// </summary>
-        public char LastCodepoint { get { return (char)(ranges[ranges.Length - 1] - 1); } }
-
-        /// <summary>
-        /// Tests whether a specific codepoint is supported by this font.
+        ///     Tests whether a specific codepoint is supported by this font.
         /// </summary>
         public bool IsSupported(char codepoint) {
             bool result = false;
@@ -113,24 +114,24 @@ namespace ManagedWinapi {
                     break;
                 result = !result;
             }
+
             return result;
         }
 
         /// <summary>
-        /// Finds the next codepoint that is either supported or not.
+        ///     Finds the next codepoint that is either supported or not.
         /// </summary>
         public char FindNext(char from, bool supported) {
             if (IsSupported(from) == supported)
                 return from;
-            foreach (char c in ranges) {
-                if (c > from)
+            foreach (char c in ranges)
+                if (c > @from)
                     return c;
-            }
             return (char)0xFFFF;
         }
 
         /// <summary>
-        /// Returns a <see cref="String"/> representation of this codepoint range.
+        ///     Returns a <see cref="string" /> representation of this codepoint range.
         /// </summary>
         public override string ToString() {
             StringBuilder sb = new StringBuilder("[");
@@ -142,8 +143,10 @@ namespace ManagedWinapi {
                 } else if (i != 0) {
                     sb.Append(", ");
                 }
-                sb.Append(((int)ranges[i] - i % 2).ToString("X4"));
+
+                sb.Append((ranges[i] - (i % 2)).ToString("X4"));
             }
+
             return sb.Append("]").ToString();
         }
 
@@ -154,26 +157,26 @@ namespace ManagedWinapi {
             CodepointRange cr = obj as CodepointRange;
             if (cr == null)
                 return false;
-            if (codepointCount != cr.codepointCount || ranges.Length != cr.ranges.Length)
+            if (SupportedCodepointCount != cr.SupportedCodepointCount || ranges.Length != cr.ranges.Length)
                 return false;
-            for (int i = 0; i < ranges.Length; i++) {
-                if (ranges[i] != cr.ranges[i]) {
+            for (int i = 0; i < ranges.Length; i++)
+                if (ranges[i] != cr.ranges[i])
                     return false;
-                }
-            }
             return true;
         }
 
         ///
         public override int GetHashCode() {
-            return (3 * codepointCount) +
-                (7 * ranges.Length) +
-                (9 * FirstCodepoint) +
-                (11 * LastCodepoint);
+            return (3 * SupportedCodepointCount) +
+                   (7 * ranges.Length) +
+                   (9 * FirstCodepoint) +
+                   (11 * LastCodepoint);
         }
+
         #endregion
 
         #region PInvoke Declarations
+
         [DllImport("gdi32.dll")]
         private static extern uint GetFontUnicodeRanges(IntPtr hdc, IntPtr lpgs);
 
@@ -182,6 +185,7 @@ namespace ManagedWinapi {
 
         [DllImport("gdi32.dll")]
         private static extern bool DeleteObject(IntPtr hObject);
+
         #endregion
     }
 }

@@ -6,11 +6,9 @@ using System.Windows.Media.Imaging;
 namespace Switcheroo {
     public class IconToBitmapImageConverter {
         public BitmapImage Convert(Icon icon) {
-            if (icon == null) {
-                return null;
-            }
+            if (icon == null) return null;
 
-            using (var memory = new MemoryStream()) {
+            using (MemoryStream memory = new MemoryStream()) {
                 Bitmap bitmap = icon.ToBitmap();
                 bitmap.Save(memory, ImageFormat.Png);
                 memory.Position = 0;

@@ -4,17 +4,16 @@ using System.Linq;
 
 namespace Switcheroo.Core {
     public class WindowFilterer {
-        public IEnumerable<FilterResult<T>> Filter<T>(WindowFilterContext<T> context, string query) where T : IWindowText {
-            var filterText = query;
+        public IEnumerable<FilterResult<T>> Filter<T>(WindowFilterContext<T> context, string query)
+            where T : IWindowText {
+            string filterText = query;
             string processFilterText = null;
 
-            var queryParts = query.Split(new[] { '.' }, 2);
+            string[] queryParts = query.Split(new[] {'.'}, 2);
 
             if (queryParts.Length == 2) {
                 processFilterText = queryParts[0];
-                if (processFilterText.Length == 0) {
-                    processFilterText = context.ForegroundWindowProcessTitle;
-                }
+                if (processFilterText.Length == 0) processFilterText = context.ForegroundWindowProcessTitle;
 
                 filterText = queryParts[1];
             }
@@ -28,9 +27,8 @@ namespace Switcheroo.Core {
                             ResultsProcessTitle = Score(w.ProcessTitle, processFilterText ?? filterText)
                         })
                 .Where(r => {
-                    if (processFilterText == null) {
+                    if (processFilterText == null)
                         return r.ResultsTitle.Any(wt => wt.Matched) || r.ResultsProcessTitle.Any(pt => pt.Matched);
-                    }
                     return r.ResultsTitle.Any(wt => wt.Matched) && r.ResultsProcessTitle.Any(pt => pt.Matched);
                 })
                 .OrderByDescending(r => r.ResultsTitle.Sum(wt => wt.Score) + r.ResultsProcessTitle.Sum(pt => pt.Score))
@@ -44,13 +42,12 @@ namespace Switcheroo.Core {
         }
 
         private static List<MatchResult> Score(string title, string filterText) {
-            var startsWithMatcher = new StartsWithMatcher();
-            var containsMatcher = new ContainsMatcher();
-            var significantCharactersMatcher = new SignificantCharactersMatcher();
-            var individualCharactersMatcher = new IndividualCharactersMatcher();
+            StartsWithMatcher startsWithMatcher = new StartsWithMatcher();
+            ContainsMatcher containsMatcher = new ContainsMatcher();
+            SignificantCharactersMatcher significantCharactersMatcher = new SignificantCharactersMatcher();
+            IndividualCharactersMatcher individualCharactersMatcher = new IndividualCharactersMatcher();
 
-            return new List<MatchResult>
-            {
+            return new List<MatchResult> {
                 startsWithMatcher.Evaluate(title, filterText),
                 significantCharactersMatcher.Evaluate(title, filterText),
                 containsMatcher.Evaluate(title, filterText),

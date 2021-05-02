@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 
 namespace ManagedWinapi {
     /// <summary>
-    /// Provides methods for getting additional information about
-    /// files, like icons or compressed file size.
+    ///     Provides methods for getting additional information about
+    ///     files, like icons or compressed file size.
     /// </summary>
     public sealed class ExtendedFileInfo {
         /// <summary>
-        /// Get the icon used for folders.
+        ///     Get the icon used for folders.
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
         public static Icon GetFolderIcon(bool small) {
@@ -19,7 +19,7 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Get the icon used for files that do not have their own icon
+        ///     Get the icon used for files that do not have their own icon
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
         public static Icon GetFileIcon(bool small) {
@@ -27,7 +27,7 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Get the icon used by files of a given extension.
+        ///     Get the icon used by files of a given extension.
         /// </summary>
         /// <param name="extension">The extension without leading dot</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
@@ -44,7 +44,7 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Get the icon used for a given, existing file.
+        ///     Get the icon used for a given, existing file.
         /// </summary>
         /// <param name="fileName">Name of the file</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
@@ -53,86 +53,85 @@ namespace ManagedWinapi {
 
             if (small) {
                 IntPtr hImgSmall = SHGetFileInfo(fileName, 0, ref shinfo,
-                                   (uint)Marshal.SizeOf(shinfo),
-                                    SHGFI_ICON |
-                                    SHGFI_SMALLICON);
+                    (uint)Marshal.SizeOf(shinfo),
+                    SHGFI_ICON |
+                    SHGFI_SMALLICON);
             } else {
                 IntPtr hImgLarge = SHGetFileInfo(fileName, 0,
-                ref shinfo, (uint)Marshal.SizeOf(shinfo),
-                SHGFI_ICON | SHGFI_LARGEICON);
+                    ref shinfo, (uint)Marshal.SizeOf(shinfo),
+                    SHGFI_ICON | SHGFI_LARGEICON);
             }
 
             if (shinfo.hIcon == IntPtr.Zero)
                 return null;
 
-            System.Drawing.Icon myIcon =
-                   System.Drawing.Icon.FromHandle(shinfo.hIcon);
+            Icon myIcon =
+                Icon.FromHandle(shinfo.hIcon);
             return myIcon;
         }
 
         /// <summary>
-        /// Get the size a file requires on disk. This takes NTFS
-        /// compression into account.
+        ///     Get the size a file requires on disk. This takes NTFS
+        ///     compression into account.
         /// </summary>
         public static ulong GetPhysicalFileSize(string filename) {
             uint low = GetCompressedFileSize(filename, out uint high);
             int error = Marshal.GetLastWin32Error();
-            if (error == 32) {
-                return (ulong)new FileInfo(filename).Length;
-            }
+            if (error == 32) return (ulong)new FileInfo(filename).Length;
             if (high == 0 && low == 0xFFFFFFFF && error != 0)
                 throw new Win32Exception(error);
-            else
-                return ((ulong)high << 32) + low;
+            return ((ulong)high << 32) + low;
         }
 
         /// <summary>
-        /// Get the cluster size for the filesystem that contains the given file.
+        ///     Get the cluster size for the filesystem that contains the given file.
         /// </summary>
         public static uint GetClusterSize(string filename) {
             string drive = Path.GetPathRoot(filename);
 
-            bool hasFreeDiskSpace = GetDiskFreeSpace(drive, out uint lpSectorsPerCluster, out uint lpBytesPerSector, out _, out _);
-            if (!hasFreeDiskSpace) {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-            }
+            bool hasFreeDiskSpace = GetDiskFreeSpace(drive, out uint lpSectorsPerCluster, out uint lpBytesPerSector,
+                out _, out _);
+            if (!hasFreeDiskSpace) throw new Win32Exception(Marshal.GetLastWin32Error());
             return lpSectorsPerCluster * lpBytesPerSector;
         }
 
         #region PInvoke Declarations
 
         private const uint SHGFI_ICON = 0x100;
-        private const uint SHGFI_LARGEICON = 0x0;    // 'Large icon
-        private const uint SHGFI_SMALLICON = 0x1;    // 'Small icon
+        private const uint SHGFI_LARGEICON = 0x0; // 'Large icon
+        private const uint SHGFI_SMALLICON = 0x1; // 'Small icon
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern bool GetDiskFreeSpace(string lpRootPathName,
-           out uint lpSectorsPerCluster,
-           out uint lpBytesPerSector,
-           out uint lpNumberOfFreeClusters,
-           out uint lpTotalNumberOfClusters);
+        private static extern bool GetDiskFreeSpace(string lpRootPathName,
+            out uint lpSectorsPerCluster,
+            out uint lpBytesPerSector,
+            out uint lpNumberOfFreeClusters,
+            out uint lpTotalNumberOfClusters);
 
         [DllImport("kernel32.dll")]
         private static extern uint GetCompressedFileSize(string lpFileName,
-           out uint lpFileSizeHigh);
+            out uint lpFileSizeHigh);
 
         [DllImport("shell32.dll")]
         private static extern IntPtr SHGetFileInfo(string pszPath,
-                                    uint dwFileAttributes,
-                                    ref SHFILEINFO psfi,
-                                    uint cbSizeFileInfo,
-                                    uint uFlags);
+            uint dwFileAttributes,
+            ref SHFILEINFO psfi,
+            uint cbSizeFileInfo,
+            uint uFlags);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct SHFILEINFO {
-            public IntPtr hIcon;
-            public IntPtr iIcon;
-            public uint dwAttributes;
+            public readonly IntPtr hIcon;
+            public readonly IntPtr iIcon;
+            public readonly uint dwAttributes;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szDisplayName;
+            public readonly string szDisplayName;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-            public string szTypeName;
-        };
+            public readonly string szTypeName;
+        }
+
         #endregion
     }
 }

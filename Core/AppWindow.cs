@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Caching;
@@ -10,50 +11,58 @@ using System.Text;
 
 namespace Switcheroo.Core {
     /// <summary>
-    /// This class is a wrapper around the Win32 api window handles
+    ///     This class is a wrapper around the Win32 api window handles
     /// </summary>
     public class AppWindow : SystemWindow {
+        public AppWindow(IntPtr HWnd) : base(HWnd) {
+        }
+
         public string ProcessTitle {
             get {
-                var key = "ProcessTitle-" + HWnd;
+                string key = "ProcessTitle-" + HWnd;
                 string processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null) {
                     if (IsApplicationFrameWindow()) {
                         processTitle = "UWP";
 
-                        var underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
+                        Process underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
                             .Select(w => w.Process)
                             .FirstOrDefault();
 
-                        if (underlyingProcess != null && underlyingProcess.ProcessName != "") {
+                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
                             processTitle = underlyingProcess.ProcessName;
-                        }
                     } else {
                         processTitle = Process.ProcessName;
                     }
+
                     MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
                 }
+
                 return processTitle;
             }
         }
 
-        public Icon LargeWindowIcon {
-            get { return new WindowIconFinder().Find(this, WindowIconSize.Large); }
+        public Icon LargeWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Large);
+
+        public Icon SmallWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Small);
+
+        public string ExecutablePath => GetExecutablePath(Process.Id);
+
+        public AppWindow Owner {
+            get {
+                IntPtr ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
+                if (ownerHandle == IntPtr.Zero)
+                    return null;
+                return new AppWindow(ownerHandle);
+            }
         }
 
-        public Icon SmallWindowIcon {
-            get { return new WindowIconFinder().Find(this, WindowIconSize.Small); }
-        }
-
-        public string ExecutablePath {
-            get { return GetExecutablePath(Process.Id); }
-        }
-
-        public AppWindow(IntPtr HWnd) : base(HWnd) {
-        }
+        public static new IEnumerable<AppWindow> AllToplevelWindows =>
+            SystemWindow.AllToplevelWindows
+                .Select(w => new AppWindow(w.HWnd));
 
         /// <summary>
-        /// Sets the focus to this window and brings it to the foreground.
+        ///     Sets the focus to this window and brings it to the foreground.
         /// </summary>
         public void SwitchTo() {
             // This function is deprecated, so should probably be replaced.
@@ -61,24 +70,8 @@ namespace Switcheroo.Core {
         }
 
         public void SwitchToLastVisibleActivePopup() {
-            var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
+            IntPtr lastActiveVisiblePopup = GetLastActiveVisiblePopup();
             WinApi.SwitchToThisWindow(lastActiveVisiblePopup, true);
-        }
-
-        public AppWindow Owner {
-            get {
-                var ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
-                if (ownerHandle == IntPtr.Zero)
-                    return null;
-                return new AppWindow(ownerHandle);
-            }
-        }
-
-        public new static IEnumerable<AppWindow> AllToplevelWindows {
-            get {
-                return SystemWindow.AllToplevelWindows
-                    .Select(w => new AppWindow(w.HWnd));
-            }
         }
 
         public bool IsAltTabWindow() {
@@ -110,7 +103,7 @@ namespace Switcheroo.Core {
 
         private bool IsToolWindow() {
             return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW
-                    || (Style & WindowStyleFlags.TOOLWINDOW) == WindowStyleFlags.TOOLWINDOW;
+                   || (Style & WindowStyleFlags.TOOLWINDOW) == WindowStyleFlags.TOOLWINDOW;
         }
 
         private bool IsAppWindow() {
@@ -126,17 +119,16 @@ namespace Switcheroo.Core {
             // http://blogs.msdn.com/b/oldnewthing/archive/2007/10/08/5351207.aspx
 
             // Start at the root owner
-            var hwndWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+            IntPtr hwndWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
 
             // See if we are the last active visible popup
-            var hwndTry = IntPtr.Zero;
+            IntPtr hwndTry = IntPtr.Zero;
             while (hwndWalk != hwndTry) {
                 hwndTry = hwndWalk;
                 hwndWalk = WinApi.GetLastActivePopup(hwndTry);
-                if (WinApi.IsWindowVisible(hwndWalk)) {
-                    return hwndWalk;
-                }
+                if (WinApi.IsWindowVisible(hwndWalk)) return hwndWalk;
             }
+
             return hwndWalk;
         }
 
@@ -170,13 +162,14 @@ namespace Switcheroo.Core {
             //    1 = Program is not running
             //    2 = Program is running on a different virtual desktop
 
-            var hasAppropriateApplicationViewCloakType = false;
+            bool hasAppropriateApplicationViewCloakType = false;
             WinApi.EnumPropsEx(HWnd, (_, lpszString, data, __) => {
-                var propName = Marshal.PtrToStringAnsi(lpszString);
+                string propName = Marshal.PtrToStringAnsi(lpszString);
                 if (propName == "ApplicationViewCloakType") {
                     hasAppropriateApplicationViewCloakType = data != 1;
                     return 0;
                 }
+
                 return 1;
             }, IntPtr.Zero);
 
@@ -185,20 +178,19 @@ namespace Switcheroo.Core {
 
         // This method only works on Windows >= Windows Vista
         private static string GetExecutablePath(int processId) {
-            var buffer = new StringBuilder(1024);
-            var hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
+            StringBuilder buffer = new StringBuilder(1024);
+            IntPtr hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
             if (hprocess == IntPtr.Zero)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
 
             try {
                 // ReSharper disable once RedundantAssignment
-                var size = buffer.Capacity;
-                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size)) {
-                    return buffer.ToString();
-                }
+                int size = buffer.Capacity;
+                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size)) return buffer.ToString();
             } finally {
                 WinApi.CloseHandle(hprocess);
             }
+
             throw new Win32Exception(Marshal.GetLastWin32Error());
         }
     }

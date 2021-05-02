@@ -9,14 +9,12 @@ namespace Switcheroo.Core {
             if (stringParts == null)
                 return string.Empty;
 
-            var xDocument = new XDocument(new XElement("Root"));
-            foreach (var stringPart in stringParts) {
-                if (stringPart.IsMatch) {
+            XDocument xDocument = new XDocument(new XElement("Root"));
+            foreach (StringPart stringPart in stringParts)
+                if (stringPart.IsMatch)
                     xDocument.Root.Add(new XElement("Bold", stringPart.Value));
-                } else {
+                else
                     xDocument.Root.Add(new XText(stringPart.Value));
-                }
-            }
             return string.Concat(xDocument.Root.Nodes().Select(x => x.ToString()).ToArray());
         }
     }

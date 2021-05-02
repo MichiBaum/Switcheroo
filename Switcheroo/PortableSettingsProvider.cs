@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Xml;
 
 namespace Switcheroo {
-
     public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider {
         private const string _rootNodeName = "settings";
         private const string _localSettingsNodeName = "localSettings";
@@ -15,12 +14,9 @@ namespace Switcheroo {
         private const string _className = "PortableSettingsProvider";
         private XmlDocument _xmlDocument;
 
-        private string _filePath {
-            get {
-                return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
-                    string.Format("{0}.settings", ApplicationName));
-            }
-        }
+        private string _filePath =>
+            Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
+                string.Format("{0}.settings", ApplicationName));
 
         private XmlNode _localSettingsNode {
             get {
@@ -36,13 +32,9 @@ namespace Switcheroo {
             }
         }
 
-        private XmlNode GlobalSettingsNode {
-            get { return GetSettingsNode(_globalSettingsNodeName); }
-        }
+        private XmlNode GlobalSettingsNode => GetSettingsNode(_globalSettingsNodeName);
 
-        private XmlNode RootNode {
-            get { return RootDocument.SelectSingleNode(_rootNodeName); }
-        }
+        private XmlNode RootNode => RootDocument.SelectSingleNode(_rootNodeName);
 
         private XmlDocument RootDocument {
             get {
@@ -65,12 +57,25 @@ namespace Switcheroo {
         }
 
         public override string ApplicationName {
-            get { return Path.GetFileNameWithoutExtension(Application.ExecutablePath); }
+            get => Path.GetFileNameWithoutExtension(Application.ExecutablePath);
             set { }
         }
 
-        public override string Name {
-            get { return _className; }
+        public override string Name => _className;
+
+        public void Reset(SettingsContext context) {
+            _localSettingsNode.RemoveAll();
+            GlobalSettingsNode.RemoveAll();
+
+            _xmlDocument.Save(_filePath);
+        }
+
+        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property) {
+            // do nothing
+            return new SettingsPropertyValue(property);
+        }
+
+        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties) {
         }
 
         public override void Initialize(string name, NameValueCollection config) {
@@ -97,11 +102,8 @@ namespace Switcheroo {
             SettingsPropertyCollection collection) {
             SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
 
-            foreach (SettingsProperty property in collection) {
-                values.Add(new SettingsPropertyValue(property) {
-                    SerializedValue = GetValue(property)
-                });
-            }
+            foreach (SettingsProperty property in collection)
+                values.Add(new SettingsPropertyValue(property) {SerializedValue = GetValue(property)});
 
             return values;
         }
@@ -111,7 +113,8 @@ namespace Switcheroo {
                 ? GlobalSettingsNode
                 : _localSettingsNode;
 
-            XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
+            XmlNode settingNode =
+                targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
             if (settingNode != null) {
                 settingNode.InnerText = propertyValue.SerializedValue.ToString();
@@ -139,10 +142,9 @@ namespace Switcheroo {
         }
 
         private bool IsGlobal(SettingsProperty property) {
-            foreach (DictionaryEntry attribute in property.Attributes) {
+            foreach (DictionaryEntry attribute in property.Attributes)
                 if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
                     return true;
-            }
 
             return false;
         }
@@ -164,21 +166,6 @@ namespace Switcheroo {
             blankXmlDocument.AppendChild(blankXmlDocument.CreateElement(_rootNodeName));
 
             return blankXmlDocument;
-        }
-
-        public void Reset(SettingsContext context) {
-            _localSettingsNode.RemoveAll();
-            GlobalSettingsNode.RemoveAll();
-
-            _xmlDocument.Save(_filePath);
-        }
-
-        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property) {
-            // do nothing
-            return new SettingsPropertyValue(property);
-        }
-
-        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties) {
         }
     }
 }

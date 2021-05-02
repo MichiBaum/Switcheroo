@@ -6,17 +6,18 @@ using System.Windows.Forms;
 
 namespace ManagedWinapi.Windows {
     /// <summary>
-    /// Any tree view, including those from other applications.
+    ///     Any tree view, including those from other applications.
     /// </summary>
     public class SystemTreeView {
-        /// <summary>
-        /// Get a SystemTreeView reference from a SystemWindow (which is a tree view)
-        /// </summary>
-        public static SystemTreeView FromSystemWindow(SystemWindow sw) {
-            if (sw.SendGetMessage(TVM_GETCOUNT) == 0)
-                return null;
-            return new SystemTreeView(sw);
-        }
+        #region PInvoke Declarations
+
+        private static readonly uint TVM_GETCOUNT = 0x1100 + 5,
+            TVM_GETNEXTITEM = 0x1100 + 10,
+            TVGN_ROOT = 0,
+            TVGN_NEXT = 1,
+            TVGN_CHILD = 4;
+
+        #endregion
 
         internal readonly SystemWindow sw;
 
@@ -25,55 +26,47 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The number of items (icons) in this tree view.
+        ///     The number of items (icons) in this tree view.
         /// </summary>
-        public int Count {
-            get {
-                return sw.SendGetMessage(TVM_GETCOUNT);
-            }
-        }
+        public int Count => sw.SendGetMessage(TVM_GETCOUNT);
 
         /// <summary>
-        /// The root items of this tree view.
+        ///     The root items of this tree view.
         /// </summary>
-        public SystemTreeViewItem[] Roots {
-            get {
-                return FindSubItems(sw, IntPtr.Zero);
-            }
+        public SystemTreeViewItem[] Roots => FindSubItems(sw, IntPtr.Zero);
+
+        /// <summary>
+        ///     Get a SystemTreeView reference from a SystemWindow (which is a tree view)
+        /// </summary>
+        public static SystemTreeView FromSystemWindow(SystemWindow sw) {
+            if (sw.SendGetMessage(TVM_GETCOUNT) == 0)
+                return null;
+            return new SystemTreeView(sw);
         }
 
         internal static SystemTreeViewItem[] FindSubItems(SystemWindow sw, IntPtr hParent) {
             List<SystemTreeViewItem> result = new List<SystemTreeViewItem>();
             IntPtr hChild;
             HandleRef hr = new HandleRef(sw, sw.HWnd);
-            if (hParent == IntPtr.Zero) {
+            if (hParent == IntPtr.Zero)
                 hChild = SystemWindow.SendMessage(hr, TVM_GETNEXTITEM, new IntPtr(TVGN_ROOT), IntPtr.Zero);
-            } else {
+            else
                 hChild = SystemWindow.SendMessage(hr, TVM_GETNEXTITEM, new IntPtr(TVGN_CHILD), hParent);
-            }
             while (hChild != IntPtr.Zero) {
                 result.Add(new SystemTreeViewItem(sw, hChild));
                 hChild = SystemWindow.SendMessage(hr, TVM_GETNEXTITEM, new IntPtr(TVGN_NEXT), hChild);
             }
+
             return result.ToArray();
         }
-
-
-        #region PInvoke Declarations
-
-        private static readonly uint TVM_GETCOUNT = 0x1100 + 5,
-            TVM_GETNEXTITEM = 0x1100 + 10, TVGN_ROOT = 0,
-            TVGN_NEXT = 1, TVGN_CHILD = 4;
-
-        #endregion
     }
 
     /// <summary>
-    /// An item of a tree view.
+    ///     An item of a tree view.
     /// </summary>
     public class SystemTreeViewItem {
-        readonly IntPtr handle;
-        readonly SystemWindow sw;
+        private readonly IntPtr handle;
+        private readonly SystemWindow sw;
 
         internal SystemTreeViewItem(SystemWindow sw, IntPtr handle) {
             this.sw = sw;
@@ -81,7 +74,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The title of that item.
+        ///     The title of that item.
         /// </summary>
         public string Title {
             get {
@@ -106,11 +99,9 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// All child items of that item.
+        ///     All child items of that item.
         /// </summary>
-        public SystemTreeViewItem[] Children {
-            get { return SystemTreeView.FindSubItems(sw, handle); }
-        }
+        public SystemTreeViewItem[] Children => SystemTreeView.FindSubItems(sw, handle);
 
         #region PInvoke Declarations
 
@@ -120,15 +111,16 @@ namespace ManagedWinapi.Windows {
         private struct TVITEM {
             public UInt32 mask;
             public IntPtr hItem;
-            public UInt32 state;
-            public UInt32 stateMask;
+            public readonly UInt32 state;
+            public readonly UInt32 stateMask;
             public IntPtr pszText;
             public Int32 cchTextMax;
-            public Int32 iImage;
-            public Int32 iSelectedImage;
-            public Int32 cChildren;
-            public IntPtr lParam;
+            public readonly Int32 iImage;
+            public readonly Int32 iSelectedImage;
+            public readonly Int32 cChildren;
+            public readonly IntPtr lParam;
         }
+
         #endregion
     }
 }

@@ -2,16 +2,8 @@ using System.Collections.Generic;
 
 namespace ManagedWinapi.Windows.Contents {
     internal class ContentParserRegistry {
-        static ContentParserRegistry instance = null;
-        List<WindowContentParser> parsers = new List<WindowContentParser>();
-
-        public static ContentParserRegistry Instance {
-            get {
-                if (instance == null)
-                    instance = new ContentParserRegistry();
-                return instance;
-            }
-        }
+        private static ContentParserRegistry instance;
+        private readonly List<WindowContentParser> parsers = new List<WindowContentParser>();
 
         private ContentParserRegistry() {
             parsers.Add(new ComboBoxParser());
@@ -23,11 +15,18 @@ namespace ManagedWinapi.Windows.Contents {
             parsers.Add(new TextFieldParser(false));
         }
 
+        public static ContentParserRegistry Instance {
+            get {
+                if (instance == null)
+                    instance = new ContentParserRegistry();
+                return instance;
+            }
+        }
+
         public WindowContentParser GetParser(SystemWindow sw) {
-            foreach (WindowContentParser p in parsers) {
+            foreach (WindowContentParser p in parsers)
                 if (p.CanParseContent(sw))
                     return p;
-            }
             return null;
         }
     }

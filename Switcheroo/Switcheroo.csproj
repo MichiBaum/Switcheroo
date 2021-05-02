@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PostSharp.6.9.4\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.9.4\build\PostSharp.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -70,9 +69,6 @@
       <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PostSharp, Version=6.9.4.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PostSharp.Redist.6.9.4\lib\net45\PostSharp.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -106,7 +102,6 @@
     <Compile Include="AppWindowViewModel.cs" />
     <Compile Include="IconToBitmapConverter.cs" />
     <Compile Include="BoolToWhateverConverter.cs" />
-    <Compile Include="LogExecutionTimeAttribute.cs" />
     <Compile Include="LoggingConfigurator.cs" />
     <Compile Include="WindowCloser.cs" />
     <Compile Include="WindowHandleToCachedIconConverter.cs" />
@@ -234,10 +229,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
-    <Error Condition="!Exists('..\packages\PostSharp.6.9.4\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.9.4\build\PostSharp.props'))" />
-    <Error Condition="!Exists('..\packages\PostSharp.6.9.4\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.9.4\build\PostSharp.targets'))" />
   </Target>
-  <Import Project="..\packages\PostSharp.6.9.4\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.9.4\build\PostSharp.targets')" />
   <!--<Import Project="$(ProgramFiles)\MSBuild\Microsoft\StyleCop\v4.3\Microsoft.StyleCop.targets" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

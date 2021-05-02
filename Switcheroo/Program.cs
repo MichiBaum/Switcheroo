@@ -9,7 +9,6 @@ using System.Threading;
 
 namespace Switcheroo {
     internal class Program {
-
         private const string mutex_id = "DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo";
         protected static ILog logger = LogManager.GetLogger(typeof(Program));
 
@@ -19,8 +18,8 @@ namespace Switcheroo {
             logger.Info("Program starting through main Method");
             RunAsAdministratorIfConfigured();
 
-            using (var mutex = new Mutex(false, mutex_id)) {
-                var hasHandle = false;
+            using (Mutex mutex = new Mutex(false, mutex_id)) {
+                bool hasHandle = false;
                 try {
                     try {
                         hasHandle = mutex.WaitOne(5000, false);
@@ -37,7 +36,7 @@ namespace Switcheroo {
 
                     MigrateUserSettings();
 
-                    var app = new App { MainWindow = new MainWindow() };
+                    App app = new App {MainWindow = new MainWindow()};
                     app.Run();
                 } finally {
                     if (hasHandle)
@@ -66,11 +65,9 @@ namespace Switcheroo {
 
         // TODO unused method?
         private static void MakePortable(ApplicationSettingsBase settings) {
-            var portableSettingsProvider = new PortableSettingsProvider();
+            PortableSettingsProvider portableSettingsProvider = new PortableSettingsProvider();
             settings.Providers.Add(portableSettingsProvider);
-            foreach (SettingsProperty prop in settings.Properties) {
-                prop.Provider = portableSettingsProvider;
-            }
+            foreach (SettingsProperty prop in settings.Properties) prop.Provider = portableSettingsProvider;
             settings.Reload();
         }
 

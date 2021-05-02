@@ -8,21 +8,18 @@ namespace Switcheroo.Core {
     // http://stackoverflow.com/a/375047/198065
     public class KeyboardHelper {
         public static string CodeToString(uint virtualKey) {
-            var thread = WinApi.GetWindowThreadProcessId(Process.GetCurrentProcess().MainWindowHandle, out uint procId);
-            var hkl = WinApi.GetKeyboardLayout(thread);
+            uint thread =
+                WinApi.GetWindowThreadProcessId(Process.GetCurrentProcess().MainWindowHandle, out uint procId);
+            IntPtr hkl = WinApi.GetKeyboardLayout(thread);
 
-            if (hkl == IntPtr.Zero) {
-                return string.Empty;
-            }
+            if (hkl == IntPtr.Zero) return string.Empty;
 
-            var keyStates = new Keys[256];
-            if (!WinApi.GetKeyboardState(keyStates)) {
-                return string.Empty;
-            }
+            Keys[] keyStates = new Keys[256];
+            if (!WinApi.GetKeyboardState(keyStates)) return string.Empty;
 
-            var scanCode = WinApi.MapVirtualKeyEx(virtualKey, WinApi.MapVirtualKeyMapTypes.MAPVK_VK_TO_CHAR, hkl);
+            uint scanCode = WinApi.MapVirtualKeyEx(virtualKey, WinApi.MapVirtualKeyMapTypes.MAPVK_VK_TO_CHAR, hkl);
 
-            var sb = new StringBuilder(10);
+            StringBuilder sb = new StringBuilder(10);
 
             _ = WinApi.ToUnicodeEx(virtualKey, scanCode, new Keys[0], sb, sb.Capacity, 0, hkl);
             return sb.ToString();

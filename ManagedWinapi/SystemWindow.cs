@@ -9,384 +9,334 @@ using System.Windows.Forms;
 
 namespace ManagedWinapi.Windows {
     /// <summary>
-    /// Window Style Flags. The original constants started with WS_.
+    ///     Window Style Flags. The original constants started with WS_.
     /// </summary>
-    /// <seealso cref="SystemWindow.Style"/>
+    /// <seealso cref="SystemWindow.Style" />
     [Flags]
     public enum WindowStyleFlags : long {
         /// <summary>
-        /// WS_OVERLAPPED
+        ///     WS_OVERLAPPED
         /// </summary>
         OVERLAPPED = 0x00000000,
 
         /// <summary>
-        /// WS_POPUP
+        ///     WS_POPUP
         /// </summary>
         POPUP = unchecked((int)0x80000000),
 
         /// <summary>
-        /// WS_CHILD
+        ///     WS_CHILD
         /// </summary>
         CHILD = 0x40000000,
 
         /// <summary>
-        /// WS_MINIMIZE
+        ///     WS_MINIMIZE
         /// </summary>
         MINIMIZE = 0x20000000,
 
         /// <summary>
-        /// WS_VISIBLE
+        ///     WS_VISIBLE
         /// </summary>
         VISIBLE = 0x10000000,
 
         /// <summary>
-        /// WS_DISABLED
+        ///     WS_DISABLED
         /// </summary>
         DISABLED = 0x08000000,
 
         /// <summary>
-        /// WS_CLIPSIBLINGS
+        ///     WS_CLIPSIBLINGS
         /// </summary>
         CLIPSIBLINGS = 0x04000000,
 
         /// <summary>
-        /// WS_CLIPCHILDREN
+        ///     WS_CLIPCHILDREN
         /// </summary>
         CLIPCHILDREN = 0x02000000,
 
         /// <summary>
-        /// WS_MAXIMIZE
+        ///     WS_MAXIMIZE
         /// </summary>
         MAXIMIZE = 0x01000000,
 
         /// <summary>
-        /// WS_BORDER
+        ///     WS_BORDER
         /// </summary>
         BORDER = 0x00800000,
 
         /// <summary>
-        /// WS_DLGFRAME
+        ///     WS_DLGFRAME
         /// </summary>
         DLGFRAME = 0x00400000,
 
         /// <summary>
-        /// WS_VSCROLL
+        ///     WS_VSCROLL
         /// </summary>
         VSCROLL = 0x00200000,
 
         /// <summary>
-        /// WS_HSCROLL
+        ///     WS_HSCROLL
         /// </summary>
         HSCROLL = 0x00100000,
 
         /// <summary>
-        /// WS_SYSMENU
+        ///     WS_SYSMENU
         /// </summary>
         SYSMENU = 0x00080000,
 
         /// <summary>
-        /// WS_THICKFRAME
+        ///     WS_THICKFRAME
         /// </summary>
         THICKFRAME = 0x00040000,
 
         /// <summary>
-        /// WS_GROUP
+        ///     WS_GROUP
         /// </summary>
         GROUP = 0x00020000,
 
         /// <summary>
-        /// WS_TABSTOP
+        ///     WS_TABSTOP
         /// </summary>
         TABSTOP = 0x00010000,
 
         /// <summary>
-        /// WS_MINIMIZEBOX
+        ///     WS_MINIMIZEBOX
         /// </summary>
         MINIMIZEBOX = 0x00020000,
 
         /// <summary>
-        /// WS_MAXIMIZEBOX
+        ///     WS_MAXIMIZEBOX
         /// </summary>
         MAXIMIZEBOX = 0x00010000,
 
         /// <summary>
-        /// WS_CAPTION
+        ///     WS_CAPTION
         /// </summary>
         CAPTION = BORDER | DLGFRAME,
 
         /// <summary>
-        /// WS_TILED
+        ///     WS_TILED
         /// </summary>
         TILED = OVERLAPPED,
 
         /// <summary>
-        /// WS_ICONIC
+        ///     WS_ICONIC
         /// </summary>
         ICONIC = MINIMIZE,
 
         /// <summary>
-        /// WS_SIZEBOX
+        ///     WS_SIZEBOX
         /// </summary>
         SIZEBOX = THICKFRAME,
 
         /// <summary>
-        /// WS_TILEDWINDOW
+        ///     WS_TILEDWINDOW
         /// </summary>
         TILEDWINDOW = OVERLAPPEDWINDOW,
 
         /// <summary>
-        /// WS_OVERLAPPEDWINDOW
+        ///     WS_OVERLAPPEDWINDOW
         /// </summary>
         OVERLAPPEDWINDOW = OVERLAPPED | CAPTION | SYSMENU | THICKFRAME | MINIMIZEBOX | MAXIMIZEBOX,
 
         /// <summary>
-        /// WS_POPUPWINDOW
+        ///     WS_POPUPWINDOW
         /// </summary>
         POPUPWINDOW = POPUP | BORDER | SYSMENU,
 
         /// <summary>
-        /// WS_CHILDWINDOW
+        ///     WS_CHILDWINDOW
         /// </summary>
         CHILDWINDOW = CHILD,
 
         /// <summary>
-        /// Usually WindowExStyleFlags.TOOLWINDOW should be used, but it seems like the style
-        /// is sometimes placed in the Style instead of ExtentedStyle
+        ///     Usually WindowExStyleFlags.TOOLWINDOW should be used, but it seems like the style
+        ///     is sometimes placed in the Style instead of ExtentedStyle
         /// </summary>
         TOOLWINDOW = 0x00000080
     }
 
     /// <summary>
-    /// Extended Window Style Flags. The original constants started with WS_EX_.
+    ///     Extended Window Style Flags. The original constants started with WS_EX_.
     /// </summary>
-    /// <seealso cref="SystemWindow.ExtendedStyle"/>
+    /// <seealso cref="SystemWindow.ExtendedStyle" />
     [Flags]
     public enum WindowExStyleFlags : uint {
         /// <summary>
-        /// Specifies that a window created with this style accepts drag-drop files.
+        ///     Specifies that a window created with this style accepts drag-drop files.
         /// </summary>
         ACCEPTFILES = 0x00000010,
+
         /// <summary>
-        /// Forces a top-level window onto the taskbar when the window is visible.
+        ///     Forces a top-level window onto the taskbar when the window is visible.
         /// </summary>
         APPWINDOW = 0x00040000,
+
         /// <summary>
-        /// Specifies that a window has a border with a sunken edge.
+        ///     Specifies that a window has a border with a sunken edge.
         /// </summary>
         CLIENTEDGE = 0x00000200,
+
         /// <summary>
-        /// Windows XP: Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
+        ///     Windows XP: Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more
+        ///     information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
         /// </summary>
         COMPOSITED = 0x02000000,
+
         /// <summary>
-        /// Includes a question mark in the title bar of the window. When the user clicks the question mark, the cursor changes to a question mark with a pointer. If the user then clicks a child window, the child receives a WM_HELP message. The child window should pass the message to the parent window procedure, which should call the WinHelp function using the HELP_WM_HELP command. The Help application displays a pop-up window that typically contains help for the child window.
-        /// WS_EX_CONTEXTHELP cannot be used with the WS_MAXIMIZEBOX or WS_MINIMIZEBOX styles.
+        ///     Includes a question mark in the title bar of the window. When the user clicks the question mark, the cursor changes
+        ///     to a question mark with a pointer. If the user then clicks a child window, the child receives a WM_HELP message.
+        ///     The child window should pass the message to the parent window procedure, which should call the WinHelp function
+        ///     using the HELP_WM_HELP command. The Help application displays a pop-up window that typically contains help for the
+        ///     child window.
+        ///     WS_EX_CONTEXTHELP cannot be used with the WS_MAXIMIZEBOX or WS_MINIMIZEBOX styles.
         /// </summary>
         CONTEXTHELP = 0x00000400,
+
         /// <summary>
-        /// The window itself contains child windows that should take part in dialog box navigation. If this style is specified, the dialog manager recurses into children of this window when performing navigation operations such as handling the TAB key, an arrow key, or a keyboard mnemonic.
+        ///     The window itself contains child windows that should take part in dialog box navigation. If this style is
+        ///     specified, the dialog manager recurses into children of this window when performing navigation operations such as
+        ///     handling the TAB key, an arrow key, or a keyboard mnemonic.
         /// </summary>
         CONTROLPARENT = 0x00010000,
+
         /// <summary>
-        /// Creates a window that has a double border; the window can, optionally, be created with a title bar by specifying the WS_CAPTION style in the dwStyle parameter.
+        ///     Creates a window that has a double border; the window can, optionally, be created with a title bar by specifying
+        ///     the WS_CAPTION style in the dwStyle parameter.
         /// </summary>
         DLGMODALFRAME = 0x00000001,
+
         /// <summary>
-        /// Windows 2000/XP: Creates a layered window. Note that this cannot be used for child windows. Also, this cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
+        ///     Windows 2000/XP: Creates a layered window. Note that this cannot be used for child windows. Also, this cannot be
+        ///     used if the window has a class style of either CS_OWNDC or CS_CLASSDC.
         /// </summary>
         LAYERED = 0x00080000,
+
         /// <summary>
-        /// Arabic and Hebrew versions of Windows 98/Me, Windows 2000/XP: Creates a window whose horizontal origin is on the right edge. Increasing horizontal values advance to the left.
+        ///     Arabic and Hebrew versions of Windows 98/Me, Windows 2000/XP: Creates a window whose horizontal origin is on the
+        ///     right edge. Increasing horizontal values advance to the left.
         /// </summary>
         LAYOUTRTL = 0x00400000,
+
         /// <summary>
-        /// Creates a window that has generic left-aligned properties. This is the default.
+        ///     Creates a window that has generic left-aligned properties. This is the default.
         /// </summary>
         LEFT = 0x00000000,
+
         /// <summary>
-        /// If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the vertical scroll bar (if present) is to the left of the client area. For other languages, the style is ignored.
+        ///     If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the vertical
+        ///     scroll bar (if present) is to the left of the client area. For other languages, the style is ignored.
         /// </summary>
         LEFTSCROLLBAR = 0x00004000,
+
         /// <summary>
-        /// The window text is displayed using left-to-right reading-order properties. This is the default.
+        ///     The window text is displayed using left-to-right reading-order properties. This is the default.
         /// </summary>
         LTRREADING = 0x00000000,
+
         /// <summary>
-        /// Creates a multiple-document interface (MDI) child window.
+        ///     Creates a multiple-document interface (MDI) child window.
         /// </summary>
         MDICHILD = 0x00000040,
+
         /// <summary>
-        /// Windows 2000/XP: A top-level window created with this style does not become the foreground window when the user clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground window.
-        /// To activate the window, use the SetActiveWindow or SetForegroundWindow function.
-        /// The window does not appear on the taskbar by default. To force the window to appear on the taskbar, use the WS_EX_APPWINDOW style.
+        ///     Windows 2000/XP: A top-level window created with this style does not become the foreground window when the user
+        ///     clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground
+        ///     window.
+        ///     To activate the window, use the SetActiveWindow or SetForegroundWindow function.
+        ///     The window does not appear on the taskbar by default. To force the window to appear on the taskbar, use the
+        ///     WS_EX_APPWINDOW style.
         /// </summary>
         NOACTIVATE = 0x08000000,
+
         /// <summary>
-        /// Windows 2000/XP: A window created with this style does not pass its window layout to its child windows.
+        ///     Windows 2000/XP: A window created with this style does not pass its window layout to its child windows.
         /// </summary>
         NOINHERITLAYOUT = 0x00100000,
+
         /// <summary>
-        /// Specifies that a child window created with this style does not send the WM_PARENTNOTIFY message to its parent window when it is created or destroyed.
+        ///     Specifies that a child window created with this style does not send the WM_PARENTNOTIFY message to its parent
+        ///     window when it is created or destroyed.
         /// </summary>
         NOPARENTNOTIFY = 0x00000004,
+
         /// <summary>
-        /// Combines the WS_EX_CLIENTEDGE and WS_EX_WINDOWEDGE styles.
+        ///     Combines the WS_EX_CLIENTEDGE and WS_EX_WINDOWEDGE styles.
         /// </summary>
         OVERLAPPEDWINDOW = WINDOWEDGE | CLIENTEDGE,
+
         /// <summary>
-        /// Combines the WS_EX_WINDOWEDGE, WS_EX_TOOLWINDOW, and WS_EX_TOPMOST styles.
+        ///     Combines the WS_EX_WINDOWEDGE, WS_EX_TOOLWINDOW, and WS_EX_TOPMOST styles.
         /// </summary>
         PALETTEWINDOW = WINDOWEDGE | TOOLWINDOW | TOPMOST,
+
         /// <summary>
-        /// The window has generic "right-aligned" properties. This depends on the window class. This style has an effect only if the shell language is Hebrew, Arabic, or another language that supports reading-order alignment; otherwise, the style is ignored.
-        /// Using the WS_EX_RIGHT style for static or edit controls has the same effect as using the SS_RIGHT or ES_RIGHT style, respectively. Using this style with button controls has the same effect as using BS_RIGHT and BS_RIGHTBUTTON styles.
+        ///     The window has generic "right-aligned" properties. This depends on the window class. This style has an effect only
+        ///     if the shell language is Hebrew, Arabic, or another language that supports reading-order alignment; otherwise, the
+        ///     style is ignored.
+        ///     Using the WS_EX_RIGHT style for static or edit controls has the same effect as using the SS_RIGHT or ES_RIGHT
+        ///     style, respectively. Using this style with button controls has the same effect as using BS_RIGHT and BS_RIGHTBUTTON
+        ///     styles.
         /// </summary>
         RIGHT = 0x00001000,
+
         /// <summary>
-        /// Vertical scroll bar (if present) is to the right of the client area. This is the default.
+        ///     Vertical scroll bar (if present) is to the right of the client area. This is the default.
         /// </summary>
         RIGHTSCROLLBAR = 0x00000000,
+
         /// <summary>
-        /// If the shell language is Hebrew, Arabic, or another language that supports reading-order alignment, the window text is displayed using right-to-left reading-order properties. For other languages, the style is ignored.
+        ///     If the shell language is Hebrew, Arabic, or another language that supports reading-order alignment, the window text
+        ///     is displayed using right-to-left reading-order properties. For other languages, the style is ignored.
         /// </summary>
         RTLREADING = 0x00002000,
+
         /// <summary>
-        /// Creates a window with a three-dimensional border style intended to be used for items that do not accept user input.
+        ///     Creates a window with a three-dimensional border style intended to be used for items that do not accept user input.
         /// </summary>
         STATICEDGE = 0x00020000,
+
         /// <summary>
-        /// Creates a tool window; that is, a window intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.
+        ///     Creates a tool window; that is, a window intended to be used as a floating toolbar. A tool window has a title bar
+        ///     that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not
+        ///     appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system
+        ///     menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by
+        ///     typing ALT+SPACE.
         /// </summary>
         TOOLWINDOW = 0x00000080,
+
         /// <summary>
-        /// Specifies that a window created with this style should be placed above all non-topmost windows and should stay above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.
+        ///     Specifies that a window created with this style should be placed above all non-topmost windows and should stay
+        ///     above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.
         /// </summary>
         TOPMOST = 0x00000008,
+
         /// <summary>
-        /// Specifies that a window created with this style should not be painted until siblings beneath the window (that were created by the same thread) have been painted. The window appears transparent because the bits of underlying sibling windows have already been painted.
-        /// To achieve transparency without these restrictions, use the SetWindowRgn function.
+        ///     Specifies that a window created with this style should not be painted until siblings beneath the window (that were
+        ///     created by the same thread) have been painted. The window appears transparent because the bits of underlying
+        ///     sibling windows have already been painted.
+        ///     To achieve transparency without these restrictions, use the SetWindowRgn function.
         /// </summary>
         TRANSPARENT = 0x00000020,
+
         /// <summary>
-        /// Specifies that a window has a border with a raised edge.
+        ///     Specifies that a window has a border with a raised edge.
         /// </summary>
         WINDOWEDGE = 0x00000100
     }
 
     /// <summary>
-    /// Represents any window used by Windows, including those from other applications.
+    ///     Represents any window used by Windows, including those from other applications.
     /// </summary>
     public class SystemWindow {
-
         private static readonly Predicate<SystemWindow> ALL = delegate { return true; };
 
         private IntPtr _hwnd;
 
-        /// <summary>
-        /// Allows getting the current foreground window and setting it.
-        /// </summary>
-        public static SystemWindow ForegroundWindow {
-            get {
-                return new SystemWindow(GetForegroundWindow());
-            }
-            set {
-                SetForegroundWindow(value.HWnd);
-            }
-        }
+        private bool _isClosed;
 
         /// <summary>
-        /// The Desktop window, i. e. the window that covers the
-        /// complete desktop.
-        /// </summary>
-        public static SystemWindow DesktopWindow {
-            get {
-                return new SystemWindow(GetDesktopWindow());
-            }
-        }
-
-        /// <summary>
-        /// Returns all available toplevel windows.
-        /// </summary>
-        public static SystemWindow[] AllToplevelWindows {
-            get {
-                return FilterToplevelWindows(new Predicate<SystemWindow>(ALL));
-            }
-        }
-
-        /// <summary>
-        /// Returns all toplevel windows that match the given predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate to filter.</param>
-        /// <returns>The filtered toplevel windows</returns>
-        public static SystemWindow[] FilterToplevelWindows(Predicate<SystemWindow> predicate) {
-            List<SystemWindow> wnds = new List<SystemWindow>();
-            EnumWindows(new EnumWindowsProc((IntPtr hwnd, IntPtr _) => {
-                SystemWindow tmp = new SystemWindow(hwnd);
-                if (predicate(tmp))
-                    wnds.Add(tmp);
-                return 1;
-            }), new IntPtr(0));
-            return wnds.ToArray();
-        }
-
-        /// <summary>
-        /// Finds the system window below the given point. This need not be a
-        /// toplevel window; disabled windows are not returned either.
-        /// If you have problems with transparent windows that cover nontransparent
-        /// windows, consider using <see cref="FromPointEx"/>, since that method
-        /// tries hard to avoid this problem.
-        /// </summary>
-        /// <param name="x">X coordinate</param>
-        /// <param name="y">Y coordinate</param>
-        /// <returns></returns>
-        public static SystemWindow FromPoint(int x, int y) {
-            IntPtr hwnd = WindowFromPoint(new POINT(x, y));
-            if (hwnd.ToInt64() == 0) {
-                return null;
-            }
-            return new SystemWindow(hwnd);
-        }
-
-        /// <summary>
-        /// Finds the system window below the given point. This method uses a more
-        /// sophisticated algorithm than <see cref="FromPoint"/>, but is slower.
-        /// </summary>
-        /// <param name="x">X coordinate</param>
-        /// <param name="y">Y coordinate</param>
-        /// <param name="toplevel">Whether to return the toplevel window.</param>
-        /// <param name="enabledOnly">Whether to return enabled windows only.</param>
-        /// <returns></returns>
-        public static SystemWindow FromPointEx(int x, int y, bool toplevel, bool enabledOnly) {
-            SystemWindow sw = FromPoint(x, y);
-            if (sw == null)
-                return null;
-            while (sw.ParentSymmetric != null)
-                sw = sw.ParentSymmetric;
-            if (toplevel)
-                return sw;
-            int area = GetArea(sw);
-            SystemWindow result = sw;
-            foreach (SystemWindow w in sw.AllDescendantWindows) {
-                if (w.Visible && (w.Enabled || !enabledOnly)) {
-                    if (w.Rectangle.ToRectangle().Contains(x, y)) {
-                        int ar2 = GetArea(w);
-                        if (ar2 <= area) {
-                            area = ar2;
-                            result = w;
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        private static int GetArea(SystemWindow sw) {
-            RECT rr = sw.Rectangle;
-            return rr.Height * rr.Width;
-        }
-
-        /// <summary>
-        /// Create a new SystemWindow instance from a window handle.
+        ///     Create a new SystemWindow instance from a window handle.
         /// </summary>
         /// <param name="HWnd">The window handle.</param>
         public SystemWindow(IntPtr HWnd) {
@@ -394,7 +344,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Create a new SystemWindow instance from a Windows Forms Control.
+        ///     Create a new SystemWindow instance from a Windows Forms Control.
         /// </summary>
         /// <param name="control">The control.</param>
         public SystemWindow(Control control) {
@@ -402,51 +352,41 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Return all descendant windows (child windows and their descendants).
+        ///     Allows getting the current foreground window and setting it.
         /// </summary>
-        public SystemWindow[] AllDescendantWindows {
-            get {
-                return FilterDescendantWindows(false, ALL);
-            }
+        public static SystemWindow ForegroundWindow {
+            get => new SystemWindow(GetForegroundWindow());
+            set => SetForegroundWindow(value.HWnd);
         }
 
         /// <summary>
-        /// Return all direct child windows.
+        ///     The Desktop window, i. e. the window that covers the
+        ///     complete desktop.
         /// </summary>
-        public SystemWindow[] AllChildWindows {
-            get {
-                return FilterDescendantWindows(true, ALL);
-            }
-        }
+        public static SystemWindow DesktopWindow => new SystemWindow(GetDesktopWindow());
 
         /// <summary>
-        /// Returns all child windows that match the given predicate.
+        ///     Returns all available toplevel windows.
         /// </summary>
-        /// <param name="directOnly">Whether to include only direct children (no descendants)</param>
-        /// <param name="predicate">The predicate to filter.</param>
-        /// <returns>The list of child windows.</returns>
-        public SystemWindow[] FilterDescendantWindows(bool directOnly, Predicate<SystemWindow> predicate) {
-            List<SystemWindow> wnds = new List<SystemWindow>();
-            EnumChildWindows(_hwnd, delegate (IntPtr hwnd, IntPtr lParam) {
-                SystemWindow tmp = new SystemWindow(hwnd);
-                bool add = true;
-                if (directOnly) {
-                    add = tmp.Parent._hwnd == _hwnd;
-                }
-                if (add && predicate(tmp))
-                    wnds.Add(tmp);
-                return 1;
-            }, new IntPtr(0));
-            return wnds.ToArray();
-        }
+        public static SystemWindow[] AllToplevelWindows => FilterToplevelWindows(ALL);
 
         /// <summary>
-        /// The Window handle of this window.
+        ///     Return all descendant windows (child windows and their descendants).
         /// </summary>
-        public IntPtr HWnd { get { return _hwnd; } }
+        public SystemWindow[] AllDescendantWindows => FilterDescendantWindows(false, ALL);
 
         /// <summary>
-        /// The title of this window (by the <c>GetWindowText</c> API function).
+        ///     Return all direct child windows.
+        /// </summary>
+        public SystemWindow[] AllChildWindows => FilterDescendantWindows(true, ALL);
+
+        /// <summary>
+        ///     The Window handle of this window.
+        /// </summary>
+        public IntPtr HWnd => _hwnd;
+
+        /// <summary>
+        ///     The title of this window (by the <c>GetWindowText</c> API function).
         /// </summary>
         public string Title {
             get {
@@ -455,15 +395,13 @@ namespace ManagedWinapi.Windows {
                 return sb.ToString();
             }
 
-            set {
-                SetWindowText(_hwnd, value);
-            }
+            set => SetWindowText(_hwnd, value);
         }
 
         /// <summary>
-        /// The text inside of this window (by sending a <c>WM_GETTEXT</c> message).
-        /// For child windows of other applications, this is more reliable
-        /// than the <see cref="Title"/> function.
+        ///     The text inside of this window (by sending a <c>WM_GETTEXT</c> message).
+        ///     For child windows of other applications, this is more reliable
+        ///     than the <see cref="Title" /> function.
         /// </summary>
         public string Text {
             get {
@@ -475,8 +413,8 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The name of the window class (by the <c>GetClassName</c> API function).
-        /// This class has nothing to do with classes in C# or other .NET languages.
+        ///     The name of the window class (by the <c>GetClassName</c> API function).
+        ///     This class has nothing to do with classes in C# or other .NET languages.
         /// </summary>
         public string ClassName {
             get {
@@ -484,57 +422,42 @@ namespace ManagedWinapi.Windows {
                 while (true) {
                     StringBuilder sb = new StringBuilder(length);
                     ApiHelper.FailIfZero(GetClassName(_hwnd, sb, sb.Capacity));
-                    if (sb.Length != length - 1) {
-                        return sb.ToString();
-                    }
+                    if (sb.Length != length - 1) return sb.ToString();
                     length *= 2;
                 }
             }
         }
 
         /// <summary>
-        /// Whether this window is currently visible. A window is visible if its
-        /// and all ancestor's visibility flags are true.
+        ///     Whether this window is currently visible. A window is visible if its
+        ///     and all ancestor's visibility flags are true.
         /// </summary>
-        public bool Visible {
-            get {
-                return IsWindowVisible(_hwnd);
-            }
-        }
+        public bool Visible => IsWindowVisible(_hwnd);
 
         /// <summary>
-        /// Whether this window always appears above all other windows
-        /// that do not have this property set to true.
+        ///     Whether this window always appears above all other windows
+        ///     that do not have this property set to true.
         /// </summary>
         public bool TopMost {
-            get {
-                return (ExtendedStyle & WindowExStyleFlags.TOPMOST) != 0;
-            }
+            get => (ExtendedStyle & WindowExStyleFlags.TOPMOST) != 0;
             set {
-                if (value) {
+                if (value)
                     SetWindowPos(_hwnd, new IntPtr(-1), 0, 0, 0, 0, 3);
-                } else {
+                else
                     SetWindowPos(_hwnd, new IntPtr(-2), 0, 0, 0, 0, 3);
-                }
             }
         }
 
         /// <summary>
-        /// Whether this window is currently enabled (able to accept keyboard input).
+        ///     Whether this window is currently enabled (able to accept keyboard input).
         /// </summary>
         public bool Enabled {
-            get {
-                return IsWindowEnabled(_hwnd);
-            }
-            set {
-                EnableWindow(_hwnd, value);
-            }
+            get => IsWindowEnabled(_hwnd);
+            set => EnableWindow(_hwnd, value);
         }
 
-        private bool _isClosed = false;
-
         /// <summary>
-        /// Returns _isClosed or GetClassNameFails()
+        ///     Returns _isClosed or GetClassNameFails()
         /// </summary>
         public bool IsClosed {
             get {
@@ -543,95 +466,73 @@ namespace ManagedWinapi.Windows {
             }
         }
 
-        private bool GetClassNameFails() {
-            StringBuilder builder = new StringBuilder(2);
-            return GetClassName(HWnd, builder, builder.Capacity) == 0;
-        }
+        /// <summary>
+        ///     Returns IsClosed or not Visible
+        /// </summary>
+        public bool IsClosedOrHidden => IsClosed || !Visible;
 
         /// <summary>
-        /// Returns IsClosed or not Visible
+        ///     Returns or sets the visibility flag.
         /// </summary>
-        public bool IsClosedOrHidden {
-            get { return IsClosed || !Visible; }
-        }
-
-        /// <summary>
-        /// Returns or sets the visibility flag.
-        /// </summary>
-        /// <seealso cref="SystemWindow.Visible"/>
+        /// <seealso cref="SystemWindow.Visible" />
         public bool VisibilityFlag {
-            get {
-                return (Style & WindowStyleFlags.VISIBLE) != 0;
-            }
+            get => (Style & WindowStyleFlags.VISIBLE) != 0;
             set {
-                if (value) {
+                if (value)
                     ShowWindow(_hwnd, 5);
-                } else {
+                else
                     ShowWindow(_hwnd, 0);
-                }
             }
         }
 
         /// <summary>
-        /// This window's style flags.
+        ///     This window's style flags.
         /// </summary>
         public WindowStyleFlags Style {
-            get {
-                return (WindowStyleFlags)(long)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_STYLE));
-            }
-            set {
-                SetWindowLong(_hwnd, (int)GWL.GWL_STYLE, (int)value);
-            }
+            get => (WindowStyleFlags)(long)GetWindowLongPtr(_hwnd, (int)GWL.GWL_STYLE);
+            set => SetWindowLong(_hwnd, (int)GWL.GWL_STYLE, (int)value);
         }
 
         /// <summary>
-        /// This window's extended style flags.
+        ///     This window's extended style flags.
         /// </summary>
         public WindowExStyleFlags ExtendedStyle {
-            get {
-                return (WindowExStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_EXSTYLE));
-            }
-            set {
-                SetWindowLong(_hwnd, (int)GWL.GWL_EXSTYLE, (int)value);
-            }
+            get => (WindowExStyleFlags)GetWindowLongPtr(_hwnd, (int)GWL.GWL_EXSTYLE);
+            set => SetWindowLong(_hwnd, (int)GWL.GWL_EXSTYLE, (int)value);
         }
 
         /// <summary>
-        /// This window's parent. A dialog's parent is its owner, a component's parent is
-        /// the window that contains it.
+        ///     This window's parent. A dialog's parent is its owner, a component's parent is
+        ///     the window that contains it.
         /// </summary>
-        public SystemWindow Parent {
-            get {
-                return new SystemWindow(GetParent(_hwnd));
-            }
-        }
+        public SystemWindow Parent => new SystemWindow(GetParent(_hwnd));
 
         /// <summary>
-        /// The window's parent, but only if this window is its parent child. Some
-        /// parents, like dialog owners, do not have the window as its child. In that case,
-        /// <c>null</c> will be returned.
+        ///     The window's parent, but only if this window is its parent child. Some
+        ///     parents, like dialog owners, do not have the window as its child. In that case,
+        ///     <c>null</c> will be returned.
         /// </summary>
         public SystemWindow ParentSymmetric {
             get {
                 SystemWindow result = Parent;
-                if (!this.IsDescendantOf(result))
+                if (!IsDescendantOf(result))
                     result = null;
                 return result;
             }
         }
 
         /// <summary>
-        /// The window's owner
+        ///     The window's owner
         /// </summary>
         public SystemWindow Owner {
             get {
-                var owner = GetWindow(HWnd, (uint)GetWindow_Cmd.GW_OWNER);
+                IntPtr owner = GetWindow(HWnd, (uint)GetWindow_Cmd.GW_OWNER);
                 return new SystemWindow(owner);
             }
         }
 
         /// <summary>
-        /// The window's position inside its parent or on the screen.
+        ///     The window's position inside its parent or on the screen.
         /// </summary>
         public RECT Position {
             get {
@@ -651,12 +552,10 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The window's location inside its parent or on the screen.
+        ///     The window's location inside its parent or on the screen.
         /// </summary>
         public Point Location {
-            get {
-                return Position.Location;
-            }
+            get => Position.Location;
 
             set {
                 WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
@@ -671,12 +570,10 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The window's size.
+        ///     The window's size.
         /// </summary>
         public Size Size {
-            get {
-                return Position.Size;
-            }
+            get => Position.Size;
 
             set {
                 WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
@@ -689,8 +586,8 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The window's position in absolute screen coordinates. Use
-        /// <see cref="Position"/> if you want to use the relative position.
+        ///     The window's position in absolute screen coordinates. Use
+        ///     <see cref="Position" /> if you want to use the relative position.
         /// </summary>
         public RECT Rectangle {
             get {
@@ -700,16 +597,7 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Check whether this window is a descendant of <c>ancestor</c>
-        /// </summary>
-        /// <param name="ancestor">The suspected ancestor</param>
-        /// <returns>If this is really an ancestor</returns>
-        public bool IsDescendantOf(SystemWindow ancestor) {
-            return IsChild(ancestor._hwnd, _hwnd);
-        }
-
-        /// <summary>
-        /// The process which created this window.
+        ///     The process which created this window.
         /// </summary>
         public Process Process {
             get {
@@ -719,21 +607,20 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        ///  The Thread which created this window.
+        ///     The Thread which created this window.
         /// </summary>
         public ProcessThread Thread {
             get {
                 int tid = GetWindowThreadProcessId(HWnd, out int pid);
-                foreach (ProcessThread t in Process.GetProcessById(pid).Threads) {
+                foreach (ProcessThread t in Process.GetProcessById(pid).Threads)
                     if (t.Id == tid)
                         return t;
-                }
                 throw new Exception("Thread not found");
             }
         }
 
         /// <summary>
-        /// Whether this window is minimized or maximized.
+        ///     Whether this window is minimized or maximized.
         /// </summary>
         public FormWindowState WindowState {
             get {
@@ -764,36 +651,29 @@ namespace ManagedWinapi.Windows {
                     default:
                         return;
                 }
+
                 ShowWindow(HWnd, showCommand);
             }
         }
 
         /// <summary>
-        /// Whether this window can be moved on the screen by the user.
+        ///     Whether this window can be moved on the screen by the user.
         /// </summary>
-        public bool Movable {
-            get {
-                return (Style & WindowStyleFlags.SYSMENU) != 0;
-            }
-        }
+        public bool Movable => (Style & WindowStyleFlags.SYSMENU) != 0;
 
         /// <summary>
-        /// Whether this window can be resized by the user. Resizing a window that
-        /// cannot be resized by the user works, but may be irritating to the user.
+        ///     Whether this window can be resized by the user. Resizing a window that
+        ///     cannot be resized by the user works, but may be irritating to the user.
         /// </summary>
-        public bool Resizable {
-            get {
-                return (Style & WindowStyleFlags.THICKFRAME) != 0;
-            }
-        }
+        public bool Resizable => (Style & WindowStyleFlags.THICKFRAME) != 0;
 
         /// <summary>
-        /// An image of this window. Unlike a screen shot, this will not
-        /// contain parts of other windows (partially) cover this window.
-        /// If you want to create a screen shot, use the
-        /// <see cref="System.Drawing.Graphics.CopyFromScreen(System.Drawing.Point,System.Drawing.Point,System.Drawing.Size)"/>
-        /// function and use the <see cref="SystemWindow.Rectangle"/> property for
-        /// the range.
+        ///     An image of this window. Unlike a screen shot, this will not
+        ///     contain parts of other windows (partially) cover this window.
+        ///     If you want to create a screen shot, use the
+        ///     <see cref="System.Drawing.Graphics.CopyFromScreen(System.Drawing.Point,System.Drawing.Point,System.Drawing.Size)" />
+        ///     function and use the <see cref="SystemWindow.Rectangle" /> property for
+        ///     the range.
         /// </summary>
         public Image Image {
             get {
@@ -814,15 +694,13 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The window's visible region.
+        ///     The window's visible region.
         /// </summary>
         public Region Region {
             get {
                 IntPtr rgn = CreateRectRgn(0, 0, 0, 0);
                 int r = GetWindowRgn(HWnd, rgn);
-                if (r == (int)GetWindowRegnReturnValues.ERROR) {
-                    return null;
-                }
+                if (r == (int)GetWindowRegnReturnValues.ERROR) return null;
                 return Region.FromHrgn(rgn);
             }
             set {
@@ -834,32 +712,24 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// The character used to mask passwords, if this control is
-        /// a text field. May be used for different purpose by other
-        /// controls.
+        ///     The character used to mask passwords, if this control is
+        ///     a text field. May be used for different purpose by other
+        ///     controls.
         /// </summary>
         public char PasswordCharacter {
-            get {
-                return (char)SendGetMessage(EM_GETPASSWORDCHAR);
-            }
-            set {
-                SendSetMessage(EM_SETPASSWORDCHAR, value);
-            }
+            get => (char)SendGetMessage(EM_GETPASSWORDCHAR);
+            set => SendSetMessage(EM_SETPASSWORDCHAR, value);
         }
 
         /// <summary>
-        /// The ID of a control within a dialog. This is used in
-        /// WM_COMMAND messages to distinguish which control sent the command.
+        ///     The ID of a control within a dialog. This is used in
+        ///     WM_COMMAND messages to distinguish which control sent the command.
         /// </summary>
-        public int DialogID {
-            get {
-                return GetWindowLong32(_hwnd, (int)GWL.GWL_ID);
-            }
-        }
+        public int DialogID => GetWindowLong32(_hwnd, (int)GWL.GWL_ID);
 
         /// <summary>
-        /// Get the window that is below this window in the Z order,
-        /// or null if this is the lowest window.
+        ///     Get the window that is below this window in the Z order,
+        ///     or null if this is the lowest window.
         /// </summary>
         public SystemWindow WindowBelow {
             get {
@@ -871,8 +741,8 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Get the window that is above this window in the Z order,
-        /// or null, if this is the foreground window.
+        ///     Get the window that is above this window in the Z order,
+        ///     or null, if this is the foreground window.
         /// </summary>
         public SystemWindow WindowAbove {
             get {
@@ -884,79 +754,173 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Gets a device context for this window.
+        ///     The content of this window. Is only supported for some
+        ///     kinds of controls (like text or list boxes).
         /// </summary>
-        /// <param name="clientAreaOnly">Whether to get the context for
-        /// the client area or for the full window.</param>
-        public WindowDeviceContext GetDeviceContext(bool clientAreaOnly) {
-            if (clientAreaOnly) {
-                return new WindowDeviceContext(this, GetDC(_hwnd));
-            } else {
-                return new WindowDeviceContext(this, GetWindowDC(_hwnd));
-            }
-        }
+        public WindowContent Content => WindowContentParser.Parse(this);
 
         /// <summary>
-        /// The content of this window. Is only supported for some
-        /// kinds of controls (like text or list boxes).
-        /// </summary>
-        public WindowContent Content {
-            get {
-                return WindowContentParser.Parse(this);
-            }
-        }
-
-        /// <summary>
-        /// Whether this control, which is a check box or radio button, is checked.
+        ///     Whether this control, which is a check box or radio button, is checked.
         /// </summary>
         public CheckState CheckState {
-            get {
-                return (CheckState)SendGetMessage(BM_GETCHECK);
-            }
-            set {
-                SendSetMessage(BM_SETCHECK, (uint)value);
-            }
+            get => (CheckState)SendGetMessage(BM_GETCHECK);
+            set => SendSetMessage(BM_SETCHECK, (uint)value);
         }
 
         /// <summary>
-        /// Whether this SystemWindow represents a valid window that existed
-        /// when this SystemWindow instance was created. To check if a window
-        /// still exists, better check its <see cref="ClassName"/> property.
+        ///     Returns all toplevel windows that match the given predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate to filter.</param>
+        /// <returns>The filtered toplevel windows</returns>
+        public static SystemWindow[] FilterToplevelWindows(Predicate<SystemWindow> predicate) {
+            List<SystemWindow> wnds = new List<SystemWindow>();
+            EnumWindows((hwnd, _) => {
+                SystemWindow tmp = new SystemWindow(hwnd);
+                if (predicate(tmp))
+                    wnds.Add(tmp);
+                return 1;
+            }, new IntPtr(0));
+            return wnds.ToArray();
+        }
+
+        /// <summary>
+        ///     Finds the system window below the given point. This need not be a
+        ///     toplevel window; disabled windows are not returned either.
+        ///     If you have problems with transparent windows that cover nontransparent
+        ///     windows, consider using <see cref="FromPointEx" />, since that method
+        ///     tries hard to avoid this problem.
+        /// </summary>
+        /// <param name="x">X coordinate</param>
+        /// <param name="y">Y coordinate</param>
+        /// <returns></returns>
+        public static SystemWindow FromPoint(int x, int y) {
+            IntPtr hwnd = WindowFromPoint(new POINT(x, y));
+            if (hwnd.ToInt64() == 0) return null;
+            return new SystemWindow(hwnd);
+        }
+
+        /// <summary>
+        ///     Finds the system window below the given point. This method uses a more
+        ///     sophisticated algorithm than <see cref="FromPoint" />, but is slower.
+        /// </summary>
+        /// <param name="x">X coordinate</param>
+        /// <param name="y">Y coordinate</param>
+        /// <param name="toplevel">Whether to return the toplevel window.</param>
+        /// <param name="enabledOnly">Whether to return enabled windows only.</param>
+        /// <returns></returns>
+        public static SystemWindow FromPointEx(int x, int y, bool toplevel, bool enabledOnly) {
+            SystemWindow sw = FromPoint(x, y);
+            if (sw == null)
+                return null;
+            while (sw.ParentSymmetric != null)
+                sw = sw.ParentSymmetric;
+            if (toplevel)
+                return sw;
+            int area = GetArea(sw);
+            SystemWindow result = sw;
+            foreach (SystemWindow w in sw.AllDescendantWindows)
+                if (w.Visible && (w.Enabled || !enabledOnly))
+                    if (w.Rectangle.ToRectangle().Contains(x, y)) {
+                        int ar2 = GetArea(w);
+                        if (ar2 <= area) {
+                            area = ar2;
+                            result = w;
+                        }
+                    }
+
+            return result;
+        }
+
+        private static int GetArea(SystemWindow sw) {
+            RECT rr = sw.Rectangle;
+            return rr.Height * rr.Width;
+        }
+
+        /// <summary>
+        ///     Returns all child windows that match the given predicate.
+        /// </summary>
+        /// <param name="directOnly">Whether to include only direct children (no descendants)</param>
+        /// <param name="predicate">The predicate to filter.</param>
+        /// <returns>The list of child windows.</returns>
+        public SystemWindow[] FilterDescendantWindows(bool directOnly, Predicate<SystemWindow> predicate) {
+            List<SystemWindow> wnds = new List<SystemWindow>();
+            EnumChildWindows(_hwnd, delegate(IntPtr hwnd, IntPtr lParam) {
+                SystemWindow tmp = new SystemWindow(hwnd);
+                bool add = true;
+                if (directOnly) add = tmp.Parent._hwnd == _hwnd;
+                if (add && predicate(tmp))
+                    wnds.Add(tmp);
+                return 1;
+            }, new IntPtr(0));
+            return wnds.ToArray();
+        }
+
+        private bool GetClassNameFails() {
+            StringBuilder builder = new StringBuilder(2);
+            return GetClassName(HWnd, builder, builder.Capacity) == 0;
+        }
+
+        /// <summary>
+        ///     Check whether this window is a descendant of <c>ancestor</c>
+        /// </summary>
+        /// <param name="ancestor">The suspected ancestor</param>
+        /// <returns>If this is really an ancestor</returns>
+        public bool IsDescendantOf(SystemWindow ancestor) {
+            return IsChild(ancestor._hwnd, _hwnd);
+        }
+
+        /// <summary>
+        ///     Gets a device context for this window.
+        /// </summary>
+        /// <param name="clientAreaOnly">
+        ///     Whether to get the context for
+        ///     the client area or for the full window.
+        /// </param>
+        public WindowDeviceContext GetDeviceContext(bool clientAreaOnly) {
+            if (clientAreaOnly)
+                return new WindowDeviceContext(this, GetDC(_hwnd));
+            return new WindowDeviceContext(this, GetWindowDC(_hwnd));
+        }
+
+        /// <summary>
+        ///     Whether this SystemWindow represents a valid window that existed
+        ///     when this SystemWindow instance was created. To check if a window
+        ///     still exists, better check its <see cref="ClassName" /> property.
         /// </summary>
         public bool IsValid() {
             return _hwnd != IntPtr.Zero;
         }
 
         /// <summary>
-        /// Send a message to this window that it should close. This is equivalent
-        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
+        ///     Send a message to this window that it should close. This is equivalent
+        ///     to clicking the "X" in the upper right corner or pressing Alt+F4.
         /// </summary>
         public void SendClose() {
             SendSetMessage(WM_CLOSE, 0);
         }
 
         /// <summary>
-        /// Post a message to this window that it should close. This is equivalent
-        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
-        /// It sometimes works in instances where the <see cref="SendClose"/> function does
-        /// not (for example, Windows Explorer windows.)
+        ///     Post a message to this window that it should close. This is equivalent
+        ///     to clicking the "X" in the upper right corner or pressing Alt+F4.
+        ///     It sometimes works in instances where the <see cref="SendClose" /> function does
+        ///     not (for example, Windows Explorer windows.)
         /// </summary>
         public void PostClose() {
             PostMessage(HWnd, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         }
 
         /// <summary>
-        /// Closes the window by sending the "WM_SYSCOMMAND" with the "SC_CLOSE" parameter.
-        /// This equals that the user open the Window menu and click "Close". This method
-        /// seem to work in more scenaries than "SendClose()" and "PostClose()".
-        /// Also see: https://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
+        ///     Closes the window by sending the "WM_SYSCOMMAND" with the "SC_CLOSE" parameter.
+        ///     This equals that the user open the Window menu and click "Close". This method
+        ///     seem to work in more scenaries than "SendClose()" and "PostClose()".
+        ///     Also see: https://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
         /// </summary>
         public void Close() {
             PostMessage(HWnd, WM_SYSCOMMAND, SC_CLOSE, IntPtr.Zero);
         }
 
         /// <summary>
-        /// Highlights the window with a red border.
+        ///     Highlights the window with a red border.
         /// </summary>
         public void Highlight() {
             GetWindowRect(_hwnd, out RECT rect);
@@ -968,18 +932,17 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Forces the window to invalidate its client area and immediately redraw itself and any child controls.
+        ///     Forces the window to invalidate its client area and immediately redraw itself and any child controls.
         /// </summary>
         public void Refresh() {
             // By using parent, we get better results in refreshing old drawing window area.
-            IntPtr hwndToRefresh = this._hwnd;
-            SystemWindow parentWindow = this.ParentSymmetric;
-            if (parentWindow != null) {
-                hwndToRefresh = parentWindow._hwnd;
-            }
+            IntPtr hwndToRefresh = _hwnd;
+            SystemWindow parentWindow = ParentSymmetric;
+            if (parentWindow != null) hwndToRefresh = parentWindow._hwnd;
 
             InvalidateRect(hwndToRefresh, IntPtr.Zero, true);
-            _ = RedrawWindow(hwndToRefresh, IntPtr.Zero, IntPtr.Zero, flags: RDW.RDW_FRAME | RDW.RDW_INVALIDATE | RDW.RDW_UPDATENOW | RDW.RDW_ALLCHILDREN | RDW.RDW_ERASENOW);
+            _ = RedrawWindow(hwndToRefresh, IntPtr.Zero, IntPtr.Zero,
+                RDW.RDW_FRAME | RDW.RDW_INVALIDATE | RDW.RDW_UPDATENOW | RDW.RDW_ALLCHILDREN | RDW.RDW_ERASENOW);
         }
 
         internal int SendGetMessage(uint message) {
@@ -997,30 +960,26 @@ namespace ManagedWinapi.Windows {
         #region Equals and HashCode
 
         /// <summary>
-        /// Convertion of obj to SystemWindow.
-        /// If obj is null returns false and else further to Equals(SystemWindow sw)
+        ///     Convertion of obj to SystemWindow.
+        ///     If obj is null returns false and else further to Equals(SystemWindow sw)
         /// </summary>
-        public override bool Equals(System.Object obj) {
-            if (obj == null) {
-                return false;
-            }
+        public override bool Equals(Object obj) {
+            if (obj == null) return false;
             SystemWindow sw = obj as SystemWindow;
             return Equals(sw);
         }
 
         /// <summary>
-        /// Checks if <see langword="null"/> and if true returns null
-        /// Chechs if it's the same as _hwnd
+        ///     Checks if <see langword="null" /> and if true returns null
+        ///     Chechs if it's the same as _hwnd
         /// </summary>
         public bool Equals(SystemWindow sw) {
-            if (sw is null) {
-                return false;
-            }
+            if (sw is null) return false;
             return _hwnd == sw._hwnd;
         }
 
         /// <summary>
-        /// unchecked((int)_hwnd.ToInt64())
+        ///     unchecked((int)_hwnd.ToInt64())
         /// </summary>
         public override int GetHashCode() {
             // avoid exceptions
@@ -1028,20 +987,16 @@ namespace ManagedWinapi.Windows {
         }
 
         /// <summary>
-        /// Compare two instances of this class for equality.
+        ///     Compare two instances of this class for equality.
         /// </summary>
         public static bool operator ==(SystemWindow a, SystemWindow b) {
-            if (System.Object.ReferenceEquals(a, b)) {
-                return true;
-            }
-            if ((a is null) || (b is null)) {
-                return false;
-            }
+            if (ReferenceEquals(a, b)) return true;
+            if (a is null || b is null) return false;
             return a._hwnd == b._hwnd;
         }
 
         /// <summary>
-        /// Compare two instances of this class for inequality.
+        ///     Compare two instances of this class for inequality.
         /// </summary>
         public static bool operator !=(SystemWindow a, SystemWindow b) {
             return !(a == b);
@@ -1065,7 +1020,7 @@ namespace ManagedWinapi.Windows {
         private static extern int GetWindowTextLength(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern bool SetWindowText(IntPtr hWnd, string lpString);
+        private static extern bool SetWindowText(IntPtr hWnd, string lpString);
 
         [DllImport("user32.dll")]
         private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
@@ -1088,8 +1043,7 @@ namespace ManagedWinapi.Windows {
         private static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex) {
             if (IntPtr.Size == 8)
                 return GetWindowLongPtr64(hWnd, nIndex);
-            else
-                return new IntPtr(GetWindowLong32(hWnd, nIndex));
+            return new IntPtr(GetWindowLong32(hWnd, nIndex));
         }
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
@@ -1098,14 +1052,14 @@ namespace ManagedWinapi.Windows {
         [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
-        private enum GWL : int {
-            GWL_WNDPROC = (-4),
-            GWL_HINSTANCE = (-6),
-            GWL_HWNDPARENT = (-8),
-            GWL_STYLE = (-16),
-            GWL_EXSTYLE = (-20),
-            GWL_USERDATA = (-21),
-            GWL_ID = (-12)
+        private enum GWL {
+            GWL_WNDPROC = -4,
+            GWL_HINSTANCE = -6,
+            GWL_HWNDPARENT = -8,
+            GWL_STYLE = -16,
+            GWL_EXSTYLE = -20,
+            GWL_USERDATA = -21,
+            GWL_ID = -12
         }
 
         [DllImport("user32.dll")]
@@ -1115,78 +1069,78 @@ namespace ManagedWinapi.Windows {
         private static extern IntPtr GetParent(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern bool IsChild(IntPtr hWndParent, IntPtr hWnd);
+        private static extern bool IsChild(IntPtr hWndParent, IntPtr hWnd);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct WINDOWPLACEMENT {
             public int length;
-            public int flags;
-            public int showCmd;
-            public POINT ptMinPosition;
-            public POINT ptMaxPosition;
+            public readonly int flags;
+            public readonly int showCmd;
+            public readonly POINT ptMinPosition;
+            public readonly POINT ptMaxPosition;
             public RECT rcNormalPosition;
         }
 
         [DllImport("user32.dll")]
-        static extern bool GetWindowPlacement(IntPtr hWnd,
-           ref WINDOWPLACEMENT lpwndpl);
+        private static extern bool GetWindowPlacement(IntPtr hWnd,
+            ref WINDOWPLACEMENT lpwndpl);
 
         [DllImport("user32.dll")]
-        static extern bool SetWindowPlacement(IntPtr hWnd,
-           [In] ref WINDOWPLACEMENT lpwndpl);
+        private static extern bool SetWindowPlacement(IntPtr hWnd,
+            [In] ref WINDOWPLACEMENT lpwndpl);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+        private static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
         [DllImport("user32.dll")]
         private static extern IntPtr WindowFromPoint(POINT Point);
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+        private static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
 
         [DllImport("user32.dll")]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("gdi32.dll")]
-        static extern IntPtr CreateRectRgn(int nLeftRect, int nTopRect, int nRightRect,
-           int nBottomRect);
+        private static extern IntPtr CreateRectRgn(int nLeftRect, int nTopRect, int nRightRect,
+            int nBottomRect);
 
         [DllImport("user32.dll")]
-        static extern int GetWindowRgn(IntPtr hWnd, IntPtr hRgn);
+        private static extern int GetWindowRgn(IntPtr hWnd, IntPtr hRgn);
 
         [DllImport("user32.dll")]
-        static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+        private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
 
         [DllImport("gdi32.dll")]
-        static extern bool BitBlt(IntPtr hObject, int nXDest, int nYDest, int nWidth,
-           int nHeight, IntPtr hObjSource, int nXSrc, int nYSrc, int dwRop);
+        private static extern bool BitBlt(IntPtr hObject, int nXDest, int nYDest, int nWidth,
+            int nHeight, IntPtr hObjSource, int nXSrc, int nYSrc, int dwRop);
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
+        private static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetWindowDC(IntPtr hWnd);
+        private static extern IntPtr GetWindowDC(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        static extern bool DeleteDC(IntPtr hdc);
+        private static extern bool DeleteDC(IntPtr hdc);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+        private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        static extern bool DeleteObject(IntPtr hObject);
+        private static extern bool DeleteObject(IntPtr hObject);
 
-        enum TernaryRasterOperations : uint {
+        private enum TernaryRasterOperations : uint {
             SRCCOPY = 0x00CC0020,
             SRCPAINT = 0x00EE0086,
             SRCAND = 0x008800C6,
@@ -1204,15 +1158,15 @@ namespace ManagedWinapi.Windows {
             WHITENESS = 0x00FF0062
         }
 
-        enum GetWindowRegnReturnValues : int {
+        private enum GetWindowRegnReturnValues {
             ERROR = 0,
             NULLREGION = 1,
             SIMPLEREGION = 2,
             COMPLEXREGION = 3
         }
 
-        static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
-        static readonly uint BM_GETCHECK = 0xF0, BM_SETCHECK = 0xF1;
+        private static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
+        private static readonly uint BM_GETCHECK = 0xF0, BM_SETCHECK = 0xF1;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -1225,20 +1179,20 @@ namespace ManagedWinapi.Windows {
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
-           int Y, int cx, int cy, uint uFlags);
+            int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
 
         [DllImport("user32.dll", SetLastError = false)]
-        static extern IntPtr GetDesktopWindow();
+        private static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetDC(IntPtr hWnd);
+        private static extern IntPtr GetDC(IntPtr hWnd);
 
         private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14, WM_SYSCOMMAND = 274;
 
-        private IntPtr SC_CLOSE = new IntPtr(61536);
+        private readonly IntPtr SC_CLOSE = new IntPtr(61536);
 
         private enum GetWindow_Cmd {
             GW_HWNDFIRST = 0,
@@ -1269,7 +1223,7 @@ namespace ManagedWinapi.Windows {
             RDW_ERASENOW = 0x0200,
 
             RDW_FRAME = 0x0400,
-            RDW_NOFRAME = 0x0800,
+            RDW_NOFRAME = 0x0800
         }
 
         [DllImport("user32.dll")]
@@ -1279,37 +1233,36 @@ namespace ManagedWinapi.Windows {
     }
 
     /// <summary>
-    /// A device context of a window that allows you to draw onto that window.
+    ///     A device context of a window that allows you to draw onto that window.
     /// </summary>
     public class WindowDeviceContext : IDisposable {
-        IntPtr hDC;
-        SystemWindow sw;
+        private readonly SystemWindow sw;
 
         internal WindowDeviceContext(SystemWindow sw, IntPtr hDC) {
             this.sw = sw;
-            this.hDC = hDC;
+            this.HDC = hDC;
         }
 
         /// <summary>
-        /// The device context handle.
+        ///     The device context handle.
         /// </summary>
-        public IntPtr HDC { get { return hDC; } }
+        public IntPtr HDC { get; private set; }
 
         /// <summary>
-        /// Creates a Graphics object for this device context.
-        /// </summary>
-        public Graphics CreateGraphics() {
-            return Graphics.FromHdc(hDC);
-        }
-
-        /// <summary>
-        /// Frees this device context.
+        ///     Frees this device context.
         /// </summary>
         public void Dispose() {
-            if (hDC != IntPtr.Zero) {
-                ReleaseDC(sw.HWnd, hDC);
-                hDC = IntPtr.Zero;
+            if (HDC != IntPtr.Zero) {
+                ReleaseDC(sw.HWnd, HDC);
+                HDC = IntPtr.Zero;
             }
+        }
+
+        /// <summary>
+        ///     Creates a Graphics object for this device context.
+        /// </summary>
+        public Graphics CreateGraphics() {
+            return Graphics.FromHdc(HDC);
         }
 
         [DllImport("user32.dll")]

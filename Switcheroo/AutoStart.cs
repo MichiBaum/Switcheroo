@@ -9,16 +9,14 @@ namespace Switcheroo {
     // http://stackoverflow.com/a/19914018/198065
     public class AutoStart {
         public bool IsEnabled {
-            get { return HasShortcut(); }
+            get => HasShortcut();
 
             set {
                 string appLink = GetAppLinkPath();
 
-                if (value) {
+                if (value)
                     CreateShortcut(appLink);
-                } else if (IsEnabled) {
-                    DeleteShortcut(appLink);
-                }
+                else if (IsEnabled) DeleteShortcut(appLink);
             }
         }
 
@@ -41,7 +39,8 @@ namespace Switcheroo {
             try {
                 File.Delete(appLink);
             } catch {
-                throw new AutoStartException("It was not possible to delete the shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException(
+                    "It was not possible to delete the shortcut to Switcheroo in the startup folder");
             }
         }
 
@@ -50,10 +49,10 @@ namespace Switcheroo {
                 string exeLocation = Assembly.GetEntryAssembly().Location;
 
                 //Windows Script Host Shell Object
-                var t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
+                Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
                 dynamic shell = Activator.CreateInstance(t);
                 try {
-                    var lnk = shell.CreateShortcut(appLink);
+                    dynamic lnk = shell.CreateShortcut(appLink);
                     try {
                         lnk.TargetPath = exeLocation;
                         lnk.Save();
@@ -64,13 +63,13 @@ namespace Switcheroo {
                     Marshal.FinalReleaseComObject(shell);
                 }
             } catch {
-                throw new AutoStartException("It was not possible to create a shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException(
+                    "It was not possible to create a shortcut to Switcheroo in the startup folder");
             }
         }
     }
 
     public class AutoStartException : Exception {
-
         public AutoStartException() {
         }
 
