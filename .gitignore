@@ -183,3 +183,6 @@ $RECYCLE.BIN/
 
 # Inno Setup Compiler
 Installer/Output
+
+# Jetbrains Rider
+.idea

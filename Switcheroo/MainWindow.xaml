@@ -95,7 +95,7 @@
                            Name="ShowHelpTextBlock" Cursor="Hand" Foreground="DarkGray">
                     <TextBlock.Text>?</TextBlock.Text>
                     <TextBlock.Triggers>
-                        <EventTrigger RoutedEvent="MouseEnter">
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
                             <EventTrigger.Actions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -105,7 +105,7 @@
                                 </BeginStoryboard>
                             </EventTrigger.Actions>
                         </EventTrigger>
-                        <EventTrigger RoutedEvent="MouseLeave">
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
                             <EventTrigger.Actions>
                                 <BeginStoryboard>
                                     <Storyboard>
