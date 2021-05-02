@@ -1,5 +1,5 @@
 #define MyAppName "Switcheroo"
-#define MyAppPublisher "Regin Larsen"
+#define MyAppPublisher "Michael Baumberger"
 #define MyAppURL "http://www.switcheroo.io"
 #define MyAppExeName "switcheroo.exe"
 #define MyAppPath SourcePath + "ProgramFiles"

@@ -14,14 +14,14 @@ namespace Switcheroo {
         private static void Main() {
             RunAsAdministratorIfConfigured();
 
-            using (var mutex = new Mutex(false, mutex_id)) {
-                var hasHandle = false;
+            using (Mutex mutex = new(false, mutex_id)) {
+                bool hasHandle = false;
                 try {
                     try {
                         hasHandle = mutex.WaitOne(5000, false);
-                        if (hasHandle == false)
+                        if (!hasHandle)
                             return; //another instance exist
-                    } catch (AbandonedMutexException) {
+                    } catch (AbandonedMutexException amex) {
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
                     }
 
@@ -31,9 +31,7 @@ namespace Switcheroo {
 
                     MigrateUserSettings();
 
-                    var app = new App {
-                        MainWindow = new MainWindow()
-                    };
+                    App app = new() {MainWindow = new MainWindow()};
                     app.Run();
                 } finally {
                     if (hasHandle)
@@ -44,7 +42,7 @@ namespace Switcheroo {
 
         private static void RunAsAdministratorIfConfigured() {
             if (RunAsAdminRequested() && !IsRunAsAdmin()) {
-                ProcessStartInfo proc = new ProcessStartInfo {
+                ProcessStartInfo proc = new() {
                     UseShellExecute = true,
                     WorkingDirectory = Environment.CurrentDirectory,
                     FileName = Assembly.GetEntryAssembly().CodeBase,
@@ -60,12 +58,11 @@ namespace Switcheroo {
             return Settings.Default.RunAsAdmin;
         }
 
+        // TODO unused method?
         private static void MakePortable(ApplicationSettingsBase settings) {
-            var portableSettingsProvider = new PortableSettingsProvider();
+            PortableSettingsProvider portableSettingsProvider = new();
             settings.Providers.Add(portableSettingsProvider);
-            foreach (SettingsProperty prop in settings.Properties) {
-                prop.Provider = portableSettingsProvider;
-            }
+            foreach (SettingsProperty prop in settings.Properties) prop.Provider = portableSettingsProvider;
             settings.Reload();
         }
 
@@ -80,7 +77,7 @@ namespace Switcheroo {
 
         private static bool IsRunAsAdmin() {
             WindowsIdentity id = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(id);
+            WindowsPrincipal principal = new(id);
 
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }

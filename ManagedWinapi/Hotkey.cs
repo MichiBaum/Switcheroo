@@ -5,29 +5,22 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ManagedWinapi {
-
     /// <summary>
-    /// Specifies a component that creates a global keyboard hotkey.
+    ///     Specifies a component that creates a global keyboard hotkey.
     /// </summary>
     [DefaultEvent("HotkeyPressed")]
     public class Hotkey : Component {
-
-        /// <summary>
-        /// Occurs when the hotkey is pressed.
-        /// </summary>
-        public event EventHandler HotkeyPressed;
-
-        private static Object myStaticLock = new Object();
+        private static readonly Object myStaticLock = new();
         private static int hotkeyCounter = 0xA000;
 
-        private int hotkeyIndex;
-        private bool isDisposed = false, isEnabled = false, isRegistered = false;
-        private Keys _keyCode;
-        private bool _ctrl, _alt, _shift, _windows;
+        private readonly int hotkeyIndex;
         private readonly IntPtr hWnd;
+        private bool _ctrl, _alt, _shift, _windows;
+        private Keys _keyCode;
+        private bool isDisposed, isEnabled, isRegistered;
 
         /// <summary>
-        /// Initializes a new instance of this class with the specified container.
+        ///     Initializes a new instance of this class with the specified container.
         /// </summary>
         /// <param name="container">The container to add it to.</param>
         public Hotkey(IContainer container) : this() {
@@ -35,25 +28,24 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Initializes a new instance of this class.
+        ///     Initializes a new instance of this class.
         /// </summary>
         public Hotkey() {
             EventDispatchingNativeWindow.Instance.EventHandler += nw_EventHandler;
             lock (myStaticLock) {
                 hotkeyIndex = ++hotkeyCounter;
             }
+
             hWnd = EventDispatchingNativeWindow.Instance.Handle;
         }
 
         /// <summary>
-        /// Enables the hotkey. When the hotkey is enabled, pressing it causes a
-        /// <c>HotkeyPressed</c> event instead of being handled by the active 
-        /// application.
+        ///     Enables the hotkey. When the hotkey is enabled, pressing it causes a
+        ///     <c>HotkeyPressed</c> event instead of being handled by the active
+        ///     application.
         /// </summary>
         public bool Enabled {
-            get {
-                return isEnabled;
-            }
+            get => isEnabled;
             set {
                 isEnabled = value;
                 updateHotkey(false);
@@ -61,12 +53,10 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// The key code of the hotkey.
+        ///     The key code of the hotkey.
         /// </summary>
         public Keys KeyCode {
-            get {
-                return _keyCode;
-            }
+            get => _keyCode;
 
             set {
                 _keyCode = value;
@@ -75,40 +65,57 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Whether the shortcut includes the Control modifier.
+        ///     Whether the shortcut includes the Control modifier.
         /// </summary>
         public bool Ctrl {
-            get { return _ctrl; }
-            set { _ctrl = value; updateHotkey(true); }
+            get => _ctrl;
+            set {
+                _ctrl = value;
+                updateHotkey(true);
+            }
         }
 
         /// <summary>
-        /// Whether this shortcut includes the Alt modifier.
+        ///     Whether this shortcut includes the Alt modifier.
         /// </summary>
         public bool Alt {
-            get { return _alt; }
-            set { _alt = value; updateHotkey(true); }
+            get => _alt;
+            set {
+                _alt = value;
+                updateHotkey(true);
+            }
         }
 
         /// <summary>
-        /// Whether this shortcut includes the shift modifier.
+        ///     Whether this shortcut includes the shift modifier.
         /// </summary>
         public bool Shift {
-            get { return _shift; }
-            set { _shift = value; updateHotkey(true); }
+            get => _shift;
+            set {
+                _shift = value;
+                updateHotkey(true);
+            }
         }
 
         /// <summary>
-        /// Whether this shortcut includes the Windows key modifier. The windows key
-        /// is an addition by Microsoft to the keyboard layout. It is located between
-        /// Control and Alt and depicts a Windows flag.
+        ///     Whether this shortcut includes the Windows key modifier. The windows key
+        ///     is an addition by Microsoft to the keyboard layout. It is located between
+        ///     Control and Alt and depicts a Windows flag.
         /// </summary>
         public bool WindowsKey {
-            get { return _windows; }
-            set { _windows = value; updateHotkey(true); }
+            get => _windows;
+            set {
+                _windows = value;
+                updateHotkey(true);
+            }
         }
 
-        void nw_EventHandler(ref Message m, ref bool handled) {
+        /// <summary>
+        ///     Occurs when the hotkey is pressed.
+        /// </summary>
+        public event EventHandler HotkeyPressed;
+
+        private void nw_EventHandler(ref Message m, ref bool handled) {
             if (handled)
                 return;
             if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == hotkeyIndex) {
@@ -119,7 +126,7 @@ namespace ManagedWinapi {
         }
 
         /// <summary>
-        /// Releases all resources used by the System.ComponentModel.Component.
+        ///     Releases all resources used by the System.ComponentModel.Component.
         /// </summary>
         /// <param name="disposing">Whether to dispose managed resources.</param>
         protected override void Dispose(bool disposing) {
@@ -136,6 +143,7 @@ namespace ManagedWinapi {
                 UnregisterHotKey(hWnd, hotkeyIndex);
                 isRegistered = false;
             }
+
             if (!isRegistered && shouldBeRegistered) {
                 // register hotkey
                 bool success = RegisterHotKey(hWnd, hotkeyIndex,
@@ -151,20 +159,17 @@ namespace ManagedWinapi {
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private static readonly int MOD_ALT = 0x0001,
-            MOD_CONTROL = 0x0002, MOD_SHIFT = 0x0004, MOD_WIN = 0x0008;
+            MOD_CONTROL = 0x0002,
+            MOD_SHIFT = 0x0004,
+            MOD_WIN = 0x0008;
 
         private static readonly int WM_HOTKEY = 0x0312;
 
         #endregion
     }
-
-    /// <summary>
-    /// The exception is thrown when a hotkey should be registered that
-    /// has already been registered by another application.
-    /// </summary>
-    public class HotkeyAlreadyInUseException : Exception { }
 }

@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 namespace Switcheroo {
     public class WindowHandleToCachedIconConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            var key = "IconImage-" + value + "-longCache";
+            string key = "IconImage-" + value + "-longCache";
             return MemoryCache.Default.Get(key) as BitmapImage;
         }
 

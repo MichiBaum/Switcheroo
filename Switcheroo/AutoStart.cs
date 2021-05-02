@@ -9,16 +9,14 @@ namespace Switcheroo {
     // http://stackoverflow.com/a/19914018/198065
     public class AutoStart {
         public bool IsEnabled {
-            get { return HasShortcut(); }
+            get => HasShortcut();
 
             set {
-                var appLink = GetAppLinkPath();
+                string appLink = GetAppLinkPath();
 
-                if (value) {
+                if (value)
                     CreateShortcut(appLink);
-                } else if (IsEnabled) {
-                    DeleteShortcut(appLink);
-                }
+                else if (IsEnabled) DeleteShortcut(appLink);
             }
         }
 
@@ -31,11 +29,10 @@ namespace Switcheroo {
         }
 
         private static string GetAppLinkPath() {
-            var appDataStart =
+            string appDataStart =
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     @"Microsoft\Windows\Start Menu\Programs\Startup");
-            var appLink = Path.Combine(appDataStart, "Switcheroo.lnk");
-            return appLink;
+            return Path.Combine(appDataStart, "Switcheroo.lnk");
         }
 
         private static void DeleteShortcut(string appLink) {
@@ -49,13 +46,13 @@ namespace Switcheroo {
 
         private static void CreateShortcut(string appLink) {
             try {
-                var exeLocation = Assembly.GetEntryAssembly().Location;
+                string exeLocation = Assembly.GetEntryAssembly().Location;
 
                 //Windows Script Host Shell Object
-                var t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
+                Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
                 dynamic shell = Activator.CreateInstance(t);
                 try {
-                    var lnk = shell.CreateShortcut(appLink);
+                    dynamic lnk = shell.CreateShortcut(appLink);
                     try {
                         lnk.TargetPath = exeLocation;
                         lnk.Save();
@@ -69,12 +66,6 @@ namespace Switcheroo {
                 throw new AutoStartException(
                     "It was not possible to create a shortcut to Switcheroo in the startup folder");
             }
-        }
-    }
-
-    public class AutoStartException : Exception {
-        public AutoStartException(string message)
-            : base(message) {
         }
     }
 }

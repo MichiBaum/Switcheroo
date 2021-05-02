@@ -181,4 +181,8 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+# Inno Setup Compiler
 Installer/Output
+
+# Jetbrains Rider
+.idea

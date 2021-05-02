@@ -4,26 +4,17 @@ using System;
 using System.Windows.Forms;
 
 namespace Switcheroo {
-    public delegate void AltTabHookEventHandler(object sender, AltTabHookEventArgs args);
-
-    public class AltTabHookEventArgs : EventArgs {
-        public bool CtrlDown { get; set; }
-        public bool ShiftDown { get; set; }
-        public bool Handled { get; set; }
-    }
-
     public class AltTabHook : IDisposable {
-        public event AltTabHookEventHandler Pressed;
         private const int AltKey = 32;
         private const int CtrlKey = 11;
-        private readonly KeyboardKey _shiftKey = new KeyboardKey(Keys.LShiftKey);
-        private readonly KeyboardKey _ctrlKey = new KeyboardKey(Keys.LControlKey);
-        private readonly KeyboardKey _altKey = new KeyboardKey(Keys.LMenu);
-        private readonly int WM_KEYDOWN = 0x0100;
-        private readonly int WM_SYSKEYDOWN = 0x0104;
+        private readonly KeyboardKey _altKey = new(Keys.LMenu);
+        private readonly KeyboardKey _ctrlKey = new(Keys.LControlKey);
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardHook _lowLevelKeyboardHook;
+        private readonly KeyboardKey _shiftKey = new(Keys.LShiftKey);
+        private readonly int WM_KEYDOWN = 0x0100;
+        private readonly int WM_SYSKEYDOWN = 0x0104;
 
         public AltTabHook() {
             _lowLevelKeyboardHook = new LowLevelKeyboardHook();
@@ -31,24 +22,23 @@ namespace Switcheroo {
             _lowLevelKeyboardHook.StartHook();
         }
 
+        public void Dispose() {
+            _lowLevelKeyboardHook?.Dispose();
+        }
+
+        public event AltTabHookEventHandler Pressed;
+
         private void OnMessageIntercepted(LowLevelMessage lowLevelMessage, ref bool handled) {
-            var keyboardMessage = lowLevelMessage as LowLevelKeyboardMessage;
-            if (handled || keyboardMessage == null) {
-                return;
-            }
+            if (handled || !(lowLevelMessage is LowLevelKeyboardMessage keyboardMessage)) return;
 
-            if (!IsTabKeyDown(keyboardMessage)) {
-                return;
-            }
+            if (!IsTabKeyDown(keyboardMessage)) return;
 
-            if (!IsKeyDown(_altKey)) {
-                return;
-            }
+            if (!IsKeyDown(_altKey)) return;
 
-            var shiftKeyDown = IsKeyDown(_shiftKey);
-            var ctrlKeyDown = IsKeyDown(_ctrlKey);
+            bool shiftKeyDown = IsKeyDown(_shiftKey);
+            bool ctrlKeyDown = IsKeyDown(_ctrlKey);
 
-            var eventArgs = OnPressed(shiftKeyDown, ctrlKeyDown);
+            AltTabHookEventArgs eventArgs = OnPressed(shiftKeyDown, ctrlKeyDown);
 
             handled = eventArgs.Handled;
         }
@@ -63,18 +53,10 @@ namespace Switcheroo {
         }
 
         private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown) {
-            var altTabHookEventArgs = new AltTabHookEventArgs { ShiftDown = shiftDown, CtrlDown = ctrlDown };
-            var handler = Pressed;
-            if (handler != null) {
-                handler(this, altTabHookEventArgs);
-            }
+            AltTabHookEventArgs altTabHookEventArgs =
+                new() {ShiftDown = shiftDown, CtrlDown = ctrlDown};
+            Pressed?.Invoke(this, altTabHookEventArgs);
             return altTabHookEventArgs;
-        }
-
-        public void Dispose() {
-            if (_lowLevelKeyboardHook != null) {
-                _lowLevelKeyboardHook.Dispose();
-            }
         }
     }
 }

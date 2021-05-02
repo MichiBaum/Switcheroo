@@ -53,16 +53,6 @@
                 <Hyperlink RequestNavigate="HandleRequestNavigate" NavigateUri="http://mwinapi.sourceforge.net/">mwinapi.sourceforge.net</Hyperlink>
                 <LineBreak />
                 <LineBreak />
-                <Bold>PortableSettingsProvider</Bold>
-                <LineBreak />
-                Copyright © crdx
-                <LineBreak />
-                The MIT License (MIT)
-                <LineBreak />
-                <Hyperlink RequestNavigate="HandleRequestNavigate"
-                           NavigateUri="https://github.com/crdx/PortableSettingsProvider">
-                    github.com/crdx/PortableSettingsProvider
-                </Hyperlink>
             </TextBlock>
         </ScrollViewer>
 

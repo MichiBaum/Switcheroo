@@ -6,7 +6,9 @@ using Switcheroo.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -19,26 +21,24 @@ using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Application = System.Windows.Application;
-using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
     public partial class MainWindow : Window {
-        private WindowCloser _windowCloser;
-        private List<AppWindowViewModel> _unfilteredWindowList;
-        private ObservableCollection<AppWindowViewModel> _filteredWindowList;
-        private NotifyIcon _notifyIcon;
-        private HotKey _hotkey;
-
-        public static readonly RoutedUICommand CloseWindowCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
-        public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
-        private OptionsWindow _optionsWindow;
+        public static readonly RoutedUICommand CloseWindowCommand = new();
+        public static readonly RoutedUICommand SwitchToWindowCommand = new();
+        public static readonly RoutedUICommand ScrollListDownCommand = new();
+        public static readonly RoutedUICommand ScrollListUpCommand = new();
         private AboutWindow _aboutWindow;
-        private AltTabHook _altTabHook;
-        private SystemWindow _foregroundWindow;
         private bool _altTabAutoSwitch;
+        private AltTabHook _altTabHook;
+        private ObservableCollection<AppWindowViewModel> _filteredWindowList;
+        private SystemWindow _foregroundWindow;
+        private HotKey _hotkey;
+        private NotifyIcon _notifyIcon;
+        private OptionsWindow _optionsWindow;
+        private List<AppWindowViewModel> _unfilteredWindowList;
+        private WindowCloser _windowCloser;
 
         public MainWindow() {
             InitializeComponent();
@@ -56,12 +56,16 @@ namespace Switcheroo {
             Opacity = 0;
         }
 
+        private enum InitialFocus {
+            NextItem,
+            PreviousItem
+        }
+
         /// =================================
 
         #region Private Methods
 
         /// =================================
-
         private void SetUpKeyBindings() {
             // Enter and Esc bindings are not executed before the keys have been released.
             // This is done to prevent that the window being focused after the key presses
@@ -83,15 +87,13 @@ namespace Switcheroo {
 
             KeyUp += (sender, args) => {
                 // ... But only when the keys are release, the action is actually executed
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
+                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                     Switch();
-                } else if (args.Key == Key.Escape) {
+                else if (args.Key == Key.Escape)
                     HideWindow();
-                } else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
+                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                     Switch();
-                } else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) {
-                    Switch();
-                }
+                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) Switch();
             };
         }
 
@@ -105,11 +107,15 @@ namespace Switcheroo {
             try {
                 _hotkey.Enabled = Settings.Default.EnableHotKey;
             } catch (HotkeyAlreadyInUseException) {
-                var boxText = "The current hotkey for activating Switcheroo is in use by another program." +
-                              Environment.NewLine +
-                              Environment.NewLine +
-                              "You can change the hotkey by right-clicking the Switcheroo icon in the system tray and choosing 'Options'.";
-                MessageBox.Show(boxText, "Hotkey already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string boxText =
+                    language_en
+                        .MainWindow_SetUpHotKey_The_current_hotkey_for_activating_Switcheroo_is_in_use_by_another_program_ +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    language_en
+                        .MainWindow_SetUpHotKey_You_can_change_the_hotkey_by_right_clicking_the_Switcheroo_icon_in_the_system_tray_and_choosing__Options__;
+                MessageBox.Show(boxText, language_en.MainWindow_SetUpHotKey_Hotkey_already_in_use, MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
@@ -119,31 +125,36 @@ namespace Switcheroo {
         }
 
         private void SetUpNotifyIcon() {
-            var icon = Properties.Resources.icon;
+            // TODO doesnt work as intended
 
-            var runOnStartupMenuItem = new MenuItem("Run on Startup", (s, e) => RunOnStartup(s as MenuItem)) {
-                Checked = new AutoStart().IsEnabled
-            };
+            Icon icon = Properties.Resources.icon;
+
+            ToolStripMenuItem runOnStartupMenuItem =
+                new(language_en.MainWindow_SetUpNotifyIcon_Run_on_Startup) {Checked = new AutoStart().IsEnabled};
+            runOnStartupMenuItem.Click += (s, e) => RunOnStartup((ToolStripMenuItem)s);
+
+            ToolStripMenuItem optionsMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Options);
+            runOnStartupMenuItem.Click += (s, e) => Options();
+
+            ToolStripMenuItem aboutMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_About);
+            runOnStartupMenuItem.Click += (s, e) => About();
+
+            ToolStripMenuItem exitMenuItem = new(language_en.MainWindow_SetUpNotifyIcon_Exit);
+            runOnStartupMenuItem.Click += (s, e) => Quit();
 
             _notifyIcon = new NotifyIcon {
-                Text = "Switcheroo",
+                Text = language_en.MainWindow_SetUpNotifyIcon_Switcheroo,
                 Icon = icon,
                 Visible = true,
-                ContextMenu = new System.Windows.Forms.ContextMenu(new[]
-                {
-                    new MenuItem("Options", (s, e) => Options()),
-                    runOnStartupMenuItem,
-                    new MenuItem("About", (s, e) => About()),
-                    new MenuItem("Exit", (s, e) => Quit())
-                })
+                ContextMenuStrip = new ContextMenuStrip {
+                    Items = {runOnStartupMenuItem, optionsMenuItem, aboutMenuItem, exitMenuItem}
+                }
             };
         }
 
-        private static void RunOnStartup(MenuItem menuItem) {
+        private static void RunOnStartup(ToolStripMenuItem menuItem) {
             try {
-                var autoStart = new AutoStart {
-                    IsEnabled = !menuItem.Checked
-                };
+                AutoStart autoStart = new() {IsEnabled = !menuItem.Checked};
                 menuItem.Checked = autoStart.IsEnabled;
             } catch (AutoStartException e) {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -151,25 +162,24 @@ namespace Switcheroo {
         }
 
         private static void CheckForUpdates() {
-            var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-            if (currentVersion == new Version(0, 0, 0, 0)) {
-                return;
-            }
+            Version currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+            if (currentVersion == new Version(0, 0, 0, 0)) return;
 
-            var timer = new DispatcherTimer();
+            DispatcherTimer timer = new();
 
             timer.Tick += async (sender, args) => {
                 timer.Stop();
-                var latestVersion = await GetLatestVersion();
+                Version latestVersion = await GetLatestVersion();
                 if (latestVersion != null && latestVersion > currentVersion) {
-                    var result = MessageBox.Show(
+                    MessageBoxResult result = MessageBox.Show(
                         string.Format(
-                            "Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
+                            language_en.MainWindow_CheckForUpdates_,
                             latestVersion, currentVersion),
                         "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                    if (result == MessageBoxResult.Yes) {
-                        Process.Start("https://github.com/kvakulo/Switcheroo/releases/latest");
-                    }
+                    if (result ==
+                        MessageBoxResult
+                            .Yes) // TODO can throw exception like https://stackoverflow.com/a/53245993/10258204
+                        Process.Start("https://github.com/MichiBaum/Switcheroo/releases/latest");
                 } else {
                     timer.Interval = new TimeSpan(24, 0, 0);
                     timer.Start();
@@ -182,28 +192,27 @@ namespace Switcheroo {
 
         private static async Task<Version> GetLatestVersion() {
             try {
-                var versionAsString =
-                    await
-                        new WebClient().DownloadStringTaskAsync(
-                            "https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
-                Version newVersion;
-                if (Version.TryParse(versionAsString, out newVersion)) {
-                    return newVersion;
-                }
+                // TODO add own versioning
+                string versionAsString = await new WebClient()
+                    .DownloadStringTaskAsync("https://raw.github.com/MichiBaum/Switcheroo/update/version.txt")
+                    .ConfigureAwait(false);
+                if (Version.TryParse(versionAsString, out Version newVersion)) return newVersion;
             } catch (WebException) {
             }
+
             return null;
         }
 
         /// <summary>
-        /// Populates the window list with the current running windows.
+        ///     Populates the window list with the current running windows.
         /// </summary>
         private void LoadData(InitialFocus focus) {
-            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList =
+                new WindowFinder().GetWindows().ConvertAll(window => new AppWindowViewModel(window));
 
-            var firstWindow = _unfilteredWindowList.FirstOrDefault();
+            AppWindowViewModel firstWindow = _unfilteredWindowList.FirstOrDefault();
 
-            var foregroundWindowMovedToBottom = false;
+            bool foregroundWindowMovedToBottom = false;
 
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow)) {
@@ -215,10 +224,10 @@ namespace Switcheroo {
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
-            foreach (var window in _unfilteredWindowList) {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
+            foreach (AppWindowViewModel window in _unfilteredWindowList) {
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
+                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
             }
 
             lb.DataContext = null;
@@ -238,10 +247,8 @@ namespace Switcheroo {
 
         private void FocusItemInList(InitialFocus focus, bool foregroundWindowMovedToBottom) {
             if (focus == InitialFocus.PreviousItem) {
-                var previousItemIndex = lb.Items.Count - 1;
-                if (foregroundWindowMovedToBottom) {
-                    previousItemIndex--;
-                }
+                int previousItemIndex = lb.Items.Count - 1;
+                if (foregroundWindowMovedToBottom) previousItemIndex--;
 
                 lb.SelectedIndex = previousItemIndex > 0 ? previousItemIndex : 0;
             } else {
@@ -250,7 +257,7 @@ namespace Switcheroo {
         }
 
         /// <summary>
-        /// Place the Switcheroo window in the center of the screen
+        ///     Place the Switcheroo window in the center of the screen
         /// </summary>
         private void CenterWindow() {
             // Reset height every time to ensure that resolution changes take effect
@@ -266,11 +273,11 @@ namespace Switcheroo {
         }
 
         /// <summary>
-        /// Switches the window associated with the selected item.
+        ///     Switches the window associated with the selected item.
         /// </summary>
         private void Switch() {
-            foreach (var item in lb.SelectedItems) {
-                var win = (AppWindowViewModel)item;
+            foreach (object item in lb.SelectedItems) {
+                AppWindowViewModel win = (AppWindowViewModel)item;
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
 
@@ -296,13 +303,11 @@ namespace Switcheroo {
 
         /// =================================
         /// <summary>
-        /// Show Options dialog.
+        ///     Show Options dialog.
         /// </summary>
         private void Options() {
             if (_optionsWindow == null) {
-                _optionsWindow = new OptionsWindow {
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen
-                };
+                _optionsWindow = new OptionsWindow {WindowStartupLocation = WindowStartupLocation.CenterScreen};
                 _optionsWindow.Closed += (sender, args) => _optionsWindow = null;
                 _optionsWindow.ShowDialog();
             } else {
@@ -311,13 +316,11 @@ namespace Switcheroo {
         }
 
         /// <summary>
-        /// Show About dialog.
+        ///     Show About dialog.
         /// </summary>
         private void About() {
             if (_aboutWindow == null) {
-                _aboutWindow = new AboutWindow {
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen
-                };
+                _aboutWindow = new AboutWindow {WindowStartupLocation = WindowStartupLocation.CenterScreen};
                 _aboutWindow.Closed += (sender, args) => _aboutWindow = null;
                 _aboutWindow.ShowDialog();
             } else {
@@ -326,7 +329,7 @@ namespace Switcheroo {
         }
 
         /// <summary>
-        /// Quit Switcheroo
+        ///     Quit Switcheroo
         /// </summary>
         private void Quit() {
             _notifyIcon.Dispose();
@@ -342,15 +345,13 @@ namespace Switcheroo {
         #region Event Handlers
 
         /// =================================
-        private void OnClose(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void OnClose(object sender, CancelEventArgs e) {
             e.Cancel = true;
             HideWindow();
         }
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e) {
-            if (!Settings.Default.EnableHotKey) {
-                return;
-            }
+            if (!Settings.Default.EnableHotKey) return;
 
             if (Visibility != Visibility.Visible) {
                 tb.IsEnabled = true;
@@ -367,17 +368,14 @@ namespace Switcheroo {
         }
 
         private void AltTabPressed(object sender, AltTabHookEventArgs e) {
-            if (!Settings.Default.AltTabHook) {
-                // Ignore Alt+Tab presses if the hook is not activated by the user
+            if (!Settings.Default.AltTabHook) // Ignore Alt+Tab presses if the hook is not activated by the user
                 return;
-            }
 
             _foregroundWindow = SystemWindow.ForegroundWindow;
 
-            if (_foregroundWindow.ClassName == "MultitaskingViewFrame") {
-                // If Windows' task switcher is on the screen then don't do anything
+            if (_foregroundWindow.ClassName ==
+                "MultitaskingViewFrame") // If Windows' task switcher is on the screen then don't do anything
                 return;
-            }
 
             e.Handled = true;
 
@@ -387,25 +385,23 @@ namespace Switcheroo {
                 ActivateAndFocusMainWindow();
 
                 Keyboard.Focus(tb);
-                if (e.ShiftDown) {
+                if (e.ShiftDown)
                     LoadData(InitialFocus.PreviousItem);
-                } else {
+                else
                     LoadData(InitialFocus.NextItem);
-                }
 
                 if (Settings.Default.AutoSwitch && !e.CtrlDown) {
                     _altTabAutoSwitch = true;
                     tb.IsEnabled = false;
-                    tb.Text = "Press Alt + S to search";
+                    tb.Text = language_en.MainWindow_AltTabPressed_Press_Alt___S_to_search;
                 }
 
                 Opacity = 1;
             } else {
-                if (e.ShiftDown) {
+                if (e.ShiftDown)
                     PreviousItem();
-                } else {
+                else
                     NextItem();
-                }
             }
         }
 
@@ -416,11 +412,11 @@ namespace Switcheroo {
             // the keyboard input.
             // http://www.codeproject.com/Tips/76427/How-to-bring-window-to-top-with-SetForegroundWindo
 
-            var thisWindowHandle = new WindowInteropHelper(this).Handle;
-            var thisWindow = new AppWindow(thisWindowHandle);
+            IntPtr thisWindowHandle = new WindowInteropHelper(this).Handle;
+            AppWindow thisWindow = new(thisWindowHandle);
 
-            var altKey = new KeyboardKey(Keys.Alt);
-            var altKeyPressed = false;
+            KeyboardKey altKey = new(Keys.Alt);
+            bool altKeyPressed = false;
 
             // Press the Alt key if it is not already being pressed
             if ((altKey.AsyncState & 0x8000) == 0) {
@@ -434,26 +430,22 @@ namespace Switcheroo {
             Activate();
 
             // Release the Alt key if it was pressed above
-            if (altKeyPressed) {
-                altKey.Release();
-            }
+            if (altKeyPressed) altKey.Release();
         }
 
         private void TextChanged(object sender, TextChangedEventArgs args) {
-            if (!tb.IsEnabled) {
-                return;
-            }
+            if (!tb.IsEnabled) return;
 
-            var query = tb.Text;
+            string query = tb.Text;
 
-            var context = new WindowFilterContext<AppWindowViewModel> {
+            WindowFilterContext<AppWindowViewModel> context = new() {
                 Windows = _unfilteredWindowList,
                 ForegroundWindowProcessTitle = new AppWindow(_foregroundWindow.HWnd).ProcessTitle
             };
 
-            var filterResults = new WindowFilterer().Filter(context, query).ToList();
+            List<FilterResult<AppWindowViewModel>> filterResults = new WindowFilterer().Filter(context, query).ToList();
 
-            foreach (var filterResult in filterResults) {
+            foreach (FilterResult<AppWindowViewModel> filterResult in filterResults) {
                 filterResult.AppWindow.FormattedTitle =
                     GetFormattedTitleFromBestResult(filterResult.WindowTitleMatchResults);
                 filterResult.AppWindow.FormattedProcessTitle =
@@ -462,13 +454,11 @@ namespace Switcheroo {
 
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(filterResults.Select(r => r.AppWindow));
             lb.DataContext = _filteredWindowList;
-            if (lb.Items.Count > 0) {
-                lb.SelectedItem = lb.Items[0];
-            }
+            if (lb.Items.Count > 0) lb.SelectedItem = lb.Items[0];
         }
 
         private static string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults) {
-            var bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
+            MatchResult bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
             return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
 
@@ -483,8 +473,8 @@ namespace Switcheroo {
         }
 
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e) {
-            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
-            foreach (var win in windows) {
+            List<AppWindowViewModel> windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (AppWindowViewModel win in windows) {
                 bool isClosed = await _windowCloser.TryCloseAsync(win);
                 if (isClosed)
                     RemoveWindow(win);
@@ -502,9 +492,9 @@ namespace Switcheroo {
                 return;
 
             if (lb.SelectedIndex == index) {
-                if (_filteredWindowList.Count > index + 1)
+                if (_filteredWindowList.Count > index + 1) {
                     lb.SelectedIndex++;
-                else {
+                } else {
                     if (index > 0)
                         lb.SelectedIndex--;
                 }
@@ -521,11 +511,10 @@ namespace Switcheroo {
 
         private void PreviousItem() {
             if (lb.Items.Count > 0) {
-                if (lb.SelectedIndex != 0) {
+                if (lb.SelectedIndex != 0)
                     lb.SelectedIndex--;
-                } else {
+                else
                     lb.SelectedIndex = lb.Items.Count - 1;
-                }
 
                 ScrollSelectedItemIntoView();
             }
@@ -538,21 +527,18 @@ namespace Switcheroo {
 
         private void NextItem() {
             if (lb.Items.Count > 0) {
-                if (lb.SelectedIndex != lb.Items.Count - 1) {
+                if (lb.SelectedIndex != lb.Items.Count - 1)
                     lb.SelectedIndex++;
-                } else {
+                else
                     lb.SelectedIndex = 0;
-                }
 
                 ScrollSelectedItemIntoView();
             }
         }
 
         private void ScrollSelectedItemIntoView() {
-            var selectedItem = lb.SelectedItem;
-            if (selectedItem != null) {
-                lb.ScrollIntoView(selectedItem);
-            }
+            object selectedItem = lb.SelectedItem;
+            if (selectedItem != null) lb.ScrollIntoView(selectedItem);
         }
 
         private void MainWindow_OnLostFocus(object sender, EventArgs e) {
@@ -564,22 +550,17 @@ namespace Switcheroo {
         }
 
         private void DisableSystemMenu() {
-            var windowHandle = new WindowInteropHelper(this).Handle;
-            var window = new SystemWindow(windowHandle);
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+            SystemWindow window = new(windowHandle);
             window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
         }
 
         private void ShowHelpTextBlock_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {
-            var duration = new Duration(TimeSpan.FromSeconds(0.150));
-            var newHeight = HelpPanel.Height > 0 ? 0 : +17;
+            Duration duration = new(TimeSpan.FromSeconds(0.150));
+            int newHeight = HelpPanel.Height > 0 ? 0 : +17;
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
 
         #endregion
-
-        private enum InitialFocus {
-            NextItem,
-            PreviousItem
-        }
     }
 }
