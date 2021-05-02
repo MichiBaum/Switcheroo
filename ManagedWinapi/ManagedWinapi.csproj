@@ -19,18 +19,6 @@
     <Reference Include="Accessibility" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="AccessibleEventListener.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Hook.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="JournalHook.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="LowLevelKeyboardHook.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="ShortcutBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -44,6 +32,18 @@
       <SubType>Component</SubType>
     </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+    <Compile Update="Accessibility\AccessibleEventListener.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Hooks\Hook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Hooks\JournalHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Hooks\LowLevelKeyboardHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="crosshair.ico" />
