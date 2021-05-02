@@ -19,7 +19,7 @@
     <Reference Include="Accessibility" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="AccessibleObjectListener.cs">
+    <Compile Update="AccessibleEventListener.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Hook.cs">
@@ -28,7 +28,7 @@
     <Compile Update="JournalHook.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="LowLevelHook.cs">
+    <Compile Update="LowLevelKeyboardHook.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="ShortcutBox.cs">

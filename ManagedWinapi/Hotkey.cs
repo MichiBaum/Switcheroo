@@ -172,11 +172,4 @@ namespace ManagedWinapi {
 
         #endregion
     }
-
-    /// <summary>
-    ///     The exception is thrown when a hotkey should be registered that
-    ///     has already been registered by another application.
-    /// </summary>
-    public class HotkeyAlreadyInUseException : Exception {
-    }
 }

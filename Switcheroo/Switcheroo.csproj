@@ -41,9 +41,6 @@
     <Compile Update="HotKey.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Content Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <AppDesigner Include="Properties\" />
     <Compile Update="Properties\language_en.Designer.cs">
       <DesignTime>True</DesignTime>

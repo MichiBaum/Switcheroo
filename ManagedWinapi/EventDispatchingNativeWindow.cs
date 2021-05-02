@@ -3,18 +3,6 @@ using System.Windows.Forms;
 
 namespace ManagedWinapi.Windows {
     /// <summary>
-    ///     Called by an EventDispatchingNativeWindow when a window message is received
-    /// </summary>
-    /// <param name="m">The message to handle.</param>
-    /// <param name="handled">
-    ///     Whether the event has already been handled. If this value is true, the handler
-    ///     should return immediately. It may set the value to true to indicate that no others
-    ///     should handle it. If the event is not handled by any handler, it is passed to the
-    ///     default WindowProc.
-    /// </param>
-    public delegate void WndProcEventHandler(ref Message m, ref bool handled);
-
-    /// <summary>
     ///     A Win32 native window that delegates window messages to handlers. So several
     ///     components can use the same native window to save "USER resources". This class
     ///     is useful when writing your own components.

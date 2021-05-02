@@ -4,14 +4,6 @@ using System;
 using System.Windows.Forms;
 
 namespace Switcheroo {
-    public delegate void AltTabHookEventHandler(object sender, AltTabHookEventArgs args);
-
-    public class AltTabHookEventArgs : EventArgs {
-        public bool CtrlDown { get; set; }
-        public bool ShiftDown { get; set; }
-        public bool Handled { get; set; }
-    }
-
     public class AltTabHook : IDisposable {
         private const int AltKey = 32;
         private const int CtrlKey = 11;

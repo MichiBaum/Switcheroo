@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace ManagedWinapi.Hooks {
     /// <summary>
@@ -180,98 +179,5 @@ namespace ManagedWinapi.Hooks {
             HC_SYSMODALOFF = 5;
 
         #endregion
-    }
-
-    /// <summary>
-    ///     A hook that intercepts local window messages.
-    /// </summary>
-    public class LocalMessageHook : Hook {
-        /// <summary>
-        ///     Represents a method that handles a message from a message hook.
-        /// </summary>
-        /// <param name="msg"></param>
-        public delegate void MessageCallback(Message msg);
-
-        /// <summary>
-        ///     Creates a local message hook and hooks it.
-        /// </summary>
-        /// <param name="callback"></param>
-        public LocalMessageHook(MessageCallback callback)
-            : this() {
-            MessageOccurred = callback;
-            StartHook();
-        }
-
-        /// <summary>
-        ///     Creates a local message hook.
-        /// </summary>
-        public LocalMessageHook()
-            : base(HookType.WH_GETMESSAGE, false, false) {
-            Callback += MessageHookCallback;
-        }
-
-        /// <summary>
-        ///     Called when a message has been intercepted.
-        /// </summary>
-        public event MessageCallback MessageOccurred;
-
-        private int MessageHookCallback(int code, IntPtr lParam, IntPtr wParam, ref bool callNext) {
-            if (code == HC_ACTION) {
-                Message msg = (Message)Marshal.PtrToStructure(wParam, typeof(Message));
-                if (MessageOccurred != null) MessageOccurred(msg);
-            }
-
-            return 0;
-        }
-    }
-
-    /// <summary>
-    ///     Hook Types. See the documentation of SetWindowsHookEx for reference.
-    /// </summary>
-    public enum HookType {
-        ///
-        WH_JOURNALRECORD = 0,
-
-        ///
-        WH_JOURNALPLAYBACK = 1,
-
-        ///
-        WH_KEYBOARD = 2,
-
-        ///
-        WH_GETMESSAGE = 3,
-
-        ///
-        WH_CALLWNDPROC = 4,
-
-        ///
-        WH_CBT = 5,
-
-        ///
-        WH_SYSMSGFILTER = 6,
-
-        ///
-        WH_MOUSE = 7,
-
-        ///
-        WH_HARDWARE = 8,
-
-        ///
-        WH_DEBUG = 9,
-
-        ///
-        WH_SHELL = 10,
-
-        ///
-        WH_FOREGROUNDIDLE = 11,
-
-        ///
-        WH_CALLWNDPROCRET = 12,
-
-        ///
-        WH_KEYBOARD_LL = 13,
-
-        ///
-        WH_MOUSE_LL = 14
     }
 }

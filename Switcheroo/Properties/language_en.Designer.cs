@@ -181,5 +181,7 @@ namespace Switcheroo.Properties {
                         "in_use_by_another_program_", resourceCulture);
             }
         }
+        
+        // TODO move strings from *.xaml here
     }
 }
