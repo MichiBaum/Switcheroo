@@ -85,17 +85,17 @@ Switcheroo makes use of these projects:
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/MichiBaum">
-            <img src="https://avatars.githubusercontent.com/u/36712219?v=4" width="100;" alt="MichiBaum"/>
-            <br />
-            <sub><b>Michael Baumberger</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/HellBrick">
             <img src="https://avatars.githubusercontent.com/u/3703722?v=4" width="100;" alt="HellBrick"/>
             <br />
             <sub><b>HellBrick</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/MichiBaum">
+            <img src="https://avatars.githubusercontent.com/u/36712219?v=4" width="100;" alt="MichiBaum"/>
+            <br />
+            <sub><b>Michael Baumberger</b></sub>
         </a>
     </td>
     <td align="center">
