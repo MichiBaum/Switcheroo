@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://www.myget.org/F/sixlabors/api/v3/index.json;
-      $(MSBuildThisFileDirectory)/../References/
-    </RestoreAdditionalProjectSources>
     <OutputType>WinExe</OutputType>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>icon.ico</ApplicationIcon>
