@@ -95,8 +95,8 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     # Remove the pfx
-    - name: Remove the pfx
-      run: Remove-Item -path $env:Wap_Project_Directory
+#    - name: Remove the pfx
+#      run: Remove-Item -path $env:Wap_Project_Directory
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-artifact
     - name: Upload build artifacts
