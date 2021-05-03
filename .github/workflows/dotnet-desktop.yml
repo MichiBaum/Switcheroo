@@ -94,7 +94,7 @@ jobs:
         AppxPackageSigningEnabled: False
         Appx_Bundle_Platforms: ${{ matrix.targetplatform }}
         Appx_Package_Build_Mode: StoreUpload
-        GenerateAppInstallerFile: True
+        GenerateAppInstallerFile: False # TODO
         Configuration: ${{ matrix.configuration }}
         TargetPlatform: ${{ matrix.targetplatform }}
 
