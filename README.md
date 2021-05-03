@@ -145,7 +145,7 @@ Switcheroo makes use of these projects:
         <a href="https://github.com/sidecutter">
             <img src="https://avatars.githubusercontent.com/u/16988910?v=4" width="100;" alt="sidecutter"/>
             <br />
-            <sub><b>sidecutter</b></sub>
+            <sub><b>Sidecutter</b></sub>
         </a>
     </td></tr>
 </table>
