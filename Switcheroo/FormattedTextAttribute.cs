@@ -19,11 +19,10 @@ namespace Switcheroo {
             return (string)textBlock.GetValue(FormattedTextProperty);
         }
 
-        private static void FormattedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            TextBlock textBlock = d as TextBlock;
-            if (textBlock == null) return;
+        private static void FormattedTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
+            if (dependencyObject is not TextBlock textBlock) return;
 
-            string formattedText = (string)e.NewValue ?? string.Empty;
+            string formattedText = (string)dependencyPropertyChangedEventArgs.NewValue ?? string.Empty;
             formattedText =
                 @"<Span xml:space=""preserve"" xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">" +
                 formattedText +

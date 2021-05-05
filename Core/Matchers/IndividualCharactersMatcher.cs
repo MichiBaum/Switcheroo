@@ -2,7 +2,7 @@
 
 namespace Switcheroo.Core.Matchers {
     public class IndividualCharactersMatcher : IMatcher {
-        public MatchResult Evaluate(string input, string pattern) {
+        public MatchResult Evaluate(string? input, string? pattern) {
             if (input == null || pattern == null) return NonMatchResult(input);
 
             string regexPattern = BuildRegexPattern(pattern);
@@ -29,17 +29,16 @@ namespace Switcheroo.Core.Matchers {
             char? previousChar = null;
             foreach (char p in pattern) {
                 if (previousChar != null)
-                    regexPattern += string.Format("([^{0}]*?)({1})", Regex.Escape(previousChar + ""),
-                        Regex.Escape(p + ""));
+                    regexPattern += $"([^{Regex.Escape(previousChar + "")}]*?)({Regex.Escape(p + "")})";
                 else
-                    regexPattern += string.Format("(.*?)({0})", Regex.Escape(p + ""));
+                    regexPattern += $"(.*?)({Regex.Escape(p + "")})";
                 previousChar = p;
             }
 
             return regexPattern + "(.*)";
         }
 
-        private static MatchResult NonMatchResult(string input) {
+        private static MatchResult NonMatchResult(string? input) {
             MatchResult matchResult = new();
             if (input != null) matchResult.StringParts.Add(new StringPart(input));
             return matchResult;

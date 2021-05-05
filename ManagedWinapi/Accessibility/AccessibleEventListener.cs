@@ -13,8 +13,8 @@ namespace ManagedWinapi.Accessibility {
         private bool enabled;
         private GCHandle gch;
         private IntPtr handle = IntPtr.Zero;
-        private AccessibleEventType max = AccessibleEventType.EVENT_MAX;
-        private AccessibleEventType min = AccessibleEventType.EVENT_MIN;
+        private AccessibleEventType max = AccessibleEventType.EventMax;
+        private AccessibleEventType min = AccessibleEventType.EventMin;
         private UInt32 processId;
         private UInt32 threadId;
 
@@ -139,8 +139,6 @@ namespace ManagedWinapi.Accessibility {
             return new SystemAccessibleObject(iacc, (int)child);
         }
 
-        #region PInvoke Declarations
-
         [DllImport("user32.dll")]
         private static extern IntPtr SetWinEventHook(AccessibleEventType eventMin, AccessibleEventType eventMax, IntPtr
                 hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
@@ -156,6 +154,5 @@ namespace ManagedWinapi.Accessibility {
         private static extern uint AccessibleObjectFromEvent(IntPtr hwnd, uint dwObjectID, uint dwChildID,
             out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
 
-        #endregion
     }
 }

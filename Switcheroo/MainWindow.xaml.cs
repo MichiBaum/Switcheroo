@@ -1,6 +1,7 @@
 ﻿using ManagedWinapi;
 using ManagedWinapi.Windows;
 using Switcheroo.Core;
+using Switcheroo.Core.Filter;
 using Switcheroo.Core.Matchers;
 using Switcheroo.Properties;
 using System;
@@ -24,21 +25,21 @@ using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
-    public partial class MainWindow : Window {
+    public partial class MainWindow {
         public static readonly RoutedUICommand CloseWindowCommand = new();
         public static readonly RoutedUICommand SwitchToWindowCommand = new();
         public static readonly RoutedUICommand ScrollListDownCommand = new();
         public static readonly RoutedUICommand ScrollListUpCommand = new();
-        private AboutWindow _aboutWindow;
+        private AboutWindow? _aboutWindow;
         private bool _altTabAutoSwitch;
-        private AltTabHook _altTabHook;
-        private ObservableCollection<AppWindowViewModel> _filteredWindowList;
-        private SystemWindow _foregroundWindow;
-        private HotKey _hotkey;
-        private NotifyIcon _notifyIcon;
-        private OptionsWindow _optionsWindow;
-        private List<AppWindowViewModel> _unfilteredWindowList;
-        private WindowCloser _windowCloser;
+        private AltTabHook? _altTabHook;
+        private ObservableCollection<AppWindowViewModel>? _filteredWindowList;
+        private SystemWindow? _foregroundWindow;
+        private HotKey? _hotkey;
+        private NotifyIcon? _notifyIcon;
+        private OptionsWindow? _optionsWindow;
+        private List<AppWindowViewModel>? _unfilteredWindowList;
+        private WindowCloser? _windowCloser;
 
         public MainWindow() {
             InitializeComponent();
@@ -61,11 +62,6 @@ namespace Switcheroo {
             PreviousItem
         }
 
-        /// =================================
-
-        #region Private Methods
-
-        /// =================================
         private void SetUpKeyBindings() {
             // Enter and Esc bindings are not executed before the keys have been released.
             // This is done to prevent that the window being focused after the key presses
@@ -86,14 +82,22 @@ namespace Switcheroo {
             };
 
             KeyUp += (sender, args) => {
-                // ... But only when the keys are release, the action is actually executed
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    Switch();
-                else if (args.Key == Key.Escape)
-                    HideWindow();
-                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    Switch();
-                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) Switch();
+                switch (args.Key)
+                {
+                    // ... But only when the keys are release, the action is actually executed
+                    case Key.Enter when !Keyboard.Modifiers.HasFlag(ModifierKeys.Control):
+                        Switch();
+                        break;
+                    case Key.Escape:
+                        HideWindow();
+                        break;
+                    default: {
+                        if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                            Switch();
+                        else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) Switch();
+                        break;
+                    }
+                }
             };
         }
 
@@ -169,7 +173,7 @@ namespace Switcheroo {
 
             timer.Tick += async (sender, args) => {
                 timer.Stop();
-                Version latestVersion = await GetLatestVersion();
+                Version? latestVersion = await GetLatestVersion();
                 if (latestVersion != null && latestVersion > currentVersion) {
                     MessageBoxResult result = MessageBox.Show(
                         string.Format(
@@ -190,13 +194,13 @@ namespace Switcheroo {
             timer.Start();
         }
 
-        private static async Task<Version> GetLatestVersion() {
+        private static async Task<Version?> GetLatestVersion() {
             try {
                 // TODO add own versioning
                 string versionAsString = await new WebClient()
                     .DownloadStringTaskAsync("https://raw.github.com/MichiBaum/Switcheroo/update/version.txt")
                     .ConfigureAwait(false);
-                if (Version.TryParse(versionAsString, out Version newVersion)) return newVersion;
+                if (Version.TryParse(versionAsString, out Version? newVersion)) return newVersion;
             } catch (WebException) {
             }
 
@@ -210,7 +214,7 @@ namespace Switcheroo {
             _unfilteredWindowList =
                 new WindowFinder().GetWindows().ConvertAll(window => new AppWindowViewModel(window));
 
-            AppWindowViewModel firstWindow = _unfilteredWindowList.FirstOrDefault();
+            AppWindowViewModel? firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             bool foregroundWindowMovedToBottom = false;
 
@@ -295,13 +299,6 @@ namespace Switcheroo {
             Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
 
-        #endregion
-
-        /// =================================
-
-        #region Right-click menu functions
-
-        /// =================================
         /// <summary>
         ///     Show Options dialog.
         /// </summary>
@@ -338,13 +335,6 @@ namespace Switcheroo {
             Application.Current.Shutdown();
         }
 
-        #endregion
-
-        /// =================================
-
-        #region Event Handlers
-
-        /// =================================
         private void OnClose(object sender, CancelEventArgs e) {
             e.Cancel = true;
             HideWindow();
@@ -561,6 +551,5 @@ namespace Switcheroo {
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
 
-        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ManagedWinapi.Windows;
+using Switcheroo.Core.WinApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,7 +51,7 @@ namespace Switcheroo.Core {
 
         public AppWindow Owner {
             get {
-                IntPtr ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
+                IntPtr ownerHandle = WinApi.WinApi.GetWindow(HWnd, GetWindowCmd.GW_OWNER);
                 if (ownerHandle == IntPtr.Zero)
                     return null;
                 return new AppWindow(ownerHandle);
@@ -66,12 +67,12 @@ namespace Switcheroo.Core {
         /// </summary>
         public void SwitchTo() {
             // This function is deprecated, so should probably be replaced.
-            WinApi.SwitchToThisWindow(HWnd, true);
+            WinApi.WinApi.SwitchToThisWindow(HWnd, true);
         }
 
         public void SwitchToLastVisibleActivePopup() {
             IntPtr lastActiveVisiblePopup = GetLastActiveVisiblePopup();
-            WinApi.SwitchToThisWindow(lastActiveVisiblePopup, true);
+            WinApi.WinApi.SwitchToThisWindow(lastActiveVisiblePopup, true);
         }
 
         public bool IsAltTabWindow() {
@@ -119,14 +120,14 @@ namespace Switcheroo.Core {
             // http://blogs.msdn.com/b/oldnewthing/archive/2007/10/08/5351207.aspx
 
             // Start at the root owner
-            IntPtr hwndWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+            IntPtr hwndWalk = WinApi.WinApi.GetAncestor(HWnd, GetAncestorFlags.GetRootOwner);
 
             // See if we are the last active visible popup
             IntPtr hwndTry = IntPtr.Zero;
             while (hwndWalk != hwndTry) {
                 hwndTry = hwndWalk;
-                hwndWalk = WinApi.GetLastActivePopup(hwndTry);
-                if (WinApi.IsWindowVisible(hwndWalk)) return hwndWalk;
+                hwndWalk = WinApi.WinApi.GetLastActivePopup(hwndTry);
+                if (WinApi.WinApi.IsWindowVisible(hwndWalk)) return hwndWalk;
             }
 
             return hwndWalk;
@@ -137,7 +138,7 @@ namespace Switcheroo.Core {
         }
 
         private bool HasITaskListDeletedProperty() {
-            return WinApi.GetProp(HWnd, "ITaskList_Deleted") != IntPtr.Zero;
+            return WinApi.WinApi.GetProp(HWnd, "ITaskList_Deleted") != IntPtr.Zero;
         }
 
         private bool IsCoreWindow() {
@@ -163,7 +164,7 @@ namespace Switcheroo.Core {
             //    2 = Program is running on a different virtual desktop
 
             bool hasAppropriateApplicationViewCloakType = false;
-            WinApi.EnumPropsEx(HWnd, (_, lpszString, data, __) => {
+            WinApi.WinApi.EnumPropsEx(HWnd, (_, lpszString, data, __) => {
                 string propName = Marshal.PtrToStringAnsi(lpszString);
                 if (propName == "ApplicationViewCloakType") {
                     hasAppropriateApplicationViewCloakType = data != 1;
@@ -179,16 +180,16 @@ namespace Switcheroo.Core {
         // This method only works on Windows >= Windows Vista
         private static string GetExecutablePath(int processId) {
             StringBuilder buffer = new(1024);
-            IntPtr hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
+            IntPtr hprocess = WinApi.WinApi.OpenProcess(ProcessAccess.QueryLimitedInformation, false, processId);
             if (hprocess == IntPtr.Zero)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
 
             try {
                 // ReSharper disable once RedundantAssignment
                 int size = buffer.Capacity;
-                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size)) return buffer.ToString();
+                if (WinApi.WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size)) return buffer.ToString();
             } finally {
-                WinApi.CloseHandle(hprocess);
+                WinApi.WinApi.CloseHandle(hprocess);
             }
 
             throw new Win32Exception(Marshal.GetLastWin32Error());

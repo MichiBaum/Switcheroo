@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Switcheroo.Core.Matchers {
     public class SignificantCharactersMatcher : IMatcher {
-        public MatchResult Evaluate(string input, string pattern) {
+        public MatchResult Evaluate(string? input, string? pattern) {
             if (input == null || pattern == null) return NonMatchResult(input);
 
             string regexPattern = BuildRegexPattern(pattern);
@@ -44,7 +44,7 @@ namespace Switcheroo.Core.Matchers {
             return regexPattern;
         }
 
-        private static MatchResult NonMatchResult(string input) {
+        private static MatchResult NonMatchResult(string? input) {
             MatchResult matchResult = new();
             if (input != null) matchResult.StringParts.Add(new StringPart(input));
             return matchResult;

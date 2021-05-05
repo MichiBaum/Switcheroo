@@ -122,8 +122,6 @@ namespace ManagedWinapi.Audio.Mixer {
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        #region PInvoke Declarations
-
         internal struct MIXERLINE {
             public int cbStruct;
             public int dwDestination;
@@ -161,6 +159,5 @@ namespace ManagedWinapi.Audio.Mixer {
         internal static int MIXER_GETLINEINFOF_DESTINATION = 0;
         internal static int MIXER_GETLINEINFOF_SOURCE = 1;
 
-        #endregion
     }
 }

@@ -146,8 +146,6 @@ namespace ManagedWinapi.Audio.Mixer {
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        #region PInvoke Declarations
-
         [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
         private static extern int mixerGetLineControlsA(IntPtr hmxobj, ref
             MIXERLINECONTROLS pmxlc, int fdwControls);
@@ -217,6 +215,5 @@ namespace ManagedWinapi.Audio.Mixer {
         internal static extern int mixerSetControlDetails(IntPtr hmxobj, ref
             MIXERCONTROLDETAILS pmxcd, int fdwDetails);
 
-        #endregion
     }
 }

@@ -46,8 +46,6 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public SystemTreeViewItem[] Children => SystemTreeView.FindSubItems(sw, handle);
 
-        #region PInvoke Declarations
-
         private static readonly uint TVM_GETITEM = 0x1100 + 12, TVIF_TEXT = 1;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -64,6 +62,5 @@ namespace ManagedWinapi.Windows {
             public readonly IntPtr lParam;
         }
 
-        #endregion
     }
 }

@@ -20,8 +20,6 @@ namespace ManagedWinapi
             base.Dispose(disposing);
         }
 
-        #region Component Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -140,8 +138,6 @@ namespace ManagedWinapi
             this.ResumeLayout(false);
 
         }
-
-        #endregion
 
         private System.Windows.Forms.ToolStripMenuItem tabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem returnMenuItem;

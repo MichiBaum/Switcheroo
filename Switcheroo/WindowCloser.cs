@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Switcheroo {
     public class WindowCloser : IDisposable {
-        private static readonly TimeSpan CheckInterval = TimeSpan.FromMilliseconds(125);
+        private static readonly TimeSpan CHECK_INTERVAL = TimeSpan.FromMilliseconds(125);
         private bool _isDisposed;
 
         public void Dispose() {
@@ -15,7 +15,7 @@ namespace Switcheroo {
             window.AppWindow.Close();
 
             while (!_isDisposed && !window.AppWindow.IsClosedOrHidden)
-                await Task.Delay(CheckInterval).ConfigureAwait(false);
+                await Task.Delay(CHECK_INTERVAL).ConfigureAwait(false);
 
             return window.AppWindow.IsClosedOrHidden;
         }

@@ -60,8 +60,6 @@ namespace ManagedWinapi.Hooks {
             return 0;
         }
 
-        #region PInvoke Declarations
-
         [StructLayout(LayoutKind.Sequential)]
         private class MSLLHOOKSTRUCT {
             public IntPtr dwExtraInfo;
@@ -71,6 +69,5 @@ namespace ManagedWinapi.Hooks {
             public int time;
         }
 
-        #endregion
     }
 }
