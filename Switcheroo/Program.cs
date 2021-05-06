@@ -1,72 +1,84 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Switcheroo.Properties;
+﻿using Switcheroo.Properties;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
 
 namespace Switcheroo {
-    public class Program {
-        
+    internal class Program {
         private const string mutex_id = "DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo";
-        
-        public static void Main(string[] args)
-        {
+
+        [STAThread]
+        private static void Main() {
             RunAsAdministratorIfConfigured();
+
             using (Mutex mutex = new(false, mutex_id)) {
                 bool hasHandle = false;
                 try {
-                    hasHandle = mutex.WaitOne(5000, false);
-                    if (!hasHandle)
-                        return; //another instance exist
-        
+                    try {
+                        hasHandle = mutex.WaitOne(5000, false);
+                        if (!hasHandle)
+                            return; //another instance exist
+                    } catch (AbandonedMutexException amex) {
+                        // Log the fact the mutex was abandoned in another process, it will still get aquired
+                    }
+
+#if PORTABLE
+                        MakePortable(Settings.Default);
+#endif
+
                     MigrateUserSettings();
-                    CreateHostBuilder(args).Build().Run();
-                } catch (AbandonedMutexException amex) {
-                    // Log the fact the mutex was abandoned in another process, it will still get aquired
+
+                    App app = new() {MainWindow = new MainWindow()};
+                    app.Run();
                 } finally {
                     if (hasHandle)
                         mutex.ReleaseMutex();
                 }
             }
         }
-        
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(builder => { builder.UseStartup<Startup>(); });
-        
-        
+
         private static void RunAsAdministratorIfConfigured() {
-            if (!RunAsAdminRequested() || IsRunAsAdmin()) return;
-            ProcessStartInfo proc = new() {
-                UseShellExecute = true,
-                WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Assembly.GetEntryAssembly().CodeBase,
-                Verb = "runas"
-            };
-        
-            Process.Start(proc);
-            Environment.Exit(0);
+            if (RunAsAdminRequested() && !IsRunAsAdmin()) {
+                ProcessStartInfo proc = new() {
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = Assembly.GetEntryAssembly().CodeBase,
+                    Verb = "runas"
+                };
+
+                Process.Start(proc);
+                Environment.Exit(0);
+            }
         }
-        
-        private static bool RunAsAdminRequested() => 
-            Settings.Default.RunAsAdmin;
-        
+
+        private static bool RunAsAdminRequested() {
+            return Settings.Default.RunAsAdmin;
+        }
+
+        // TODO unused method?
+        private static void MakePortable(ApplicationSettingsBase settings) {
+            PortableSettingsProvider portableSettingsProvider = new();
+            settings.Providers.Add(portableSettingsProvider);
+            foreach (SettingsProperty prop in settings.Properties) prop.Provider = portableSettingsProvider;
+            settings.Reload();
+        }
+
         private static void MigrateUserSettings() {
             if (!Settings.Default.FirstRun)
                 return;
-        
+
             Settings.Default.Upgrade();
             Settings.Default.FirstRun = false;
             Settings.Default.Save();
         }
-        
+
         private static bool IsRunAsAdmin() {
             WindowsIdentity id = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(id);
-        
+
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
