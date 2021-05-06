@@ -1,3 +1,7 @@
+// Copyright by Switcheroo
+
+#region
+
 using Accessibility;
 using ManagedWinapi.Windows;
 using System;
@@ -6,6 +10,8 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+
+#endregion
 
 namespace ManagedWinapi.Accessibility {
     /// <summary>

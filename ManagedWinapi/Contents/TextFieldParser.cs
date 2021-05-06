@@ -1,3 +1,5 @@
+// Copyright by Switcheroo
+
 namespace ManagedWinapi.Windows.Contents {
     internal class TextFieldParser : WindowContentParser {
         private readonly bool strict;

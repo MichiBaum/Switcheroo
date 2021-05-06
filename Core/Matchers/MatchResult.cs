@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System.Collections.Generic;
+
+#endregion
 
 namespace Switcheroo.Core.Matchers {
     public class MatchResult {

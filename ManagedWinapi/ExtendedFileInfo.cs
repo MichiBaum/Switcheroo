@@ -1,8 +1,14 @@
+// Copyright by Switcheroo
+
+#region
+
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+
+#endregion
 
 namespace ManagedWinapi {
     /// <summary>

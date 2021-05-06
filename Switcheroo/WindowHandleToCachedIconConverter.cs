@@ -1,8 +1,14 @@
+// Copyright by Switcheroo
+
+#region
+
 using System;
 using System.Globalization;
 using System.Runtime.Caching;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace Switcheroo {
     public class WindowHandleToCachedIconConverter : IValueConverter {

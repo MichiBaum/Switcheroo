@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Windows.Contents {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Windows.Contents {
     internal class ComboBoxParser : WindowContentParser {
         internal override bool CanParseContent(SystemWindow sw) {
             return SystemComboBox.FromSystemWindow(sw) != null;

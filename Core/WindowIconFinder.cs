@@ -1,7 +1,13 @@
-﻿using Switcheroo.Core.WinApi;
+﻿// Copyright by Switcheroo
+
+#region
+
+using Switcheroo.Core.WinApi;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+
+#endregion
 
 namespace Switcheroo.Core {
     public class WindowIconFinder {

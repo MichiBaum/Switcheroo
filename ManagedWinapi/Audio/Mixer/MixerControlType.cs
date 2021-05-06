@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Audio.Mixer {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     The type of a mixer control.
     ///     You can find descriptions for most of these types on

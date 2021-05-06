@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Windows {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Windows {
     /// <summary>
     ///     A column of a list view.
     /// </summary>

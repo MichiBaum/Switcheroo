@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿// Copyright by Switcheroo
+
+#region
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+
+#endregion
 
 namespace Switcheroo {
     public class Startup {

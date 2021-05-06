@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Copyright by Switcheroo
 
 namespace ManagedWinapi {
     /// <summary>

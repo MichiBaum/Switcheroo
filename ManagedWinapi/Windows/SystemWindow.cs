@@ -1,3 +1,7 @@
+// Copyright by Switcheroo
+
+#region
+
 using ManagedWinapi.Windows.Contents;
 using System;
 using System.Collections.Generic;
@@ -6,6 +10,8 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+
+#endregion
 
 namespace ManagedWinapi.Windows {
     /// <summary>

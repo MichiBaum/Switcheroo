@@ -1,4 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System.Text.RegularExpressions;
+
+#endregion
 
 namespace Switcheroo.Core.Matchers {
     public class IndividualCharactersMatcher : IMatcher {

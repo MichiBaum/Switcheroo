@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -6,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+
+#endregion
 
 namespace Switcheroo {
     public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider {

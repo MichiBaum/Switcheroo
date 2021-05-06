@@ -1,5 +1,11 @@
+// Copyright by Switcheroo
+
+#region
+
 using System;
 using System.Windows.Forms;
+
+#endregion
 
 namespace ManagedWinapi {
     /// <summary>

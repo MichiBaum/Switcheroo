@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Hooks {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Hooks {
     /// <summary>
     ///     Hook Types. See the documentation of SetWindowsHookEx for reference.
     /// </summary>

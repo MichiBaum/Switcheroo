@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Accessibility {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     Represents the method that will handle accessibility events.
     /// </summary>

@@ -1,7 +1,13 @@
-﻿using System.Windows;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
+
+#endregion
 
 namespace Switcheroo {
     public class FormattedTextAttribute {

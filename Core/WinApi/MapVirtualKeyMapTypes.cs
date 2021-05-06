@@ -1,4 +1,4 @@
-// unset
+// Copyright by Switcheroo
 
 namespace Switcheroo.Core.WinApi {
     /// <summary>

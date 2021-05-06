@@ -1,3 +1,7 @@
+// Copyright by Switcheroo
+
+#region
+
 using Microsoft.Win32;
 using Switcheroo.Core;
 using System;
@@ -6,6 +10,8 @@ using System.Globalization;
 using System.Runtime.Caching;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace Switcheroo {
     public class WindowHandleToIconConverter : IValueConverter {

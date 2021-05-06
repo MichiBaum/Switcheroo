@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System;
+
+#endregion
 
 namespace Switcheroo {
     public class AltTabHookEventArgs : EventArgs {

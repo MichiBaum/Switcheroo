@@ -1,4 +1,10 @@
+// Copyright by Switcheroo
+
+#region
+
 using System.Collections.Generic;
+
+#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     internal class ContentParserRegistry {

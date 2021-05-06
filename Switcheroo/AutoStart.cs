@@ -1,7 +1,13 @@
-﻿using System;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
+#endregion
 
 namespace Switcheroo {
     // Create a shortcut file in the current users start up folder

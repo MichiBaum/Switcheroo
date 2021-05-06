@@ -1,7 +1,13 @@
-﻿using System.Drawing;
+﻿// Copyright by Switcheroo
+
+#region
+
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace Switcheroo {
     public class IconToBitmapImageConverter {

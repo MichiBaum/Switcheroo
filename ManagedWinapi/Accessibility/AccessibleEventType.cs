@@ -1,4 +1,6 @@
-﻿namespace ManagedWinapi.Accessibility {
+﻿// Copyright by Switcheroo
+
+namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     This enumeration lists known accessible event types.
     /// </summary>

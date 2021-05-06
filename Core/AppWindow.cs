@@ -1,4 +1,8 @@
-﻿using ManagedWinapi.Windows;
+﻿// Copyright by Switcheroo
+
+#region
+
+using ManagedWinapi.Windows;
 using Switcheroo.Core.WinApi;
 using System;
 using System.Collections.Generic;
@@ -9,6 +13,8 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
+
+#endregion
 
 namespace Switcheroo.Core {
     /// <summary>

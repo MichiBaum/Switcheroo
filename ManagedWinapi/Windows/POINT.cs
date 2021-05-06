@@ -1,5 +1,11 @@
+// Copyright by Switcheroo
+
+#region
+
 using System.Drawing;
 using System.Runtime.InteropServices;
+
+#endregion
 
 // from www.pinvoke.net
 namespace ManagedWinapi.Windows {
