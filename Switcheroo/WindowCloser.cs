@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Switcheroo {
     public class WindowCloser : IDisposable {
-        private static readonly TimeSpan CHECK_INTERVAL = TimeSpan.FromMilliseconds(125);
+        private readonly TimeSpan CHECK_INTERVAL = TimeSpan.FromMilliseconds(125);
         private bool _isDisposed;
 
         public void Dispose() {

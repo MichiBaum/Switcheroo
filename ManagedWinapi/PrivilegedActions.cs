@@ -79,32 +79,32 @@ namespace ManagedWinapi {
         private static extern int SetLocalTime(ref SYSTEMTIME lpSystemTime);
 
         private struct SYSTEMTIME {
-            internal readonly ushort wYear;
+            private readonly ushort _wYear;
 
-            internal readonly ushort wMonth;
+            private readonly ushort _wMonth;
 
-            internal ushort wDayOfWeek;
+            private ushort _wDayOfWeek;
 
-            internal readonly ushort wDay;
+            private readonly ushort _wDay;
 
-            internal readonly ushort wHour;
-            internal readonly ushort wMinute;
-            internal readonly ushort wSecond;
-            internal readonly ushort wMilliseconds;
+            private readonly ushort _wHour;
+            private readonly ushort _wMinute;
+            private readonly ushort _wSecond;
+            private readonly ushort _wMilliseconds;
 
             internal SYSTEMTIME(DateTime time) {
-                wYear = (ushort)time.Year;
-                wMonth = (ushort)time.Month;
-                wDayOfWeek = (ushort)time.DayOfWeek;
-                wDay = (ushort)time.Day;
-                wHour = (ushort)time.Hour;
-                wMinute = (ushort)time.Minute;
-                wSecond = (ushort)time.Second;
-                wMilliseconds = (ushort)time.Millisecond;
+                _wYear = (ushort)time.Year;
+                _wMonth = (ushort)time.Month;
+                _wDayOfWeek = (ushort)time.DayOfWeek;
+                _wDay = (ushort)time.Day;
+                _wHour = (ushort)time.Hour;
+                _wMinute = (ushort)time.Minute;
+                _wSecond = (ushort)time.Second;
+                _wMilliseconds = (ushort)time.Millisecond;
             }
 
             internal DateTime ToDateTime() {
-                return new(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds);
+                return new(_wYear, _wMonth, _wDay, _wHour, _wMinute, _wSecond, _wMilliseconds);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace ManagedWinapi {
     ///     for the <see cref="System.Windows.Forms.SendKeys" /> class.
     /// </summary>
     public class SendKeysEscaper {
-        private static SendKeysEscaper _instance;
+        private static SendKeysEscaper? _instance;
 
         private readonly EscapableState[] lookupTable = new EscapableState[256];
 
@@ -33,18 +33,12 @@ namespace ManagedWinapi {
         /// <summary>
         ///     The singleton instance.
         /// </summary>
-        public static SendKeysEscaper Instance {
-            get {
-                if (_instance == null)
-                    _instance = new SendKeysEscaper();
-                return _instance;
-            }
+        public SendKeysEscaper Instance {
+            get { return _instance ??= new SendKeysEscaper(); }
         }
 
         private EscapableState getEscapableState(char c) {
-            if (c < 256)
-                return lookupTable[c];
-            return EscapableState.ALWAYS;
+            return c < 256 ? lookupTable[c] : EscapableState.ALWAYS;
         }
 
         /// <summary>

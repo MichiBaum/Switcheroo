@@ -26,14 +26,13 @@ namespace Switcheroo {
             string key = "IconImage-" + handle;
             string shortCacheKey = key + "-shortCache";
             string longCacheKey = key + "-longCache";
-            BitmapImage? iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
-            if (iconImage == null) {
-                AppWindow window = new(handle);
-                Icon icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
-                iconImage = _iconToBitmapConverter.Convert(icon) ?? new BitmapImage();
-                MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
-                MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
-            }
+            AppWindow window = new(handle);
+
+            if (MemoryCache.Default.Get(shortCacheKey) is BitmapImage iconImage) return iconImage;
+            Icon icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
+            iconImage = _iconToBitmapConverter.Convert(icon) ?? new BitmapImage();
+            MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
+            MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
 
             return iconImage;
         }
@@ -42,7 +41,7 @@ namespace Switcheroo {
             throw new NotImplementedException();
         }
 
-        private static bool ShouldUseSmallTaskbarIcons() {
+        private bool ShouldUseSmallTaskbarIcons() {
             const string cacheKey = "SmallTaskbarIcons";
 
             bool? cachedSetting = MemoryCache.Default.Get(cacheKey) as bool?;
