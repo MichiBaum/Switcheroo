@@ -55,7 +55,7 @@ namespace Switcheroo {
         private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown) {
             AltTabHookEventArgs altTabHookEventArgs =
                 new() {ShiftDown = shiftDown, CtrlDown = ctrlDown};
-            Pressed(this, altTabHookEventArgs);
+            Pressed?.Invoke(this, altTabHookEventArgs);
             return altTabHookEventArgs;
         }
     }

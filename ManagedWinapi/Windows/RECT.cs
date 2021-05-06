@@ -81,6 +81,8 @@ namespace ManagedWinapi.Windows {
                         ^ ((Height << 7) | (Height >> 0x19));
         }
 
+        #region Operator overloads
+
         /// <summary>
         ///     Implicit Cast.
         /// </summary>
@@ -95,5 +97,6 @@ namespace ManagedWinapi.Windows {
             return new(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
+        #endregion
     }
 }

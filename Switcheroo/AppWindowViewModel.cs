@@ -1,5 +1,4 @@
 ﻿using Switcheroo.Core;
-using Switcheroo.Core.Filter;
 using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
@@ -12,9 +11,15 @@ namespace Switcheroo {
 
         public AppWindow AppWindow { get; }
 
+        #region IWindowText Members
+
         public string WindowTitle => AppWindow.Title;
 
         public string ProcessTitle => AppWindow.ProcessTitle;
+
+        #endregion
+
+        #region Bindable properties
 
         public IntPtr HWnd => AppWindow.HWnd;
 
@@ -48,6 +53,10 @@ namespace Switcheroo {
             }
         }
 
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyOfPropertyChange<T>(Expression<Func<T>> property) {
@@ -66,5 +75,6 @@ namespace Switcheroo {
             return memberExpression.Member.Name;
         }
 
+        #endregion
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 
 namespace ManagedWinapi {
@@ -49,7 +48,7 @@ namespace ManagedWinapi {
         ///     Whether you prefer to put characters into braces.
         /// </param>
         /// <returns>The escaped string.</returns>
-        public string Escape(string literal, bool preferBraced) {
+        public string escape(string literal, bool preferBraced) {
             StringBuilder sb = new(literal.Length);
             foreach (char c in literal)
                 switch (getEscapableState(c)) {
@@ -68,11 +67,34 @@ namespace ManagedWinapi {
                         else
                             sb.Append(c);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        ///     Specifies if a character needs to be escaped.
+        /// </summary>
+        private enum EscapableState {
+            /// <summary>
+            ///     The character cannot be used at all with SendKeys.
+            /// </summary>
+            NOT_AT_ALL,
+
+            /// <summary>
+            ///     The character must be escaped by putting it into braces
+            /// </summary>
+            BRACED_ONLY,
+
+            /// <summary>
+            ///     The character may not be escaped by putting it into braces
+            /// </summary>
+            UNBRACED_ONLY,
+
+            /// <summary>
+            ///     Both ways are okay.
+            /// </summary>
+            ALWAYS
         }
     }
 }

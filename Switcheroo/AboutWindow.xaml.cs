@@ -4,16 +4,15 @@ using System.Windows;
 using System.Windows.Documents;
 
 namespace Switcheroo {
-    public partial class AboutWindow {
+    public partial class AboutWindow : Window {
         public AboutWindow() {
             InitializeComponent();
-            var x = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
-            if(x != null)
-                VersionNumber.Inlines.Add(x);
+            VersionNumber.Inlines.Add(Assembly.GetEntryAssembly().GetName().Version.ToString());
         }
 
         private void HandleRequestNavigate(object sender, RoutedEventArgs e) {
-            if (e.OriginalSource is not Hyperlink hyperlink)
+            Hyperlink hyperlink = e.OriginalSource as Hyperlink;
+            if (hyperlink == null)
                 return;
 
             string navigateUri = hyperlink.NavigateUri.ToString();

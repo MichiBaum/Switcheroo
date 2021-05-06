@@ -15,20 +15,21 @@ namespace Switcheroo {
         public static void Main(string[] args)
         {
             RunAsAdministratorIfConfigured();
-            using Mutex mutex = new(false, mutex_id);
-            bool hasHandle = false;
-            try {
-                hasHandle = mutex.WaitOne(5000, false);
-                if (!hasHandle)
-                    return; //another instance exist
+            using (Mutex mutex = new(false, mutex_id)) {
+                bool hasHandle = false;
+                try {
+                    hasHandle = mutex.WaitOne(5000, false);
+                    if (!hasHandle)
+                        return; //another instance exist
         
-                MigrateUserSettings();
-                CreateHostBuilder(args).Build().Run();
-            } catch (AbandonedMutexException) {
-                // Log the fact the mutex was abandoned in another process, it will still get aquired
-            } finally {
-                if (hasHandle)
-                    mutex.ReleaseMutex();
+                    MigrateUserSettings();
+                    CreateHostBuilder(args).Build().Run();
+                } catch (AbandonedMutexException amex) {
+                    // Log the fact the mutex was abandoned in another process, it will still get aquired
+                } finally {
+                    if (hasHandle)
+                        mutex.ReleaseMutex();
+                }
             }
         }
         
@@ -42,7 +43,7 @@ namespace Switcheroo {
             ProcessStartInfo proc = new() {
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Assembly.GetEntryAssembly()?.CodeBase ?? throw new InvalidOperationException(),
+                FileName = Assembly.GetEntryAssembly().CodeBase,
                 Verb = "runas"
             };
         

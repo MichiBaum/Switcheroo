@@ -98,6 +98,8 @@ namespace ManagedWinapi.Windows {
             return new SystemListView(sw);
         }
 
+        #region PInvoke Declarations
+
         internal static readonly uint LVM_GETITEMRECT = 0x1000 + 14,
             LVM_SETITEMPOSITION = 0x1000 + 15,
             LVM_GETITEMPOSITION = 0x1000 + 16,
@@ -136,5 +138,6 @@ namespace ManagedWinapi.Windows {
             public readonly IntPtr lParam;
         }
 
+        #endregion
     }
 }

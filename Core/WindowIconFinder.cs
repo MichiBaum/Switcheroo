@@ -1,5 +1,4 @@
-﻿using Switcheroo.Core.WinApi;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -9,15 +8,15 @@ namespace Switcheroo.Core {
             Icon icon = null;
             try {
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/ms632625(v=vs.85).aspx
-                IntPtr outvalue = WinApi.WinApi.SendMessageTimeout(window.HWnd, 0x007F,
+                IntPtr outvalue = WinApi.SendMessageTimeout(window.HWnd, 0x007F,
                     size == WindowIconSize.Small ? new IntPtr(2) : new IntPtr(1),
-                    IntPtr.Zero, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 100, out IntPtr response);
+                    IntPtr.Zero, WinApi.SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 100, out IntPtr response);
 
                 if (outvalue == IntPtr.Zero || response == IntPtr.Zero)
-                    response = WinApi.WinApi.GetClassLongPtr(window.HWnd,
+                    response = WinApi.GetClassLongPtr(window.HWnd,
                         size == WindowIconSize.Small
-                            ? ClassLongFlags.GCLP_HICONSM
-                            : ClassLongFlags.GCLP_HICON);
+                            ? WinApi.ClassLongFlags.GCLP_HICONSM
+                            : WinApi.ClassLongFlags.GCLP_HICON);
 
                 if (response != IntPtr.Zero) {
                     icon = Icon.FromHandle(response);

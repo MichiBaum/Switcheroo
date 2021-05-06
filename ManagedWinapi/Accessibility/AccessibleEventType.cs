@@ -10,31 +10,31 @@
         ///     are perfectly welcome to use it.  Clients of IAccessible* will simply
         ///     turn around and get back a non-visual object that describes the sound.
         /// </summary>
-        EventSystemSound = 0x0001,
+        EVENT_SYSTEM_SOUND = 0x0001,
 
         /// <summary>
         ///     Sent when an alert needs to be given to the user.  MessageBoxes generate
         ///     alerts for example.
         /// </summary>
-        EventSystemAlert = 0x0002,
+        EVENT_SYSTEM_ALERT = 0x0002,
 
         /// <summary>
         ///     Sent when the foreground (active) window changes, even if it is changing
         ///     to another window in the same thread as the previous one.
         /// </summary>
-        EventSystemForeground = 0x0003,
+        EVENT_SYSTEM_FOREGROUND = 0x0003,
 
         /// <summary>
         ///     Sent when entering into and leaving from menu mode (system, app bar, and
         ///     track popups).
         /// </summary>
-        EventSystemMenuStart = 0x0004,
+        EVENT_SYSTEM_MENUSTART = 0x0004,
 
         /// <summary>
         ///     Sent when entering into and leaving from menu mode (system, app bar, and
         ///     track popups).
         /// </summary>
-        EventSystemMenuEnd = 0x0005,
+        EVENT_SYSTEM_MENUEND = 0x0005,
 
         /// <summary>
         ///     Sent when a menu popup comes up and just before it is taken down.  Note
@@ -42,7 +42,7 @@
         ///     followed almost immediately by EVENT_SYSTEM_MENUPOPUPSTART for the popup
         ///     being shown.
         /// </summary>
-        EventSystemMenuPopupStart = 0x0006,
+        EVENT_SYSTEM_MENUPOPUPSTART = 0x0006,
 
         /// <summary>
         ///     Sent when a menu popup comes up and just before it is taken down.  Note
@@ -50,197 +50,198 @@
         ///     followed almost immediately by EVENT_SYSTEM_MENUPOPUPSTART for the popup
         ///     being shown.
         /// </summary>
-        EventSystemMenuPopupEnd = 0x0007,
+        EVENT_SYSTEM_MENUPOPUPEND = 0x0007,
+
 
         /// <summary>
         ///     Sent when a window takes the capture and releases the capture.
         /// </summary>
-        EventSystemCaptureStart = 0x0008,
+        EVENT_SYSTEM_CAPTURESTART = 0x0008,
 
         /// <summary>
         ///     Sent when a window takes the capture and releases the capture.
         /// </summary>
-        EventSystemCaptureEnd = 0x0009,
+        EVENT_SYSTEM_CAPTUREEND = 0x0009,
 
         /// <summary>
         ///     Sent when a window enters and leaves move-size dragging mode.
         /// </summary>
-        EventSystemMoveSizeStart = 0x000A,
+        EVENT_SYSTEM_MOVESIZESTART = 0x000A,
 
         /// <summary>
         ///     Sent when a window enters and leaves move-size dragging mode.
         /// </summary>
-        EventSystemMoveSizeEnd = 0x000B,
+        EVENT_SYSTEM_MOVESIZEEND = 0x000B,
 
         /// <summary>
         ///     Sent when a window enters and leaves context sensitive help mode.
         /// </summary>
-        EventSystemContextHelpStart = 0x000C,
+        EVENT_SYSTEM_CONTEXTHELPSTART = 0x000C,
 
         /// <summary>
         ///     Sent when a window enters and leaves context sensitive help mode.
         /// </summary>
-        EventSystemContextHelpEnd = 0x000D,
+        EVENT_SYSTEM_CONTEXTHELPEND = 0x000D,
 
         /// <summary>
         ///     Sent when a window enters and leaves drag drop mode.  Note that it is up
         ///     to apps and OLE to generate this, since the system doesn't know.  Like
         ///     EVENT_SYSTEM_SOUND, it will be a while before this is prevalent.
         /// </summary>
-        EventSystemDragDropStart = 0x000E,
+        EVENT_SYSTEM_DRAGDROPSTART = 0x000E,
 
         /// <summary>
         ///     Sent when a window enters and leaves drag drop mode.  Note that it is up
         ///     to apps and OLE to generate this, since the system doesn't know.  Like
         ///     EVENT_SYSTEM_SOUND, it will be a while before this is prevalent.
         /// </summary>
-        EventSystemDragDropEnd = 0x000F,
+        EVENT_SYSTEM_DRAGDROPEND = 0x000F,
 
         /// <summary>
         ///     Sent when a dialog comes up and just before it goes away.
         /// </summary>
-        EventSystemDialogStart = 0x0010,
+        EVENT_SYSTEM_DIALOGSTART = 0x0010,
 
         /// <summary>
         ///     Sent when a dialog comes up and just before it goes away.
         /// </summary>
-        EventSystemDialogEnd = 0x0011,
+        EVENT_SYSTEM_DIALOGEND = 0x0011,
 
         /// <summary>
         ///     Sent when beginning and ending the tracking of a scrollbar in a window,
         ///     and also for scrollbar controls.
         /// </summary>
-        EventSystemScrollingStart = 0x0012,
+        EVENT_SYSTEM_SCROLLINGSTART = 0x0012,
 
         /// <summary>
         ///     Sent when beginning and ending the tracking of a scrollbar in a window,
         ///     and also for scrollbar controls.
         /// </summary>
-        EventSystemScrollingEnd = 0x0013,
+        EVENT_SYSTEM_SCROLLINGEND = 0x0013,
 
         /// <summary>
         ///     Sent when beginning and ending alt-tab mode with the switch window.
         /// </summary>
-        EventSystemSwitchStart = 0x0014,
+        EVENT_SYSTEM_SWITCHSTART = 0x0014,
 
         /// <summary>
         ///     Sent when beginning and ending alt-tab mode with the switch window.
         /// </summary>
-        EventSystemSwitchEnd = 0x0015,
+        EVENT_SYSTEM_SWITCHEND = 0x0015,
 
         /// <summary>
         ///     Sent when a window minimizes.
         /// </summary>
-        EventSystemMinimizeStart = 0x0016,
+        EVENT_SYSTEM_MINIMIZESTART = 0x0016,
 
         /// <summary>
         ///     Sent just before a window restores.
         /// </summary>
-        EventSystemMinimizeEnd = 0x0017,
+        EVENT_SYSTEM_MINIMIZEEND = 0x0017,
 
         /// <summary>
         ///     hwnd + ID + idChild is created item
         /// </summary>
-        EventObjectCreate = 0x8000,
+        EVENT_OBJECT_CREATE = 0x8000,
 
         /// <summary>
         ///     hwnd + ID + idChild is destroyed item
         /// </summary>
-        EventObjectDestroy = 0x8001,
+        EVENT_OBJECT_DESTROY = 0x8001,
 
         /// <summary>
         ///     hwnd + ID + idChild is shown item
         /// </summary>
-        EventObjectShow = 0x8002,
+        EVENT_OBJECT_SHOW = 0x8002,
 
         /// <summary>
         ///     hwnd + ID + idChild is hidden item
         /// </summary>
-        EventObjectHide = 0x8003,
+        EVENT_OBJECT_HIDE = 0x8003,
 
         /// <summary>
         ///     hwnd + ID + idChild is parent of zordering children
         /// </summary>
-        EventObjectReorder = 0x8004,
+        EVENT_OBJECT_REORDER = 0x8004,
 
         /// <summary>
         ///     hwnd + ID + idChild is focused item
         /// </summary>
-        EventObjectFocus = 0x8005,
+        EVENT_OBJECT_FOCUS = 0x8005,
 
         /// <summary>
         ///     hwnd + ID + idChild is selected item (if only one), or idChild is OBJID_WINDOW if complex
         /// </summary>
-        EventObjectSelection = 0x8006,
+        EVENT_OBJECT_SELECTION = 0x8006,
 
         /// <summary>
         ///     hwnd + ID + idChild is item added
         /// </summary>
-        EventObjectSelectionAdd = 0x8007,
+        EVENT_OBJECT_SELECTIONADD = 0x8007,
 
         /// <summary>
         ///     hwnd + ID + idChild is item removed
         /// </summary>
-        EventObjectSelectionRemove = 0x8008,
+        EVENT_OBJECT_SELECTIONREMOVE = 0x8008,
 
         /// <summary>
         ///     hwnd + ID + idChild is parent of changed selected items
         /// </summary>
-        EventObjectSelectionWithin = 0x8009,
+        EVENT_OBJECT_SELECTIONWITHIN = 0x8009,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ state change
         /// </summary>
-        EventObjectStateChange = 0x800A,
+        EVENT_OBJECT_STATECHANGE = 0x800A,
 
         /// <summary>
         ///     hwnd + ID + idChild is moved/sized item
         /// </summary>
-        EventObjectLocationChange = 0x800B,
+        EVENT_OBJECT_LOCATIONCHANGE = 0x800B,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ name change
         /// </summary>
-        EventObjectNameChange = 0x800C,
+        EVENT_OBJECT_NAMECHANGE = 0x800C,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ desc change
         /// </summary>
-        EventObjectDescriptionChange = 0x800D,
+        EVENT_OBJECT_DESCRIPTIONCHANGE = 0x800D,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ value change
         /// </summary>
-        EventObjectValueChange = 0x800E,
+        EVENT_OBJECT_VALUECHANGE = 0x800E,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ new parent
         /// </summary>
-        EventObjectParentChange = 0x800F,
+        EVENT_OBJECT_PARENTCHANGE = 0x800F,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ help change
         /// </summary>
-        EventObjectHelpChange = 0x8010,
+        EVENT_OBJECT_HELPCHANGE = 0x8010,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ def action change
         /// </summary>
-        EventObjectDefactionChange = 0x8011,
+        EVENT_OBJECT_DEFACTIONCHANGE = 0x8011,
 
         /// <summary>
         ///     hwnd + ID + idChild is item w/ keybd accel change
         /// </summary>
-        EventObjectAcceleratorChange = 0x8012,
+        EVENT_OBJECT_ACCELERATORCHANGE = 0x8012,
 
         /// <summary>
         ///     The lowest possible event value
         /// </summary>
-        EventMin = 0x00000001,
+        EVENT_MIN = 0x00000001,
 
         /// <summary>
         ///     The highest possible event value
         /// </summary>
-        EventMax = 0x7FFFFFFF
+        EVENT_MAX = 0x7FFFFFFF
     }
 }

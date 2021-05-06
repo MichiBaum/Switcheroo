@@ -59,9 +59,9 @@ namespace ManagedWinapi.Windows.Contents {
             if (parsed)
                 return;
             if (hasSysMenu)
-                sysmenu = ParseMenu(systemWindow, AccessibleObjectID.ObjidSysmenu);
+                sysmenu = ParseMenu(systemWindow, AccessibleObjectID.OBJID_SYSMENU);
             if (hasMenu)
-                menu = ParseMenu(systemWindow, AccessibleObjectID.ObjidMenu);
+                menu = ParseMenu(systemWindow, AccessibleObjectID.OBJID_MENU);
             if (hasClientArea)
                 clientarea = ParseClientArea(systemWindow);
             parsed = true;
@@ -83,7 +83,7 @@ namespace ManagedWinapi.Windows.Contents {
         }
 
         private string ParseClientArea(SystemWindow sw) {
-            SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.ObjidClient);
+            SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             StringBuilder sb = new();
             ParseClientAreaElement(sb, sao, 1);
             return sb.ToString();

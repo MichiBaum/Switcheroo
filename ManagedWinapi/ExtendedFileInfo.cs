@@ -95,6 +95,8 @@ namespace ManagedWinapi {
             return lpSectorsPerCluster * lpBytesPerSector;
         }
 
+        #region PInvoke Declarations
+
         private const uint SHGFI_ICON = 0x100;
         private const uint SHGFI_LARGEICON = 0x0; // 'Large icon
         private const uint SHGFI_SMALLICON = 0x1; // 'Small icon
@@ -130,5 +132,6 @@ namespace ManagedWinapi {
             public readonly string szTypeName;
         }
 
+        #endregion
     }
 }

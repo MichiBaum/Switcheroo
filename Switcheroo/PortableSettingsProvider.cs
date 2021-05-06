@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -143,17 +142,20 @@ namespace Switcheroo {
         }
 
         private bool IsGlobal(SettingsProperty property) {
-            return property.Attributes
-                .Cast<DictionaryEntry>()
-                .Any(attribute => (Attribute)attribute.Value! is SettingsManageabilityAttribute);
+            foreach (DictionaryEntry attribute in property.Attributes)
+                if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
+                    return true;
+
+            return false;
         }
 
         private XmlNode GetSettingsNode(string name) {
-            XmlNode? settingsNode = RootNode.SelectSingleNode(name);
+            XmlNode settingsNode = RootNode.SelectSingleNode(name);
 
-            if (settingsNode != null) return settingsNode;
-            settingsNode = RootDocument.CreateElement(name);
-            RootNode.AppendChild(settingsNode);
+            if (settingsNode == null) {
+                settingsNode = RootDocument.CreateElement(name);
+                RootNode.AppendChild(settingsNode);
+            }
 
             return settingsNode;
         }

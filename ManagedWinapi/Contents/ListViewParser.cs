@@ -16,7 +16,7 @@ namespace ManagedWinapi.Windows.Contents {
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
             if (cnt == 0)
                 throw new Exception();
-            SystemAccessibleObject o = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.ObjidClient);
+            SystemAccessibleObject o = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             if (o.RoleIndex == 33) {
                 // are there column headers?
                 int cs = o.Children.Length;
@@ -25,7 +25,7 @@ namespace ManagedWinapi.Windows.Contents {
                     SystemAccessibleObject headers = o.Children[cs - 1];
                     if (headers.RoleIndex == 9 && headers.Window != sw) {
                         SystemAccessibleObject hdrL =
-                            SystemAccessibleObject.FromWindow(headers.Window, AccessibleObjectID.ObjidClient);
+                            SystemAccessibleObject.FromWindow(headers.Window, AccessibleObjectID.OBJID_CLIENT);
                         hdr = new string[hdrL.Children.Length];
                         for (int i = 0; i < hdr.Length; i++) {
                             if (hdrL.Children[i].RoleIndex != 25) {

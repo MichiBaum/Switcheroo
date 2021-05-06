@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Switcheroo.Core.Filter {
+namespace Switcheroo.Core {
     public class WindowFilterer {
         public IEnumerable<FilterResult<T>> Filter<T>(WindowFilterContext<T> context, string query)
             where T : IWindowText {

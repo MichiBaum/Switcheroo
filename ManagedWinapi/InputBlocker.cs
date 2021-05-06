@@ -27,8 +27,11 @@ namespace ManagedWinapi {
             needUnblock = false;
         }
 
+        #region PInvoke Declarations
+
         [DllImport("user32.dll")]
         private static extern bool BlockInput(bool fBlockIt);
 
+        #endregion
     }
 }

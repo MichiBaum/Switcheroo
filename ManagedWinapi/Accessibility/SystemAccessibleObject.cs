@@ -49,7 +49,7 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     Gets an accessibility object for the mouse cursor.
         /// </summary>
-        public static SystemAccessibleObject MouseCursor => FromWindow(null, AccessibleObjectID.ObjidCursor);
+        public static SystemAccessibleObject MouseCursor => FromWindow(null, AccessibleObjectID.OBJID_CURSOR);
 
         /// <summary>
         ///     Gets an accessibility object for the input caret, or
@@ -58,7 +58,7 @@ namespace ManagedWinapi.Accessibility {
         public static SystemAccessibleObject Caret {
             get {
                 try {
-                    return FromWindow(null, AccessibleObjectID.ObjidCaret);
+                    return FromWindow(null, AccessibleObjectID.OBJID_CARET);
                 } catch (COMException) {
                     return null;
                 }
@@ -332,6 +332,8 @@ namespace ManagedWinapi.Accessibility {
             return new SystemAccessibleObject((IAccessible)obj, 0);
         }
 
+        #region Equals and HashCode
+
         ///
         public override bool Equals(Object obj) {
             if (obj == null) return false;
@@ -412,6 +414,10 @@ namespace ManagedWinapi.Accessibility {
             }
         }
 
+        #endregion
+
+        #region PInvoke Declarations
+
         [DllImport("oleacc.dll")]
         private static extern IntPtr AccessibleObjectFromPoint(POINT pt, [Out] [MarshalAs(UnmanagedType.Interface)]
             out IAccessible accObj, [Out] out object ChildID);
@@ -437,5 +443,6 @@ namespace ManagedWinapi.Accessibility {
         private static extern uint AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren,
             [Out] object[] rgvarChildren, out int pcObtained);
 
+        #endregion
     }
 }

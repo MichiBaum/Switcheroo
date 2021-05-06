@@ -160,7 +160,12 @@ namespace ManagedWinapi.Windows {
         /// <seealso cref="SystemWindow.Visible" />
         public bool VisibilityFlag {
             get => (Style & WindowStyleFlags.VISIBLE) != 0;
-            set { ShowWindow(_hwnd, value ? 5 : 0); }
+            set {
+                if (value)
+                    ShowWindow(_hwnd, 5);
+                else
+                    ShowWindow(_hwnd, 0);
+            }
         }
 
         /// <summary>
@@ -193,7 +198,9 @@ namespace ManagedWinapi.Windows {
         public SystemWindow ParentSymmetric {
             get {
                 SystemWindow result = Parent;
-                return !IsDescendantOf(result) ? null : result;
+                if (!IsDescendantOf(result))
+                    result = null;
+                return result;
             }
         }
 
@@ -303,11 +310,14 @@ namespace ManagedWinapi.Windows {
                 WINDOWPLACEMENT wp = new();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(HWnd, ref wp);
-                return (wp.showCmd % 4) switch {
-                    2 => FormWindowState.Minimized,
-                    3 => FormWindowState.Maximized,
-                    _ => FormWindowState.Normal
-                };
+                switch (wp.showCmd % 4) {
+                    case 2:
+                        return FormWindowState.Minimized;
+                    case 3:
+                        return FormWindowState.Maximized;
+                    default:
+                        return FormWindowState.Normal;
+                }
             }
             set {
                 int showCommand;
@@ -630,6 +640,8 @@ namespace ManagedWinapi.Windows {
             SendMessage(new HandleRef(this, HWnd), message, new IntPtr(value), new IntPtr(0));
         }
 
+        #region Equals and HashCode
+
         /// <summary>
         ///     Convertion of obj to SystemWindow.
         ///     If obj is null returns false and else further to Equals(SystemWindow sw)
@@ -672,6 +684,10 @@ namespace ManagedWinapi.Windows {
         public static bool operator !=(SystemWindow a, SystemWindow b) {
             return !(a == b);
         }
+
+        #endregion
+
+        #region PInvoke Declarations
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -896,5 +912,6 @@ namespace ManagedWinapi.Windows {
         [DllImport("user32.dll")]
         private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RDW flags);
 
+        #endregion
     }
 }

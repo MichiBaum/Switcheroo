@@ -7,6 +7,7 @@ namespace ManagedWinapi.Windows {
     ///     Any list box, including those from other applications.
     /// </summary>
     public class SystemListBox {
+        #region PInvoke Declarations
 
         private static readonly uint LB_GETTEXT = 0x189,
             LB_GETTEXTLEN = 0x18A,
@@ -15,6 +16,8 @@ namespace ManagedWinapi.Windows {
             //    LB_GETSELCOUNT = 0x190,
             //    LB_GETSELITEMS = 0x191,
             LB_GETCOUNT = 0x18B;
+
+        #endregion
 
         private SystemListBox(SystemWindow sw) {
             SystemWindow = sw;

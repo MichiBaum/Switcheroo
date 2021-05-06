@@ -7,10 +7,13 @@ namespace ManagedWinapi.Windows {
     ///     Any combo box, including those from other applications.
     /// </summary>
     public class SystemComboBox {
+        #region PInvoke Declarations
 
         private static readonly uint CB_GETCOUNT = 0x146,
             CB_GETLBTEXT = 0x148,
             CB_GETLBTEXTLEN = 0x149;
+
+        #endregion
 
         private SystemComboBox(SystemWindow sw) {
             SystemWindow = sw;
@@ -42,7 +45,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemComboBox reference from a SystemWindow (which is a combo box)
         /// </summary>
-        public static SystemComboBox? FromSystemWindow(SystemWindow sw) {
+        public static SystemComboBox FromSystemWindow(SystemWindow sw) {
             if (sw.SendGetMessage(CB_GETCOUNT) == 0)
                 return null;
             return new SystemComboBox(sw);

@@ -155,6 +155,8 @@ namespace ManagedWinapi {
             }
         }
 
+        #region PInvoke Declarations
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
@@ -168,5 +170,6 @@ namespace ManagedWinapi {
 
         private static readonly int WM_HOTKEY = 0x0312;
 
+        #endregion
     }
 }

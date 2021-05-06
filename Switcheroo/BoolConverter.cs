@@ -7,6 +7,8 @@ namespace Switcheroo {
         public T IfTrue { get; set; }
         public T IfFalse { get; set; }
 
+        #region IValueConverter Members
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             return (bool)value ? IfTrue : IfFalse;
         }
@@ -15,5 +17,6 @@ namespace Switcheroo {
             throw new NotImplementedException();
         }
 
+        #endregion
     }
 }

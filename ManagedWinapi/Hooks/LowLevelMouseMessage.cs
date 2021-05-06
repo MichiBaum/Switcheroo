@@ -71,6 +71,8 @@ namespace ManagedWinapi.Hooks {
                     new UIntPtr((ulong)ExtraInfo.ToInt64()));
         }
 
+        #region PInvoke Declarations
+
         [Flags]
         private enum MouseEventFlagValues {
             LEFTDOWN = 0x00000002,
@@ -97,5 +99,6 @@ namespace ManagedWinapi.Hooks {
         private const int WM_MOUSEWHEEL = 0x20A;
         private const int WM_MOUSEHWHEEL = 0x020E;
 
+        #endregion
     }
 }

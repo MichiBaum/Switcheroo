@@ -20,7 +20,7 @@ namespace Switcheroo {
             string key = "IconImage-" + handle;
             string shortCacheKey = key + "-shortCache";
             string longCacheKey = key + "-longCache";
-            BitmapImage? iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
+            BitmapImage iconImage = MemoryCache.Default.Get(shortCacheKey) as BitmapImage;
             if (iconImage == null) {
                 AppWindow window = new(handle);
                 Icon icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
@@ -42,15 +42,19 @@ namespace Switcheroo {
             bool? cachedSetting = MemoryCache.Default.Get(cacheKey) as bool?;
             if (cachedSetting != null) return cachedSetting.Value;
 
-            using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced");
+            using (
+                RegistryKey registryKey =
+                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
+                if (registryKey == null) return false;
 
-            object? value = registryKey?.GetValue("TaskbarSmallIcons");
-            if (value == null) return false;
+                object value = registryKey.GetValue("TaskbarSmallIcons");
+                if (value == null) return false;
 
-            int.TryParse(value.ToString(), out int intValue);
-            bool smallTaskbarIcons = intValue == 1;
-            MemoryCache.Default.Set(cacheKey, smallTaskbarIcons, DateTimeOffset.Now.AddMinutes(120));
-            return smallTaskbarIcons;
+                int.TryParse(value.ToString(), out int intValue);
+                bool smallTaskbarIcons = intValue == 1;
+                MemoryCache.Default.Set(cacheKey, smallTaskbarIcons, DateTimeOffset.Now.AddMinutes(120));
+                return smallTaskbarIcons;
+            }
         }
     }
 }

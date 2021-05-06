@@ -19,7 +19,7 @@ namespace ManagedWinapi {
         public ProcessMemoryChunk(Process process, IntPtr location, int size) {
             Process = process;
             hProcess = OpenProcess(
-                ProcessAccessFlags.VmOperation | ProcessAccessFlags.VmRead | ProcessAccessFlags.VmWrite, false,
+                ProcessAccessFlags.VMOperation | ProcessAccessFlags.VMRead | ProcessAccessFlags.VMWrite, false,
                 process.Id);
             ApiHelper.FailIfZero(hProcess);
             Location = location;
@@ -65,7 +65,7 @@ namespace ManagedWinapi {
         /// </summary>
         public static ProcessMemoryChunk Alloc(Process process, int size) {
             IntPtr hProcess =
-                OpenProcess(ProcessAccessFlags.VmOperation | ProcessAccessFlags.VmRead | ProcessAccessFlags.VmWrite,
+                OpenProcess(ProcessAccessFlags.VMOperation | ProcessAccessFlags.VMRead | ProcessAccessFlags.VMWrite,
                     false, process.Id);
             IntPtr remotePointer = VirtualAllocEx(hProcess, IntPtr.Zero, (uint)size,
                 MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
@@ -171,6 +171,8 @@ namespace ManagedWinapi {
             }
         }
 
+        #region PInvoke Declarations
+
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
         private static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress,
             uint dwSize, uint flAllocationType, uint flProtect);
@@ -207,5 +209,6 @@ namespace ManagedWinapi {
         private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
             IntPtr lpBuffer, UIntPtr nSize, IntPtr lpNumberOfBytesWritten);
 
+        #endregion
     }
 }
