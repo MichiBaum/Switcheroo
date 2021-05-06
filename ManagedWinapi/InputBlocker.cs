@@ -29,6 +29,5 @@ namespace ManagedWinapi {
 
         [DllImport("user32.dll")]
         private static extern bool BlockInput(bool fBlockIt);
-
     }
 }

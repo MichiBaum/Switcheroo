@@ -7,6 +7,19 @@ namespace ManagedWinapi.Hooks {
     ///     A message that has been intercepted by a low-level mouse hook
     /// </summary>
     public class LowLevelMouseMessage : LowLevelMessage {
+        private const int WM_MOUSEMOVE = 0x200;
+        private const int WM_LBUTTONDOWN = 0x201;
+        private const int WM_LBUTTONUP = 0x202;
+        private const int WM_LBUTTONDBLCLK = 0x203;
+        private const int WM_RBUTTONDOWN = 0x204;
+        private const int WM_RBUTTONUP = 0x205;
+        private const int WM_RBUTTONDBLCLK = 0x206;
+        private const int WM_MBUTTONDOWN = 0x207;
+        private const int WM_MBUTTONUP = 0x208;
+        private const int WM_MBUTTONDBLCLK = 0x209;
+        private const int WM_MOUSEWHEEL = 0x20A;
+        private const int WM_MOUSEHWHEEL = 0x020E;
+
         /// <summary>
         ///     Creates a new low-level mouse message.
         /// </summary>
@@ -83,19 +96,5 @@ namespace ManagedWinapi.Hooks {
             WHEEL = 0x00000800,
             HWHEEL = 0x00001000
         }
-
-        private const int WM_MOUSEMOVE = 0x200;
-        private const int WM_LBUTTONDOWN = 0x201;
-        private const int WM_LBUTTONUP = 0x202;
-        private const int WM_LBUTTONDBLCLK = 0x203;
-        private const int WM_RBUTTONDOWN = 0x204;
-        private const int WM_RBUTTONUP = 0x205;
-        private const int WM_RBUTTONDBLCLK = 0x206;
-        private const int WM_MBUTTONDOWN = 0x207;
-        private const int WM_MBUTTONUP = 0x208;
-        private const int WM_MBUTTONDBLCLK = 0x209;
-        private const int WM_MOUSEWHEEL = 0x20A;
-        private const int WM_MOUSEHWHEEL = 0x020E;
-
     }
 }

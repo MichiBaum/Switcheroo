@@ -12,6 +12,11 @@ namespace ManagedWinapi {
     [DefaultEvent("ClipboardChanged")]
     public class ClipboardNotifier : Component {
         private static Boolean instantiated;
+
+        private static readonly int
+            WM_DRAWCLIPBOARD = 0x0308,
+            WM_CHANGECBCHAIN = 0x030D;
+
         private readonly EventDispatchingNativeWindow ednw;
 
         private readonly IntPtr hWnd;
@@ -84,10 +89,5 @@ namespace ManagedWinapi {
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
-
-        private static readonly int
-            WM_DRAWCLIPBOARD = 0x0308,
-            WM_CHANGECBCHAIN = 0x030D;
-
     }
 }

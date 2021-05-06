@@ -179,6 +179,5 @@ namespace ManagedWinapi {
 
         [DllImport("gdi32.dll")]
         private static extern bool DeleteObject(IntPtr hObject);
-
     }
 }

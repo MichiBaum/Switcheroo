@@ -8,6 +8,7 @@ namespace ManagedWinapi.Windows {
     ///     An item of a tree view.
     /// </summary>
     public class SystemTreeViewItem {
+        private static readonly uint TVM_GETITEM = 0x1100 + 12, TVIF_TEXT = 1;
         private readonly IntPtr handle;
         private readonly SystemWindow sw;
 
@@ -46,8 +47,6 @@ namespace ManagedWinapi.Windows {
         /// </summary>
         public SystemTreeViewItem[] Children => SystemTreeView.FindSubItems(sw, handle);
 
-        private static readonly uint TVM_GETITEM = 0x1100 + 12, TVIF_TEXT = 1;
-
         [StructLayout(LayoutKind.Sequential)]
         private struct TVITEM {
             public UInt32 mask;
@@ -61,6 +60,5 @@ namespace ManagedWinapi.Windows {
             public readonly Int32 cChildren;
             public readonly IntPtr lParam;
         }
-
     }
 }

@@ -10,6 +10,10 @@ namespace ManagedWinapi {
     ///     files, like icons or compressed file size.
     /// </summary>
     public sealed class ExtendedFileInfo {
+        private const uint SHGFI_ICON = 0x100;
+        private const uint SHGFI_LARGEICON = 0x0; // 'Large icon
+        private const uint SHGFI_SMALLICON = 0x1; // 'Small icon
+
         /// <summary>
         ///     Get the icon used for folders.
         /// </summary>
@@ -95,10 +99,6 @@ namespace ManagedWinapi {
             return lpSectorsPerCluster * lpBytesPerSector;
         }
 
-        private const uint SHGFI_ICON = 0x100;
-        private const uint SHGFI_LARGEICON = 0x0; // 'Large icon
-        private const uint SHGFI_SMALLICON = 0x1; // 'Small icon
-
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern bool GetDiskFreeSpace(string lpRootPathName,
             out uint lpSectorsPerCluster,
@@ -129,6 +129,5 @@ namespace ManagedWinapi {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
             public readonly string szTypeName;
         }
-
     }
 }

@@ -8,6 +8,21 @@ namespace ManagedWinapi.Windows {
     ///     Any list view, including those from other applications.
     /// </summary>
     public class SystemListView {
+        internal static readonly uint LVM_GETITEMRECT = 0x1000 + 14,
+            LVM_SETITEMPOSITION = 0x1000 + 15,
+            LVM_GETITEMPOSITION = 0x1000 + 16,
+            LVM_GETITEMCOUNT = 0x1000 + 4,
+            LVM_GETITEM = 0x1005,
+            LVM_GETCOLUMN = 0x1000 + 25;
+
+        private static readonly uint LVIF_TEXT = 0x1,
+            LVIF_IMAGE = 0x2,
+            LVIF_STATE = 0x8,
+            LVCF_FMT = 0x1,
+            LVCF_WIDTH = 0x2,
+            LVCF_TEXT = 0x4,
+            LVCF_SUBITEM = 0x8;
+
         private readonly SystemWindow sw;
 
         private SystemListView(SystemWindow sw) {
@@ -98,21 +113,6 @@ namespace ManagedWinapi.Windows {
             return new SystemListView(sw);
         }
 
-        internal static readonly uint LVM_GETITEMRECT = 0x1000 + 14,
-            LVM_SETITEMPOSITION = 0x1000 + 15,
-            LVM_GETITEMPOSITION = 0x1000 + 16,
-            LVM_GETITEMCOUNT = 0x1000 + 4,
-            LVM_GETITEM = 0x1005,
-            LVM_GETCOLUMN = 0x1000 + 25;
-
-        private static readonly uint LVIF_TEXT = 0x1,
-            LVIF_IMAGE = 0x2,
-            LVIF_STATE = 0x8,
-            LVCF_FMT = 0x1,
-            LVCF_WIDTH = 0x2,
-            LVCF_TEXT = 0x4,
-            LVCF_SUBITEM = 0x8;
-
         [StructLayout(LayoutKind.Sequential)]
         private struct LVCOLUMN {
             public UInt32 mask;
@@ -135,6 +135,5 @@ namespace ManagedWinapi.Windows {
             public readonly Int32 iImage;
             public readonly IntPtr lParam;
         }
-
     }
 }

@@ -68,6 +68,5 @@ namespace ManagedWinapi.Hooks {
             public POINT pt;
             public int time;
         }
-
     }
 }

@@ -42,7 +42,8 @@ namespace Switcheroo {
             bool? cachedSetting = MemoryCache.Default.Get(cacheKey) as bool?;
             if (cachedSetting != null) return cachedSetting.Value;
 
-            using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced");
+            using RegistryKey? registryKey =
+                Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced");
 
             object? value = registryKey?.GetValue("TaskbarSmallIcons");
             if (value == null) return false;

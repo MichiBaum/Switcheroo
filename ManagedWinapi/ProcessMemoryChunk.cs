@@ -9,6 +9,11 @@ namespace ManagedWinapi {
     ///     in another process for sending messages to its windows.
     /// </summary>
     public class ProcessMemoryChunk : IDisposable {
+        private static readonly uint MEM_COMMIT = 0x1000,
+            MEM_RESERVE = 0x2000,
+            MEM_RELEASE = 0x8000,
+            PAGE_READWRITE = 0x04;
+
         private readonly bool free;
         private readonly IntPtr hProcess;
 
@@ -182,11 +187,6 @@ namespace ManagedWinapi {
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern int CloseHandle(IntPtr hObject);
 
-        private static readonly uint MEM_COMMIT = 0x1000,
-            MEM_RESERVE = 0x2000,
-            MEM_RELEASE = 0x8000,
-            PAGE_READWRITE = 0x04;
-
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
         private static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress,
             UIntPtr dwSize, uint dwFreeType);
@@ -206,6 +206,5 @@ namespace ManagedWinapi {
         [DllImport("kernel32.dll")]
         private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
             IntPtr lpBuffer, UIntPtr nSize, IntPtr lpNumberOfBytesWritten);
-
     }
 }

@@ -1,10 +1,9 @@
 ﻿// unset
 
 namespace ManagedWinapi {
-    
-        /// <summary>
-        ///     Specifies if a character needs to be escaped.
-        /// </summary>
+    /// <summary>
+    ///     Specifies if a character needs to be escaped.
+    /// </summary>
     internal enum EscapableState {
         /// <summary>
         ///     The character cannot be used at all with SendKeys.

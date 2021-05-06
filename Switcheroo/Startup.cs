@@ -5,28 +5,24 @@ using System;
 
 namespace Switcheroo {
     public class Startup {
-        
-        public IServiceProvider ServiceProvider { get; }
-        public IConfiguration Configuration { get; }
-        
         public Startup(IConfiguration configuration, IServiceProvider serviceProvider) {
             Configuration = configuration;
             ServiceProvider = serviceProvider;
         }
 
+        public IServiceProvider ServiceProvider { get; }
+        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             services.AddTransient(typeof(MainWindow));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
-        {
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+        public void Configure(IApplicationBuilder app) {
+            MainWindow? mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
-                
     }
 }

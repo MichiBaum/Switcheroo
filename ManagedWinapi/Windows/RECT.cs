@@ -94,6 +94,5 @@ namespace ManagedWinapi.Windows {
         public static implicit operator RECT(Rectangle rect) {
             return new(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
-
     }
 }

@@ -12,9 +12,15 @@ namespace ManagedWinapi.Windows {
     ///     Represents any window used by Windows, including those from other applications.
     /// </summary>
     public class SystemWindow {
+        private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14, WM_SYSCOMMAND = 274;
         private static readonly Predicate<SystemWindow> ALL = delegate { return true; };
 
+        private static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
+        private static readonly uint BM_GETCHECK = 0xF0, BM_SETCHECK = 0xF1;
+
         private readonly IntPtr _hwnd;
+
+        private readonly IntPtr SC_CLOSE = new(61536);
 
         private bool _isClosed;
 
@@ -160,7 +166,7 @@ namespace ManagedWinapi.Windows {
         /// <seealso cref="SystemWindow.Visible" />
         public bool VisibilityFlag {
             get => (Style & WindowStyleFlags.VISIBLE) != 0;
-            set { ShowWindow(_hwnd, value ? 5 : 0); }
+            set => ShowWindow(_hwnd, value ? 5 : 0);
         }
 
         /// <summary>
@@ -696,8 +702,6 @@ namespace ManagedWinapi.Windows {
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
-        private delegate int EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
         [DllImport("user32.dll")]
         private static extern bool IsWindowVisible(IntPtr hWnd);
 
@@ -719,16 +723,6 @@ namespace ManagedWinapi.Windows {
         [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
-        private enum GWL {
-            GWL_WNDPROC = -4,
-            GWL_HINSTANCE = -6,
-            GWL_HWNDPARENT = -8,
-            GWL_STYLE = -16,
-            GWL_EXSTYLE = -20,
-            GWL_USERDATA = -21,
-            GWL_ID = -12
-        }
-
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -737,16 +731,6 @@ namespace ManagedWinapi.Windows {
 
         [DllImport("user32.dll")]
         private static extern bool IsChild(IntPtr hWndParent, IntPtr hWnd);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WINDOWPLACEMENT {
-            public int length;
-            public readonly int flags;
-            public readonly int showCmd;
-            public readonly POINT ptMinPosition;
-            public readonly POINT ptMaxPosition;
-            public RECT rcNormalPosition;
-        }
 
         [DllImport("user32.dll")]
         private static extern bool GetWindowPlacement(IntPtr hWnd,
@@ -807,6 +791,56 @@ namespace ManagedWinapi.Windows {
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
         private static extern bool DeleteObject(IntPtr hObject);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, [Out] StringBuilder lParam);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
+            int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("user32.dll", SetLastError = false)]
+        private static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDC(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
+
+        [DllImport("user32.dll")]
+        private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RDW flags);
+
+        private delegate int EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        private enum GWL {
+            GWL_WNDPROC = -4,
+            GWL_HINSTANCE = -6,
+            GWL_HWNDPARENT = -8,
+            GWL_STYLE = -16,
+            GWL_EXSTYLE = -20,
+            GWL_USERDATA = -21,
+            GWL_ID = -12
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WINDOWPLACEMENT {
+            public int length;
+            public readonly int flags;
+            public readonly int showCmd;
+            public readonly POINT ptMinPosition;
+            public readonly POINT ptMaxPosition;
+            public RECT rcNormalPosition;
+        }
+
         private enum TernaryRasterOperations : uint {
             SRCCOPY = 0x00CC0020,
             SRCPAINT = 0x00EE0086,
@@ -832,35 +866,6 @@ namespace ManagedWinapi.Windows {
             COMPLEXREGION = 3
         }
 
-        private static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
-        private static readonly uint BM_GETCHECK = 0xF0, BM_SETCHECK = 0xF1;
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
-        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, [Out] StringBuilder lParam);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
-            int Y, int cx, int cy, uint uFlags);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
-
-        [DllImport("user32.dll", SetLastError = false)]
-        private static extern IntPtr GetDesktopWindow();
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetDC(IntPtr hWnd);
-
-        private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14, WM_SYSCOMMAND = 274;
-
-        private readonly IntPtr SC_CLOSE = new(61536);
-
         private enum GetWindow_Cmd {
             GW_HWNDFIRST = 0,
             GW_HWNDLAST = 1,
@@ -870,9 +875,6 @@ namespace ManagedWinapi.Windows {
             GW_CHILD = 5,
             GW_ENABLEDPOPUP = 6
         }
-
-        [DllImport("user32.dll")]
-        private static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
 
         private enum RDW : uint {
             RDW_INVALIDATE = 0x0001,
@@ -892,9 +894,5 @@ namespace ManagedWinapi.Windows {
             RDW_FRAME = 0x0400,
             RDW_NOFRAME = 0x0800
         }
-
-        [DllImport("user32.dll")]
-        private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RDW flags);
-
     }
 }

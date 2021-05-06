@@ -8,6 +8,12 @@ namespace ManagedWinapi.Audio.Mixer {
     ///     or a mute switch.
     /// </summary>
     public class MixerControl {
+        private static readonly int MIXER_GETLINECONTROLSF_ALL = 0x0;
+        private static readonly uint MIXERCONTROL_CT_CLASS_MASK = 0xF0000000;
+
+        private static readonly uint MIXERCONTROL_CT_SUBCLASS_MASK = 0x0F000000;
+        private static readonly uint MIXERCONTROL_CT_UNITS_MASK = 0x00FF0000;
+
         /// <summary>
         ///     Occurs when the value of this control is changed
         /// </summary>
@@ -150,6 +156,14 @@ namespace ManagedWinapi.Audio.Mixer {
         private static extern int mixerGetLineControlsA(IntPtr hmxobj, ref
             MIXERLINECONTROLS pmxlc, int fdwControls);
 
+        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
+        internal static extern int mixerGetControlDetailsA(IntPtr hmxobj, ref
+            MIXERCONTROLDETAILS pmxcd, int fdwDetails);
+
+        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
+        internal static extern int mixerSetControlDetails(IntPtr hmxobj, ref
+            MIXERCONTROLDETAILS pmxcd, int fdwDetails);
+
         private struct MIXERLINECONTROLS {
             public int cbStruct;
             public int dwLineID;
@@ -200,20 +214,5 @@ namespace ManagedWinapi.Audio.Mixer {
         internal struct MIXERCONTROLDETAILS_BOOLEAN {
             public int fValue;
         }
-
-        private static readonly int MIXER_GETLINECONTROLSF_ALL = 0x0;
-        private static readonly uint MIXERCONTROL_CT_CLASS_MASK = 0xF0000000;
-
-        private static readonly uint MIXERCONTROL_CT_SUBCLASS_MASK = 0x0F000000;
-        private static readonly uint MIXERCONTROL_CT_UNITS_MASK = 0x00FF0000;
-
-        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
-        internal static extern int mixerGetControlDetailsA(IntPtr hmxobj, ref
-            MIXERCONTROLDETAILS pmxcd, int fdwDetails);
-
-        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
-        internal static extern int mixerSetControlDetails(IntPtr hmxobj, ref
-            MIXERCONTROLDETAILS pmxcd, int fdwDetails);
-
     }
 }

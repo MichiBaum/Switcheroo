@@ -14,6 +14,13 @@ namespace ManagedWinapi.Hooks {
         /// </summary>
         public delegate int HookCallback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext);
 
+        internal static readonly int HC_ACTION = 0,
+            HC_GETNEXT = 1,
+            HC_SKIP = 2,
+            HC_NOREMOVE = 3,
+            HC_SYSMODALON = 4,
+            HC_SYSMODALOFF = 5;
+
         private readonly bool global;
 
         private readonly HookProc managedDelegate;
@@ -168,13 +175,5 @@ namespace ManagedWinapi.Hooks {
         private static extern bool FreeLibrary(IntPtr hModule);
 
         private delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
-
-        internal static readonly int HC_ACTION = 0,
-            HC_GETNEXT = 1,
-            HC_SKIP = 2,
-            HC_NOREMOVE = 3,
-            HC_SYSMODALON = 4,
-            HC_SYSMODALOFF = 5;
-
     }
 }

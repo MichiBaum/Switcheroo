@@ -436,6 +436,5 @@ namespace ManagedWinapi.Accessibility {
         [DllImport("oleacc.dll")]
         private static extern uint AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren,
             [Out] object[] rgvarChildren, out int pcObtained);
-
     }
 }

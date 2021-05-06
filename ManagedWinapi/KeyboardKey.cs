@@ -142,6 +142,5 @@ namespace ManagedWinapi {
 
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(int vKey);
-
     }
 }

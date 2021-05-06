@@ -24,7 +24,7 @@ namespace Switcheroo.Core.Matchers {
 
         private static MatchResult NonMatchResult(string? input) {
             MatchResult matchResult = new();
-            if (input != null) 
+            if (input != null)
                 matchResult.StringParts.Add(new StringPart(input));
             return matchResult;
         }

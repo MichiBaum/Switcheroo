@@ -147,12 +147,11 @@ namespace ManagedWinapi.Accessibility {
         [DllImport("user32.dll")]
         private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
-        private delegate void WinEventDelegate(IntPtr hWinEventHook, AccessibleEventType eventType,
-            IntPtr hwnd, uint idObject, uint idChild, uint dwEventThread, uint dwmsEventTime);
-
         [DllImport("oleacc.dll")]
         private static extern uint AccessibleObjectFromEvent(IntPtr hwnd, uint dwObjectID, uint dwChildID,
             out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
 
+        private delegate void WinEventDelegate(IntPtr hWinEventHook, AccessibleEventType eventType,
+            IntPtr hwnd, uint idObject, uint idChild, uint dwEventThread, uint dwmsEventTime);
     }
 }

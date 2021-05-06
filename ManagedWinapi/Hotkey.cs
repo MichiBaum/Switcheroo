@@ -13,6 +13,13 @@ namespace ManagedWinapi {
         private static readonly Object myStaticLock = new();
         private static int hotkeyCounter = 0xA000;
 
+        private static readonly int MOD_ALT = 0x0001,
+            MOD_CONTROL = 0x0002,
+            MOD_SHIFT = 0x0004,
+            MOD_WIN = 0x0008;
+
+        private static readonly int WM_HOTKEY = 0x0312;
+
         private readonly int hotkeyIndex;
         private readonly IntPtr hWnd;
         private bool _ctrl, _alt, _shift, _windows;
@@ -160,13 +167,5 @@ namespace ManagedWinapi {
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        private static readonly int MOD_ALT = 0x0001,
-            MOD_CONTROL = 0x0002,
-            MOD_SHIFT = 0x0004,
-            MOD_WIN = 0x0008;
-
-        private static readonly int WM_HOTKEY = 0x0312;
-
     }
 }

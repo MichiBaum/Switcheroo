@@ -7,7 +7,6 @@ namespace ManagedWinapi.Windows {
     ///     Any combo box, including those from other applications.
     /// </summary>
     public class SystemComboBox {
-
         private static readonly uint CB_GETCOUNT = 0x146,
             CB_GETLBTEXT = 0x148,
             CB_GETLBTEXTLEN = 0x149;
