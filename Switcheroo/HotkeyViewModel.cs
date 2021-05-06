@@ -1,13 +1,16 @@
 // Copyright by Switcheroo
 
+#region
+
 using Switcheroo.Core;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
 
+#endregion
+
 namespace Switcheroo {
     public class HotkeyViewModel {
-        
         public Key KeyCode { get; set; }
         public bool Shift { get; set; }
         public bool Alt { get; set; }
@@ -35,6 +38,5 @@ namespace Switcheroo {
             shortcutText.Append(keyString);
             return shortcutText.ToString();
         }
-        
     }
 }

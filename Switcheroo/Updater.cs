@@ -1,5 +1,7 @@
 ﻿// Copyright by Switcheroo
 
+#region
+
 using Switcheroo.Properties;
 using System;
 using System.Diagnostics;
@@ -9,14 +11,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Switcheroo {
-    public interface IUpdater
-    {
-        void CheckForUpdates();
-    }
+#endregion
 
+namespace Switcheroo {
     public class Updater : IUpdater {
-        
         public void CheckForUpdates() {
             Version currentVersion = Assembly.GetEntryAssembly().GetName().Version;
             if (currentVersion == new Version(0, 0, 0, 0)) return;

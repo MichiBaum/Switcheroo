@@ -3,9 +3,7 @@
 #region
 
 using ManagedWinapi;
-using Switcheroo.Core;
 using Switcheroo.Properties;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -160,6 +158,5 @@ namespace Switcheroo {
         private void HotKeyCheckBox_OnUnchecked(object sender, RoutedEventArgs e) {
             HotkeyPreview.IsEnabled = false;
         }
-
     }
 }
