@@ -3,6 +3,7 @@
 using System;
 
 namespace Switcheroo.Core.WinApi {
+    
     [Flags]
     public enum ProcessAccess {
         /// <summary>

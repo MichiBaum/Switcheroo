@@ -3,6 +3,7 @@
 using System;
 
 namespace Switcheroo.Core.WinApi {
+    
     [Flags]
     public enum SendMessageTimeoutFlags : uint {
         SMTO_NORMAL = 0x0,
@@ -10,4 +11,5 @@ namespace Switcheroo.Core.WinApi {
         SMTO_ABORTIFHUNG = 0x2,
         SMTO_NOTIMEOUTIFNOTHUNG = 0x8
     }
+    
 }

@@ -7,8 +7,8 @@ namespace Switcheroo {
     public partial class AboutWindow {
         public AboutWindow() {
             InitializeComponent();
-            string? x = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
-            if (x != null)
+            var x = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+            if(x != null)
                 VersionNumber.Inlines.Add(x);
         }
 

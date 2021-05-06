@@ -7,8 +7,6 @@ namespace ManagedWinapi {
     ///     a non-administrative user, like shutdown or setting the system time.
     /// </summary>
     public static class PrivilegedActions {
-        private const uint SHTDN_REASON_FLAG_PLANNED = 0x80000000;
-
         /// <summary>
         ///     Get or set the system time in the local timezone.
         /// </summary>
@@ -60,17 +58,7 @@ namespace ManagedWinapi {
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int ExitWindowsEx(uint uFlags, uint dwReason);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern int GetSystemTime(ref SYSTEMTIME lpSystemTime);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern int SetSystemTime(ref SYSTEMTIME lpSystemTime);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern int GetLocalTime(ref SYSTEMTIME lpSystemTime);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern int SetLocalTime(ref SYSTEMTIME lpSystemTime);
+        private const uint SHTDN_REASON_FLAG_PLANNED = 0x80000000;
 
         private struct SYSTEMTIME {
             internal readonly ushort wYear;
@@ -101,5 +89,18 @@ namespace ManagedWinapi {
                 return new(wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds);
             }
         }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern int GetSystemTime(ref PrivilegedActions.SYSTEMTIME lpSystemTime);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern int SetSystemTime(ref PrivilegedActions.SYSTEMTIME lpSystemTime);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern int GetLocalTime(ref PrivilegedActions.SYSTEMTIME lpSystemTime);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern int SetLocalTime(ref PrivilegedActions.SYSTEMTIME lpSystemTime);
+
     }
 }

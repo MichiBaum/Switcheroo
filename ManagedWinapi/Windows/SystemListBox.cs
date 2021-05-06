@@ -7,6 +7,7 @@ namespace ManagedWinapi.Windows {
     ///     Any list box, including those from other applications.
     /// </summary>
     public class SystemListBox {
+
         private static readonly uint LB_GETTEXT = 0x189,
             LB_GETTEXTLEN = 0x18A,
             //    LB_GETSEL = 0x187,

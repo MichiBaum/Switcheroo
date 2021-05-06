@@ -133,6 +133,15 @@ namespace ManagedWinapi.Hooks {
             return 0;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private class KBDLLHOOKSTRUCT {
+            public IntPtr dwExtraInfo;
+            public int flags;
+            public int scanCode;
+            public int time;
+            public int vkCode;
+        }
+
         [DllImport("user32.dll")]
         private static extern int GetKeyboardState(byte[] lpKeyState);
 
@@ -142,13 +151,5 @@ namespace ManagedWinapi.Hooks {
             StringBuilder pwszBuff, int cchBuff,
             uint wFlags);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private class KBDLLHOOKSTRUCT {
-            public IntPtr dwExtraInfo;
-            public int flags;
-            public int scanCode;
-            public int time;
-            public int vkCode;
-        }
     }
 }

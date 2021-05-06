@@ -7,6 +7,7 @@ namespace ManagedWinapi.Windows {
     ///     Any tree view, including those from other applications.
     /// </summary>
     public class SystemTreeView {
+
         private static readonly uint TVM_GETCOUNT = 0x1100 + 5,
             TVM_GETNEXTITEM = 0x1100 + 10,
             TVGN_ROOT = 0,

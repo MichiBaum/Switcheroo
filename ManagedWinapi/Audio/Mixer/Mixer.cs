@@ -12,9 +12,6 @@ namespace ManagedWinapi.Audio.Mixer {
     ///     each has multiple source lines (Wave, MIDI, Mic, etc.).
     /// </summary>
     public class Mixer : IDisposable {
-        private static readonly uint CALLBACK_WINDOW = 0x00010000;
-        private static readonly int MM_MIXM_LINE_CHANGE = 0x3D0;
-        private static readonly int MM_MIXM_CONTROL_CHANGE = 0x3D1;
         private readonly MIXERCAPS mc;
 
         /// <summary>
@@ -183,5 +180,10 @@ namespace ManagedWinapi.Audio.Mixer {
             public int fdwSupport;
             public int cDestinations;
         }
+
+        private static readonly uint CALLBACK_WINDOW = 0x00010000;
+        private static readonly int MM_MIXM_LINE_CHANGE = 0x3D0;
+        private static readonly int MM_MIXM_CONTROL_CHANGE = 0x3D1;
+
     }
 }

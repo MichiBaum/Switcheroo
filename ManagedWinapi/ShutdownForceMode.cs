@@ -1,6 +1,7 @@
 ﻿// unset
 
 namespace ManagedWinapi {
+    
     /// <summary>
     ///     Whether shutdown should be forced if an application cancels it
     ///     or is hung.

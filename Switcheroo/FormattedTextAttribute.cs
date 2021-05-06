@@ -19,8 +19,7 @@ namespace Switcheroo {
             return (string)textBlock.GetValue(FormattedTextProperty);
         }
 
-        private static void FormattedTextChanged(DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
+        private static void FormattedTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
             if (dependencyObject is not TextBlock textBlock) return;
 
             string formattedText = (string)dependencyPropertyChangedEventArgs.NewValue ?? string.Empty;

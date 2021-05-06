@@ -8,7 +8,6 @@ namespace ManagedWinapi.Hooks {
     ///     a log of keyboard and mouse events.
     /// </summary>
     public abstract class JournalHook : Hook {
-        private static readonly int WM_CANCELJOURNAL = 0x4B;
         private readonly LocalMessageHook lmh;
 
         /// <summary>
@@ -53,6 +52,8 @@ namespace ManagedWinapi.Hooks {
             lmh.Unhook();
         }
 
+        private static readonly int WM_CANCELJOURNAL = 0x4B;
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct EVENTMSG {
             public uint message;
@@ -61,5 +62,6 @@ namespace ManagedWinapi.Hooks {
             public int time;
             public IntPtr hWnd;
         }
+
     }
 }

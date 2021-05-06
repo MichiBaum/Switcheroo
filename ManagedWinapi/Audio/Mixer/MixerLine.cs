@@ -10,9 +10,6 @@ namespace ManagedWinapi.Audio.Mixer {
         private static readonly IList<MixerLine> EMPTY_LIST =
             new List<MixerLine>().AsReadOnly();
 
-        internal static int MIXER_GETLINEINFOF_DESTINATION = 0;
-        internal static int MIXER_GETLINEINFOF_SOURCE = 1;
-
         /// <summary>
         ///     Occurs when this line changes.
         /// </summary>
@@ -125,10 +122,6 @@ namespace ManagedWinapi.Audio.Mixer {
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
-        internal static extern int mixerGetLineInfoA(IntPtr hmxobj, ref
-            MIXERLINE pmxl, int fdwInfo);
-
         internal struct MIXERLINE {
             public int cbStruct;
             public int dwDestination;
@@ -158,5 +151,13 @@ namespace ManagedWinapi.Audio.Mixer {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
             public string szPname;
         }
+
+        [DllImport("winmm.dll", CharSet = CharSet.Ansi)]
+        internal static extern int mixerGetLineInfoA(IntPtr hmxobj, ref
+            MIXERLINE pmxl, int fdwInfo);
+
+        internal static int MIXER_GETLINEINFOF_DESTINATION = 0;
+        internal static int MIXER_GETLINEINFOF_SOURCE = 1;
+
     }
 }

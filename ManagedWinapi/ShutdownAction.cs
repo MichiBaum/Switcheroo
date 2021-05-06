@@ -1,6 +1,7 @@
 ﻿// unset
 
 namespace ManagedWinapi {
+    
     /// <summary>
     ///     Actions that can be performed at shutdown.
     /// </summary>

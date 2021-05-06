@@ -6,13 +6,6 @@ namespace ManagedWinapi.Hooks {
     ///     A message that has been intercepted by a low-level mouse hook
     /// </summary>
     public class LowLevelKeyboardMessage : LowLevelMessage {
-        private const int KEYEVENTF_KEYUP = 0x2;
-
-        private const int WM_KEYDOWN = 0x100,
-            WM_KEYUP = 0x101,
-            WM_SYSKEYDOWN = 0x104,
-            WM_SYSKEYUP = 0x105;
-
         /// <summary>
         ///     Creates a new low-level keyboard message.
         /// </summary>
@@ -57,5 +50,13 @@ namespace ManagedWinapi.Hooks {
             KeyboardKey.InjectKeyboardEvent((Keys)VirtualKeyCode, (byte)ScanCode, KeyboardEventFlags,
                 new UIntPtr((ulong)ExtraInfo.ToInt64()));
         }
+
+        private const int KEYEVENTF_KEYUP = 0x2;
+
+        private const int WM_KEYDOWN = 0x100,
+            WM_KEYUP = 0x101,
+            WM_SYSKEYDOWN = 0x104,
+            WM_SYSKEYUP = 0x105;
+
     }
 }

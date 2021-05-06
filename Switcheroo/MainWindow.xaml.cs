@@ -57,6 +57,11 @@ namespace Switcheroo {
             Opacity = 0;
         }
 
+        private enum InitialFocus {
+            NextItem,
+            PreviousItem
+        }
+
         private void SetUpKeyBindings() {
             // Enter and Esc bindings are not executed before the keys have been released.
             // This is done to prevent that the window being focused after the key presses
@@ -77,7 +82,8 @@ namespace Switcheroo {
             };
 
             KeyUp += (sender, args) => {
-                switch (args.Key) {
+                switch (args.Key)
+                {
                     // ... But only when the keys are release, the action is actually executed
                     case Key.Enter when !Keyboard.Modifiers.HasFlag(ModifierKeys.Control):
                         Switch();
@@ -150,10 +156,10 @@ namespace Switcheroo {
             };
         }
 
-        private static void RunOnStartup(ToolStripMenuItem? menuItem) {
+        private static void RunOnStartup(ToolStripMenuItem menuItem) {
             try {
-                AutoStart autoStart = new() {IsEnabled = menuItem is {Checked: false}};
-                if (menuItem != null) menuItem.Checked = autoStart.IsEnabled;
+                AutoStart autoStart = new() {IsEnabled = !menuItem.Checked};
+                menuItem.Checked = autoStart.IsEnabled;
             } catch (AutoStartException e) {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -545,9 +551,5 @@ namespace Switcheroo {
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
 
-        private enum InitialFocus {
-            NextItem,
-            PreviousItem
-        }
     }
 }

@@ -92,15 +92,16 @@ namespace Switcheroo {
             // Ignore modifier keys
             if (
                 key is Key.LeftShift
-                    or Key.RightShift
-                    or Key.LeftCtrl
-                    or Key.RightCtrl
-                    or Key.LeftAlt
-                    or Key.RightAlt
-                    or Key.LWin
-                    or Key.RWin
-            )
+                or Key.RightShift
+                or Key.LeftCtrl
+                or Key.RightCtrl
+                or Key.LeftAlt
+                or Key.RightAlt
+                or Key.LWin
+                or Key.RWin
+            ) {
                 return;
+            }
 
             HotkeyViewModel previewHotkeyModel = new() {
                 Ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0,
