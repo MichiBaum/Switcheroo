@@ -14,29 +14,28 @@ namespace Switcheroo {
         private static void Main() {
             RunAsAdministratorIfConfigured();
 
-            using (Mutex mutex = new(false, mutex_id)) {
-                bool hasHandle = false;
+            using Mutex mutex = new(false, mutex_id);
+            bool hasHandle = false;
+            try {
                 try {
-                    try {
-                        hasHandle = mutex.WaitOne(5000, false);
-                        if (!hasHandle)
-                            return; //another instance exist
-                    } catch (AbandonedMutexException amex) {
-                        // Log the fact the mutex was abandoned in another process, it will still get aquired
-                    }
+                    hasHandle = mutex.WaitOne(5000, false);
+                    if (!hasHandle)
+                        return; //another instance exist
+                } catch (AbandonedMutexException amex) {
+                    // Log the fact the mutex was abandoned in another process, it will still get aquired
+                }
 
 #if PORTABLE
                         MakePortable(Settings.Default);
 #endif
 
-                    MigrateUserSettings();
+                MigrateUserSettings();
 
-                    App app = new() {MainWindow = new MainWindow()};
-                    app.Run();
-                } finally {
-                    if (hasHandle)
-                        mutex.ReleaseMutex();
-                }
+                App app = new() {MainWindow = new MainWindow()};
+                app.Run();
+            } finally {
+                if (hasHandle)
+                    mutex.ReleaseMutex();
             }
         }
 

@@ -18,13 +18,13 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     Create an accessible object from an IAccessible instance and a child ID.
         /// </summary>
-        public SystemAccessibleObject(IAccessible iacc, int childID) {
+        public SystemAccessibleObject(IAccessible? iacc, int childID) {
             if (iacc == null)
                 throw new ArgumentNullException();
             //if (childID < 0) throw new ArgumentException();
             if (childID != 0)
                 try {
-                    object realChild = iacc.get_accChild(childID);
+                    object? realChild = iacc.get_accChild(childID);
                     if (realChild != null) {
                         iacc = (IAccessible)realChild;
                         childID = 0;
@@ -55,7 +55,7 @@ namespace ManagedWinapi.Accessibility {
         ///     Gets an accessibility object for the input caret, or
         ///     <b>null</b> if there is none.
         /// </summary>
-        public static SystemAccessibleObject Caret {
+        public static SystemAccessibleObject? Caret {
             get {
                 try {
                     return FromWindow(null, AccessibleObjectID.OBJID_CARET);
@@ -143,11 +143,11 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     The parent of this accessible object, or <b>null</b> if none exists.
         /// </summary>
-        public SystemAccessibleObject Parent {
+        public SystemAccessibleObject? Parent {
             get {
                 if (ChildID != 0)
                     return new SystemAccessibleObject(IAccessible, 0);
-                IAccessible p = (IAccessible)IAccessible.accParent;
+                IAccessible? p = (IAccessible)IAccessible.accParent;
                 if (p == null)
                     return null;
                 return new SystemAccessibleObject(p, 0);
@@ -157,7 +157,7 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     The keyboard shortcut of this accessible object.
         /// </summary>
-        public string KeyboardShortcut {
+        public string? KeyboardShortcut {
             get {
                 try {
                     return IAccessible.get_accKeyboardShortcut(ChildID);
@@ -175,7 +175,7 @@ namespace ManagedWinapi.Accessibility {
         ///     A string describing the default action of this accessible object.
         ///     For a button, this might be "Press".
         /// </summary>
-        public string DefaultAction {
+        public string? DefaultAction {
             get {
                 try {
                     return IAccessible.get_accDefaultAction(ChildID);
@@ -192,7 +192,7 @@ namespace ManagedWinapi.Accessibility {
             get {
                 if (ChildID != 0)
                     return new SystemAccessibleObject[0];
-                object sel;
+                object? sel;
                 try {
                     sel = IAccessible.accSelection;
                 } catch (NotImplementedException) {
@@ -276,7 +276,7 @@ namespace ManagedWinapi.Accessibility {
         /// <param name="window">The window</param>
         /// <param name="objectID">Which accessibility object to get</param>
         /// <returns></returns>
-        public static SystemAccessibleObject FromWindow(SystemWindow window, AccessibleObjectID objectID) {
+        public static SystemAccessibleObject FromWindow(SystemWindow? window, AccessibleObjectID objectID) {
             IAccessible iacc = (IAccessible)AccessibleObjectFromWindow(window == null ? IntPtr.Zero : window.HWnd,
                 (uint)objectID, new Guid("{618736E0-3C3D-11CF-810C-00AA00389B71}"));
             return new SystemAccessibleObject(iacc, 0);
@@ -335,14 +335,14 @@ namespace ManagedWinapi.Accessibility {
         #region Equals and HashCode
 
         ///
-        public override bool Equals(Object obj) {
+        public override bool Equals(Object? obj) {
             if (obj == null) return false;
-            SystemAccessibleObject sao = obj as SystemAccessibleObject;
+            SystemAccessibleObject? sao = obj as SystemAccessibleObject;
             return Equals(sao);
         }
 
         ///
-        public bool Equals(SystemAccessibleObject sao) {
+        public bool Equals(SystemAccessibleObject? sao) {
             if ((object)sao == null) return false;
             return ChildID == sao.ChildID && DeepEquals(IAccessible, sao.IAccessible);
         }
@@ -392,7 +392,7 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     Compare two instances of this class for equality.
         /// </summary>
-        public static bool operator ==(SystemAccessibleObject a, SystemAccessibleObject b) {
+        public static bool operator ==(SystemAccessibleObject? a, SystemAccessibleObject? b) {
             if (ReferenceEquals(a, b)) return true;
             if ((object)a == null || (object)b == null) return false;
             return a.IAccessible == b.IAccessible && a.ChildID == b.ChildID;

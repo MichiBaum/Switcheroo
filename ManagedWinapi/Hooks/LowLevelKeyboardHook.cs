@@ -57,17 +57,17 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         ///     Called when a key has been intercepted.
         /// </summary>
-        public event KeyCallback KeyIntercepted;
+        public event KeyCallback? KeyIntercepted;
 
         /// <summary>
         ///     Called when a character has been intercepted.
         /// </summary>
-        public event CharCallback CharIntercepted;
+        public event CharCallback? CharIntercepted;
 
         /// <summary>
         ///     Called when a key message has been intercepted.
         /// </summary>
-        public event LowLevelMessageCallback MessageIntercepted;
+        public event LowLevelMessageCallback? MessageIntercepted;
 
         private int LowLevelKeyboardHook_Callback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext) {
             if (code == HC_ACTION) {

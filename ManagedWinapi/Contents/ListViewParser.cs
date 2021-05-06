@@ -20,7 +20,7 @@ namespace ManagedWinapi.Windows.Contents {
             if (o.RoleIndex == 33) {
                 // are there column headers?
                 int cs = o.Children.Length;
-                string[] hdr = null;
+                string[]? hdr = null;
                 if (cs > 0) {
                     SystemAccessibleObject headers = o.Children[cs - 1];
                     if (headers.RoleIndex == 9 && headers.Window != sw) {
@@ -46,7 +46,7 @@ namespace ManagedWinapi.Windows.Contents {
                         string name = o.Children[i].Name;
                         if (hdr != null)
                             try {
-                                string cols = o.Children[i].Description;
+                                string? cols = o.Children[i].Description;
                                 if (cols == null && values.Count == 0) { hdr = null; } else {
                                     string tmpCols = "; " + cols;
                                     List<string> usedHdr = new();

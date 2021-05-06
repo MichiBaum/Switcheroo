@@ -45,7 +45,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemComboBox reference from a SystemWindow (which is a combo box)
         /// </summary>
-        public static SystemComboBox FromSystemWindow(SystemWindow sw) {
+        public static SystemComboBox? FromSystemWindow(SystemWindow sw) {
             if (sw.SendGetMessage(CB_GETCOUNT) == 0)
                 return null;
             return new SystemComboBox(sw);

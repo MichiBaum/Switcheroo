@@ -41,7 +41,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     The selected element in this list box.
         /// </summary>
-        public string SelectedItem {
+        public string? SelectedItem {
             get {
                 int idx = SelectedIndex;
                 if (idx == -1)
@@ -66,7 +66,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemListBox reference from a SystemWindow (which is a list box)
         /// </summary>
-        public static SystemListBox FromSystemWindow(SystemWindow sw) {
+        public static SystemListBox? FromSystemWindow(SystemWindow sw) {
             if (sw.SendGetMessage(LB_GETCOUNT) == 0)
                 return null;
             return new SystemListBox(sw);

@@ -92,7 +92,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemListView reference from a SystemWindow (which is a list view)
         /// </summary>
-        public static SystemListView FromSystemWindow(SystemWindow sw) {
+        public static SystemListView? FromSystemWindow(SystemWindow sw) {
             if (sw.SendGetMessage(LVM_GETITEMCOUNT) == 0)
                 return null;
             return new SystemListView(sw);

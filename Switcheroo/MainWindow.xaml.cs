@@ -190,7 +190,7 @@ namespace Switcheroo {
             timer.Start();
         }
 
-        private static async Task<Version> GetLatestVersion() {
+        private static async Task<Version?> GetLatestVersion() {
             try {
                 // TODO add own versioning
                 string versionAsString = await new WebClient()

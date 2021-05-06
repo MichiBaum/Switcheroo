@@ -20,12 +20,12 @@ namespace Switcheroo.Core {
         public string ProcessTitle {
             get {
                 string key = "ProcessTitle-" + HWnd;
-                string processTitle = MemoryCache.Default.Get(key) as string;
+                string? processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null) {
                     if (IsApplicationFrameWindow()) {
                         processTitle = "UWP";
 
-                        Process underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
+                        Process? underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
                             .Select(w => w.Process)
                             .FirstOrDefault();
 
@@ -48,7 +48,7 @@ namespace Switcheroo.Core {
 
         public string ExecutablePath => GetExecutablePath(Process.Id);
 
-        public AppWindow Owner {
+        public AppWindow? Owner {
             get {
                 IntPtr ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
                 if (ownerHandle == IntPtr.Zero)

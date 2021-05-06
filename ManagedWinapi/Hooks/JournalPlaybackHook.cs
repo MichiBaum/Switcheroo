@@ -11,7 +11,7 @@ namespace ManagedWinapi.Hooks {
         /// </summary>
         public delegate JournalMessage JournalQuery(ref int timestamp);
 
-        private JournalMessage nextEvent;
+        private JournalMessage? nextEvent;
         private int nextEventTime;
 
         /// <summary>

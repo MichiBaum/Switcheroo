@@ -94,10 +94,10 @@ namespace ManagedWinapi.Audio.Mixer {
         public virtual void Dispose() {
         }
 
-        internal MixerLine FindLine(int lineId) {
+        internal MixerLine? FindLine(int lineId) {
             if (Id == lineId) return this;
             foreach (MixerLine ml in ChildLines) {
-                MixerLine found = ml.FindLine(lineId);
+                MixerLine? found = ml.FindLine(lineId);
                 if (found != null)
                     return found;
             }
@@ -105,12 +105,12 @@ namespace ManagedWinapi.Audio.Mixer {
             return null;
         }
 
-        internal MixerControl FindControl(int ctrlId) {
+        internal MixerControl? FindControl(int ctrlId) {
             foreach (MixerControl c in Controls)
                 if (c.Id == ctrlId)
                     return c;
             foreach (MixerLine l in ChildLines) {
-                MixerControl found = l.FindControl(ctrlId);
+                MixerControl? found = l.FindControl(ctrlId);
                 if (found != null)
                     return found;
             }

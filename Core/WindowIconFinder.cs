@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Switcheroo.Core {
     public class WindowIconFinder {
         public Icon Find(AppWindow window, WindowIconSize size) {
-            Icon icon = null;
+            Icon? icon = null;
             try {
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/ms632625(v=vs.85).aspx
                 IntPtr outvalue = WinApi.SendMessageTimeout(window.HWnd, 0x007F,

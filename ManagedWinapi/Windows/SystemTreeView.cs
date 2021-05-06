@@ -36,7 +36,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemTreeView reference from a SystemWindow (which is a tree view)
         /// </summary>
-        public static SystemTreeView FromSystemWindow(SystemWindow sw) {
+        public static SystemTreeView? FromSystemWindow(SystemWindow sw) {
             if (sw.SendGetMessage(TVM_GETCOUNT) == 0)
                 return null;
             return new SystemTreeView(sw);

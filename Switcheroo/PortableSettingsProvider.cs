@@ -12,7 +12,7 @@ namespace Switcheroo {
         private const string _localSettingsNodeName = "localSettings";
         private const string _globalSettingsNodeName = "globalSettings";
         private const string _className = "PortableSettingsProvider";
-        private XmlDocument _xmlDocument;
+        private XmlDocument? _xmlDocument;
 
         private string _filePath =>
             Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
@@ -21,7 +21,7 @@ namespace Switcheroo {
         private XmlNode _localSettingsNode {
             get {
                 XmlNode settingsNode = GetSettingsNode(_localSettingsNodeName);
-                XmlNode machineNode = settingsNode.SelectSingleNode(Environment.MachineName.ToLowerInvariant());
+                XmlNode? machineNode = settingsNode.SelectSingleNode(Environment.MachineName.ToLowerInvariant());
 
                 if (machineNode == null) {
                     machineNode = RootDocument.CreateElement(Environment.MachineName.ToLowerInvariant());
@@ -34,7 +34,7 @@ namespace Switcheroo {
 
         private XmlNode GlobalSettingsNode => GetSettingsNode(_globalSettingsNodeName);
 
-        private XmlNode RootNode => RootDocument.SelectSingleNode(_rootNodeName);
+        private XmlNode? RootNode => RootDocument.SelectSingleNode(_rootNodeName);
 
         private XmlDocument RootDocument {
             get {
@@ -46,7 +46,7 @@ namespace Switcheroo {
                         // TODO do something with the exception
                     }
 
-                    if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)
+                    if (_xmlDocument?.SelectSingleNode(_rootNodeName) != null)
                         return _xmlDocument;
 
                     _xmlDocument = GetBlankXmlDocument();
@@ -113,27 +113,27 @@ namespace Switcheroo {
                 ? GlobalSettingsNode
                 : _localSettingsNode;
 
-            XmlNode settingNode =
+            XmlNode? settingNode =
                 targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
             if (settingNode != null) {
-                settingNode.InnerText = propertyValue.SerializedValue.ToString();
+                settingNode.InnerText = propertyValue.SerializedValue.ToString() ?? string.Empty;
             } else {
                 settingNode = RootDocument.CreateElement("setting");
 
                 XmlAttribute nameAttribute = RootDocument.CreateAttribute("name");
                 nameAttribute.Value = propertyValue.Name;
 
-                settingNode.Attributes.Append(nameAttribute);
-                settingNode.InnerText = propertyValue.SerializedValue.ToString();
+                settingNode.Attributes?.Append(nameAttribute);
+                settingNode.InnerText = propertyValue.SerializedValue.ToString() ?? string.Empty;
 
                 targetNode.AppendChild(settingNode);
             }
         }
 
-        private string GetValue(SettingsProperty property) {
+        private string? GetValue(SettingsProperty property) {
             XmlNode targetNode = IsGlobal(property) ? GlobalSettingsNode : _localSettingsNode;
-            XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
+            XmlNode? settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
 
             if (settingNode == null)
                 return property.DefaultValue != null ? property.DefaultValue.ToString() : string.Empty;
@@ -150,11 +150,11 @@ namespace Switcheroo {
         }
 
         private XmlNode GetSettingsNode(string name) {
-            XmlNode settingsNode = RootNode.SelectSingleNode(name);
+            XmlNode? settingsNode = RootNode?.SelectSingleNode(name);
 
             if (settingsNode == null) {
                 settingsNode = RootDocument.CreateElement(name);
-                RootNode.AppendChild(settingsNode);
+                RootNode?.AppendChild(settingsNode);
             }
 
             return settingsNode;

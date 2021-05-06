@@ -95,7 +95,7 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     Occurs when an accessible event is received.
         /// </summary>
-        public event AccessibleEventHandler EventOccurred;
+        public event AccessibleEventHandler? EventOccurred;
 
         private void updateListener() {
             if (handle != IntPtr.Zero) {

@@ -1,8 +1,10 @@
+using ManagedWinapi.Windows;
+using ManagedWinapi.Windows.Contents;
 using System.Collections.Generic;
 
-namespace ManagedWinapi.Windows.Contents {
+namespace ManagedWinapi.Contents {
     internal class ContentParserRegistry {
-        private static ContentParserRegistry instance;
+        private static ContentParserRegistry? instance;
         private readonly List<WindowContentParser> parsers = new();
 
         private ContentParserRegistry() {
@@ -23,7 +25,7 @@ namespace ManagedWinapi.Windows.Contents {
             }
         }
 
-        public WindowContentParser GetParser(SystemWindow sw) {
+        public WindowContentParser? GetParser(SystemWindow sw) {
             foreach (WindowContentParser p in parsers)
                 if (p.CanParseContent(sw))
                     return p;

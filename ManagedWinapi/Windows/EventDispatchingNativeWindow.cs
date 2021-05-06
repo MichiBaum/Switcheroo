@@ -9,7 +9,7 @@ namespace ManagedWinapi.Windows {
     /// </summary>
     public class EventDispatchingNativeWindow : NativeWindow {
         private static readonly Object myLock = new();
-        private static EventDispatchingNativeWindow _instance;
+        private static EventDispatchingNativeWindow? _instance;
 
         /// <summary>
         ///     Create your own event dispatching window.
