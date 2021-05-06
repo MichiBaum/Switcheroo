@@ -11,7 +11,6 @@ using System.Windows.Markup;
 
 namespace Switcheroo {
     public class FormattedTextAttribute {
-        
         public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.RegisterAttached(
             "FormattedText",
             typeof(string),
@@ -20,6 +19,10 @@ namespace Switcheroo {
 
         public static void SetFormattedText(DependencyObject textBlock, string value) {
             textBlock.SetValue(FormattedTextProperty, value);
+        }
+
+        public static string GetFormattedText(DependencyObject textBlock) {
+            return (string)textBlock.GetValue(FormattedTextProperty);
         }
 
         private static void FormattedTextChanged(DependencyObject dependencyObject,

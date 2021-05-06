@@ -11,6 +11,8 @@ using System.Windows.Forms;
 
 namespace Switcheroo {
     public class AltTabHook : IDisposable {
+        private const int AltKey = 32;
+        private const int CtrlKey = 11;
         private readonly KeyboardKey _altKey = new(Keys.LMenu);
         private readonly KeyboardKey _ctrlKey = new(Keys.LControlKey);
 
@@ -47,7 +49,7 @@ namespace Switcheroo {
             handled = eventArgs.Handled;
         }
 
-        private bool IsKeyDown(KeyboardKey keyboardKey) {
+        private static bool IsKeyDown(KeyboardKey keyboardKey) {
             return (keyboardKey.AsyncState & 32768) != 0;
         }
 

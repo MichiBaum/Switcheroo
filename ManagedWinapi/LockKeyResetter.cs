@@ -37,22 +37,24 @@ namespace ManagedWinapi {
             for (int i = 0; i < MODIFIER_KEYS.Length; i++) {
                 KeyboardKey k = new(MODIFIER_KEYS[i]);
                 short dummy = k.AsyncState; // reset remembered status
-                if (k.AsyncState == 0) continue;
-                simpleModifiers[i] = true;
-                k.Release();
+                if (k.AsyncState != 0) {
+                    simpleModifiers[i] = true;
+                    k.Release();
+                }
             }
 
             KeyboardKey capslockKey = new(Keys.CapsLock);
             int capslockstate = capslockKey.State;
             capslock = (capslockstate & 0x01) == 0x01;
-            if (!capslock) return;
-            // press caps lock
-            capslockKey.PressAndRelease();
-            Application.DoEvents();
-            if ((capslockKey.State & 0x01) == 0x01) // press shift
-                new KeyboardKey(Keys.ShiftKey).PressAndRelease();
-            Application.DoEvents();
-            if ((capslockKey.State & 0x01) == 0x01) throw new Exception("Cannot disable caps lock.");
+            if (capslock) {
+                // press caps lock
+                capslockKey.PressAndRelease();
+                Application.DoEvents();
+                if ((capslockKey.State & 0x01) == 0x01) // press shift
+                    new KeyboardKey(Keys.ShiftKey).PressAndRelease();
+                Application.DoEvents();
+                if ((capslockKey.State & 0x01) == 0x01) throw new Exception("Cannot disable caps lock.");
+            }
         }
 
         /// <summary>

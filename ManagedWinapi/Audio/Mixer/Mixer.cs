@@ -6,7 +6,6 @@ using ManagedWinapi.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -141,9 +140,13 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <param name="lineId">ID of the line to find</param>
         /// <returns>The line, or <code>null</code> if no line was found.</returns>
         public MixerLine FindLine(int lineId) {
-            return DestinationLines
-                .Select(dl => dl.FindLine(lineId))
-                .FirstOrDefault(found => found != null);
+            foreach (DestinationLine dl in DestinationLines) {
+                MixerLine found = dl.FindLine(lineId);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -152,9 +155,13 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <param name="ctrlId">ID of the control to find.</param>
         /// <returns>The control, or <code>null</code> if no control was found.</returns>
         public MixerControl FindControl(int ctrlId) {
-            return DestinationLines
-                .Select(dl => dl.FindControl(ctrlId))
-                .FirstOrDefault(found => found != null);
+            foreach (DestinationLine dl in DestinationLines) {
+                MixerControl found = dl.FindControl(ctrlId);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
         [DllImport("winmm.dll", SetLastError = true)]

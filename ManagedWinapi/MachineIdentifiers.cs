@@ -20,8 +20,7 @@ namespace ManagedWinapi {
     ///     software to a machine.
     /// </summary>
     public static class MachineIdentifiers {
-        private const uint 
-            PolicyViewLocalInformation = 0x00000001,
+        private const uint POLICY_VIEW_LOCAL_INFORMATION = 0x00000001,
             PolicyAccountDomainInformation = 5;
 
         /// <summary>
@@ -33,9 +32,11 @@ namespace ManagedWinapi {
         public static SecurityIdentifier MachineSID {
             get {
                 int objectAttributes = 0;
-                LsaOpenPolicy(IntPtr.Zero, ref objectAttributes, PolicyViewLocalInformation, out IntPtr policyHandle);
+                LsaOpenPolicy(IntPtr.Zero, ref objectAttributes, POLICY_VIEW_LOCAL_INFORMATION,
+                    out IntPtr policyHandle);
                 LsaQueryInformationPolicy(policyHandle, PolicyAccountDomainInformation, out IntPtr pInfo);
-                POLICY_ACCOUNT_DOMAIN_INFO info = (POLICY_ACCOUNT_DOMAIN_INFO)(Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO)) ?? throw new InvalidOperationException());
+                POLICY_ACCOUNT_DOMAIN_INFO info =
+                    (POLICY_ACCOUNT_DOMAIN_INFO)Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO));
                 SecurityIdentifier sid = new(info.DomainSid);
                 LsaFreeMemory(ref info);
                 LsaClose(policyHandle);

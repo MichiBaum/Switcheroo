@@ -32,14 +32,10 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
     public partial class MainWindow {
-
-        private readonly IUpdater _updater;
-        
-        private static readonly RoutedUICommand CLOSE_WINDOW_COMMAND = new();
-        private static readonly RoutedUICommand SWITCH_TO_WINDOW_COMMAND = new();
-        private static readonly RoutedUICommand SCROLL_LIST_DOWN_COMMAND = new();
-        private static readonly RoutedUICommand SCROLL_LIST_UP_COMMAND = new();
-        
+        public static readonly RoutedUICommand CloseWindowCommand = new();
+        public static readonly RoutedUICommand SwitchToWindowCommand = new();
+        public static readonly RoutedUICommand ScrollListDownCommand = new();
+        public static readonly RoutedUICommand ScrollListUpCommand = new();
         private AboutWindow? _aboutWindow;
         private bool _altTabAutoSwitch;
         private AltTabHook? _altTabHook;
@@ -51,9 +47,7 @@ namespace Switcheroo {
         private List<AppWindowViewModel>? _unfilteredWindowList;
         private WindowCloser? _windowCloser;
 
-        public MainWindow(Updater updater) {
-            _updater = updater;
-            
+        public MainWindow() {
             InitializeComponent();
 
             SetUpKeyBindings();
@@ -64,8 +58,8 @@ namespace Switcheroo {
 
             SetUpAltTabHook();
 
-            _updater.CheckForUpdates();
-            
+            CheckForUpdates();
+
             Opacity = 0;
         }
 
@@ -171,6 +165,48 @@ namespace Switcheroo {
             }
         }
 
+        private static void CheckForUpdates() {
+            Version currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+            if (currentVersion == new Version(0, 0, 0, 0)) return;
+
+            DispatcherTimer timer = new();
+
+            timer.Tick += async (sender, args) => {
+                timer.Stop();
+                Version? latestVersion = await GetLatestVersion();
+                if (latestVersion != null && latestVersion > currentVersion) {
+                    MessageBoxResult result = MessageBox.Show(
+                        string.Format(
+                            language_en.MainWindow_CheckForUpdates_,
+                            latestVersion, currentVersion),
+                        "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                    if (result ==
+                        MessageBoxResult
+                            .Yes) // TODO can throw exception like https://stackoverflow.com/a/53245993/10258204
+                        Process.Start("https://github.com/MichiBaum/Switcheroo/releases/latest");
+                } else {
+                    timer.Interval = new TimeSpan(24, 0, 0);
+                    timer.Start();
+                }
+            };
+
+            timer.Interval = new TimeSpan(0, 0, 0);
+            timer.Start();
+        }
+
+        private static async Task<Version?> GetLatestVersion() {
+            try {
+                // TODO add own versioning
+                string versionAsString = await new WebClient()
+                    .DownloadStringTaskAsync("https://raw.github.com/MichiBaum/Switcheroo/update/version.txt")
+                    .ConfigureAwait(false);
+                if (Version.TryParse(versionAsString, out Version? newVersion)) return newVersion;
+            } catch (WebException) {
+            }
+
+            return null;
+        }
+
         /// <summary>
         ///     Populates the window list with the current running windows.
         /// </summary>
@@ -209,7 +245,7 @@ namespace Switcheroo {
             ScrollSelectedItemIntoView();
         }
 
-        private bool AreWindowsRelated(SystemWindow window1, SystemWindow window2) {
+        private static bool AreWindowsRelated(SystemWindow window1, SystemWindow window2) {
             return window1.HWnd == window2.HWnd || window1.Process.Id == window2.Process.Id;
         }
 
@@ -411,7 +447,7 @@ namespace Switcheroo {
             if (lb.Items.Count > 0) lb.SelectedItem = lb.Items[0];
         }
 
-        private string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults) {
+        private static string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults) {
             MatchResult bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
             return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
@@ -464,13 +500,14 @@ namespace Switcheroo {
         }
 
         private void PreviousItem() {
-            if (lb.Items.Count <= 0) return;
-            if (lb.SelectedIndex != 0)
-                lb.SelectedIndex--;
-            else
-                lb.SelectedIndex = lb.Items.Count - 1;
+            if (lb.Items.Count > 0) {
+                if (lb.SelectedIndex != 0)
+                    lb.SelectedIndex--;
+                else
+                    lb.SelectedIndex = lb.Items.Count - 1;
 
-            ScrollSelectedItemIntoView();
+                ScrollSelectedItemIntoView();
+            }
         }
 
         private void ScrollListDown(object sender, ExecutedRoutedEventArgs e) {
@@ -505,7 +542,7 @@ namespace Switcheroo {
         private void DisableSystemMenu() {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
             SystemWindow window = new(windowHandle);
-            window.Style &= ~WindowStyleFlags.SYSMENU;
+            window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
         }
 
         private void ShowHelpTextBlock_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {

@@ -26,7 +26,7 @@ namespace Switcheroo {
             }
         }
 
-        private bool HasShortcut() {
+        private static bool HasShortcut() {
             try {
                 return File.Exists(GetAppLinkPath());
             } catch {
@@ -34,14 +34,14 @@ namespace Switcheroo {
             }
         }
 
-        private string GetAppLinkPath() {
+        private static string GetAppLinkPath() {
             string appDataStart =
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     @"Microsoft\Windows\Start Menu\Programs\Startup");
             return Path.Combine(appDataStart, "Switcheroo.lnk");
         }
 
-        private void DeleteShortcut(string appLink) {
+        private static void DeleteShortcut(string appLink) {
             try {
                 File.Delete(appLink);
             } catch {
@@ -50,7 +50,7 @@ namespace Switcheroo {
             }
         }
 
-        private void CreateShortcut(string appLink) {
+        private static void CreateShortcut(string appLink) {
             try {
                 string? exeLocation = Assembly.GetEntryAssembly()?.Location;
 

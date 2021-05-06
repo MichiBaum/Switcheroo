@@ -20,19 +20,23 @@
         Background="Transparent">
 
     <Window.CommandBindings>
-        <CommandBinding Command="local:MainWindow.CLOSE_WINDOW_COMMAND" Executed="CloseWindow" />
-        <CommandBinding Command="local:MainWindow.SWITCH_TO_WINDOW_COMMAND" Executed="OnEnterPressed" />
-        <CommandBinding Command="local:MainWindow.SCROLL_LIST_UP_COMMAND" Executed="ScrollListUp" />
-        <CommandBinding Command="local:MainWindow.SCROLL_LIST_DOWN_COMMAND" Executed="ScrollListDown" />
+        <CommandBinding Command="local:MainWindow.CloseWindowCommand"
+                        Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
+                        Executed="OnEnterPressed" />
+        <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
+                        Executed="ScrollListUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
+                        Executed="ScrollListDown" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
-        <KeyBinding Command="local:MainWindow.CLOSE_WINDOW_COMMAND" Key="W" Modifiers="Ctrl" />
-        <KeyBinding Command="local:MainWindow.CLOSE_WINDOW_COMMAND" Key="X" Modifiers="Alt" />
-        <KeyBinding Command="local:MainWindow.SCROLL_LIST_UP_COMMAND" Key="Up" />
-        <KeyBinding Command="local:MainWindow.SCROLL_LIST_DOWN_COMMAND" Key="Down" />
-        <KeyBinding Command="local:MainWindow.SCROLL_LIST_UP_COMMAND" Key="K" Modifiers="Alt" />
-        <KeyBinding Command="local:MainWindow.SCROLL_LIST_DOWN_COMMAND" Key="J" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="X" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="K" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="J" Modifiers="Alt" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -78,10 +82,10 @@
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
                         <!-- For now, leave these here.  Would it be better to route them upward? -->
-                        <KeyBinding Command="local:MainWindow.SCROLL_LIST_UP_COMMAND" Key="Up" />
-                        <KeyBinding Command="local:MainWindow.SCROLL_LIST_DOWN_COMMAND" Key="Down" />
-                        <KeyBinding Command="local:MainWindow.SCROLL_LIST_UP_COMMAND" Key="Tab" Modifiers="Shift" />
-                        <KeyBinding Command="local:MainWindow.SCROLL_LIST_DOWN_COMMAND" Key="Tab" />
+                        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+                        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+                        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
+                        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
                     </TextBox.InputBindings>
                 </TextBox>
                 <TextBlock Margin="0,0,10,0" Width="15" HorizontalAlignment="Right" TextAlignment="Center"
