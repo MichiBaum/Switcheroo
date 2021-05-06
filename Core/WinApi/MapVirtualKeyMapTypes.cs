@@ -1,4 +1,4 @@
-// Copyright by Switcheroo
+// unset
 
 namespace Switcheroo.Core.WinApi {
     /// <summary>

@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi.Accessibility;
+﻿using ManagedWinapi.Accessibility;
 using System.Collections.Generic;
-
-#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     internal class TreeViewParser : WindowContentParser {

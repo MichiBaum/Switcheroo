@@ -1,13 +1,7 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Documents;
-
-#endregion
 
 namespace Switcheroo {
     public partial class AboutWindow {

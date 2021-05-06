@@ -1,10 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Runtime.InteropServices;
-
-#endregion
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedWinapi.Audio.Mixer {
     /// <summary>

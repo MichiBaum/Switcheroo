@@ -1,10 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Collections.Generic;
-
-#endregion
+﻿using System.Collections.Generic;
 
 namespace Switcheroo.Core.Filter {
     public class WindowFilterContext<T> where T : IWindowText {

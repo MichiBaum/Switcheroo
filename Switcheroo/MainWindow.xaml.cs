@@ -1,8 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi;
+﻿using ManagedWinapi;
 using ManagedWinapi.Windows;
 using Switcheroo.Core;
 using Switcheroo.Core.Filter;
@@ -27,8 +23,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
-
-#endregion
 
 namespace Switcheroo {
     public partial class MainWindow {

@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace ManagedWinapi.Audio.Mixer {
+﻿namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Represents the method that will handle the <b>LineChanged</b> or
     ///     <b>ControlChanged</b> event of a <see cref="Mixer">Mixer</see>.

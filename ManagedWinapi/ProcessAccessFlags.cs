@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace ManagedWinapi {
+﻿namespace ManagedWinapi {
     internal enum ProcessAccessFlags {
         All = 0x001F0FFF,
         Terminate = 0x00000001,

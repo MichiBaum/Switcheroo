@@ -1,14 +1,8 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Switcheroo.Core;
+﻿using Switcheroo.Core;
 using Switcheroo.Core.Filter;
 using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
-
-#endregion
 
 namespace Switcheroo {
     public class AppWindowViewModel : INotifyPropertyChanged, IWindowText {

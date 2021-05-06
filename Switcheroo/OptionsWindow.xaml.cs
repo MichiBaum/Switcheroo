@@ -1,8 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi;
+﻿using ManagedWinapi;
 using Switcheroo.Core;
 using Switcheroo.Properties;
 using System.Text;
@@ -12,8 +8,6 @@ using System.Windows.Input;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
-
-#endregion
 
 namespace Switcheroo {
     public partial class OptionsWindow {

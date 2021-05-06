@@ -1,10 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System;
-
-#endregion
+﻿using System;
 
 namespace Switcheroo.Core.Matchers {
     public class StartsWithMatcher : IMatcher {

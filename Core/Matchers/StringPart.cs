@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace Switcheroo.Core.Matchers {
+﻿namespace Switcheroo.Core.Matchers {
     public class StringPart {
         public StringPart(string value, bool isMatch = false) {
             Value = value;

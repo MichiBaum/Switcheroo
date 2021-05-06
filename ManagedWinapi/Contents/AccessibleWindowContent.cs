@@ -1,13 +1,7 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi.Accessibility;
+﻿using ManagedWinapi.Accessibility;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-
-#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     /// <summary>

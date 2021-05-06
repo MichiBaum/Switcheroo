@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace Switcheroo {
+﻿namespace Switcheroo {
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>

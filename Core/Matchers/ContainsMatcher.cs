@@ -1,10 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Text.RegularExpressions;
-
-#endregion
+﻿using System.Text.RegularExpressions;
 
 namespace Switcheroo.Core.Matchers {
     public class ContainsMatcher : IMatcher {

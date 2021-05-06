@@ -1,13 +1,7 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi.Accessibility;
+﻿using ManagedWinapi.Accessibility;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
-#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     internal class ListViewParser : WindowContentParser {

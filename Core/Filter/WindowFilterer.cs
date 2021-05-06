@@ -1,12 +1,6 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Switcheroo.Core.Matchers;
+﻿using Switcheroo.Core.Matchers;
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace Switcheroo.Core.Filter {
     public class WindowFilterer {

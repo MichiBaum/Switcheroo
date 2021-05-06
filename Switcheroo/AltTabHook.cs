@@ -1,13 +1,7 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi;
+﻿using ManagedWinapi;
 using ManagedWinapi.Hooks;
 using System;
 using System.Windows.Forms;
-
-#endregion
 
 namespace Switcheroo {
     public class AltTabHook : IDisposable {

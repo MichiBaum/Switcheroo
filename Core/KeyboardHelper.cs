@@ -1,14 +1,8 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Switcheroo.Core.WinApi;
+﻿using Switcheroo.Core.WinApi;
 using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
-
-#endregion
 
 namespace Switcheroo.Core {
     // Convert a keycode to the relevant display character

@@ -1,12 +1,6 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi.Windows;
+﻿using ManagedWinapi.Windows;
 using System;
 using System.Windows.Forms;
-
-#endregion
 
 namespace ManagedWinapi.Hooks {
     /// <summary>

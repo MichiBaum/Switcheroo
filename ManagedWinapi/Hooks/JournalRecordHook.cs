@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
-
-#endregion
 
 namespace ManagedWinapi.Hooks {
     /// <summary>

@@ -1,11 +1,5 @@
-// Copyright by Switcheroo
-
-#region
-
 using System;
 using System.Collections.Generic;
-
-#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     /// <summary>

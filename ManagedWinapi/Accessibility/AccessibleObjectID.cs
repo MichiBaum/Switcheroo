@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace ManagedWinapi.Accessibility {
+﻿namespace ManagedWinapi.Accessibility {
     /// <summary>
     ///     This enumeration lists all kinds of accessible objects that can
     ///     be directly assigned to a window.

@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
-
-#endregion
 
 namespace Switcheroo {
     public class WindowCloser : IDisposable {

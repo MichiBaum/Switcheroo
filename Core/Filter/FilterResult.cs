@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Switcheroo.Core.Matchers;
+﻿using Switcheroo.Core.Matchers;
 using System.Collections.Generic;
-
-#endregion
 
 namespace Switcheroo.Core.Filter {
     public class FilterResult<T> where T : IWindowText {

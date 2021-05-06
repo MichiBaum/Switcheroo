@@ -1,5 +1,3 @@
-// Copyright by Switcheroo
-
 namespace ManagedWinapi.Windows.Contents {
     internal abstract class WindowContentParser {
         internal abstract bool CanParseContent(SystemWindow sw);

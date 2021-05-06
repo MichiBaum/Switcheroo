@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace Switcheroo {
+﻿namespace Switcheroo {
     public class BoolToDoubleConverter : BoolConverter<double> {
     }
 }

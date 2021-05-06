@@ -1,12 +1,6 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using ManagedWinapi;
+﻿using ManagedWinapi;
 using Switcheroo.Properties;
 using System.Windows.Forms;
-
-#endregion
 
 namespace Switcheroo {
     public class HotKey : Hotkey {

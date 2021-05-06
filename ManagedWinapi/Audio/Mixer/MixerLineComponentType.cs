@@ -1,6 +1,4 @@
-﻿// Copyright by Switcheroo
-
-namespace ManagedWinapi.Audio.Mixer {
+﻿namespace ManagedWinapi.Audio.Mixer {
     /// <summary>
     ///     Types of source or destination lines. The descriptions for these
     ///     lines have been taken from http://www.borg.com/~jglatt/tech/mixer.htm.

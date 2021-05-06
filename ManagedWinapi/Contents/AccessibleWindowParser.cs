@@ -1,11 +1,5 @@
-// Copyright by Switcheroo
-
-#region
-
 using ManagedWinapi.Accessibility;
 using System.Runtime.InteropServices;
-
-#endregion
 
 namespace ManagedWinapi.Windows.Contents {
     internal class AccessibleWindowParser : WindowContentParser {

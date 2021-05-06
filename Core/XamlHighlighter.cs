@@ -1,14 +1,8 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Switcheroo.Core.Matchers;
+﻿using Switcheroo.Core.Matchers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-
-#endregion
 
 namespace Switcheroo.Core {
     public class XamlHighlighter {

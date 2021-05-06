@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
-
-#endregion
 
 namespace Switcheroo.Core.Matchers {
     public class SignificantCharactersMatcher : IMatcher {

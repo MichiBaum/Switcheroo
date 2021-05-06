@@ -1,10 +1,6 @@
-﻿// Copyright by Switcheroo
-
-#region
+﻿// unset
 
 using System;
-
-#endregion
 
 namespace Switcheroo.Core.WinApi {
     [Flags]

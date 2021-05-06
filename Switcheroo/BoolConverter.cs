@@ -1,12 +1,6 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-
-#endregion
 
 namespace Switcheroo {
     public class BoolConverter<T> : IValueConverter {

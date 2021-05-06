@@ -1,8 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Switcheroo.Properties;
 using System;
@@ -10,8 +6,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
-
-#endregion
 
 namespace Switcheroo {
     public class Program {

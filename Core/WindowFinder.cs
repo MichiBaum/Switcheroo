@@ -1,11 +1,5 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace Switcheroo.Core {
     public class WindowFinder {

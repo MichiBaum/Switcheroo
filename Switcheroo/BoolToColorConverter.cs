@@ -1,10 +1,4 @@
-﻿// Copyright by Switcheroo
-
-#region
-
-using System.Windows.Media;
-
-#endregion
+﻿using System.Windows.Media;
 
 namespace Switcheroo {
     public class BoolToColorConverter : BoolConverter<Color> {
