@@ -33,7 +33,9 @@ namespace ManagedWinapi {
         /// <summary>
         ///     The singleton instance.
         /// </summary>
-        public SendKeysEscaper Instance => _instance ??= new SendKeysEscaper();
+        public SendKeysEscaper Instance {
+            get { return _instance ??= new SendKeysEscaper(); }
+        }
 
         private EscapableState getEscapableState(char c) {
             return c < 256 ? lookupTable[c] : EscapableState.ALWAYS;

@@ -11,6 +11,7 @@ using System.Windows.Markup;
 
 namespace Switcheroo {
     public class FormattedTextAttribute {
+        
         public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.RegisterAttached(
             "FormattedText",
             typeof(string),

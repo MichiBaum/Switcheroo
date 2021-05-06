@@ -12,8 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -28,13 +32,14 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo {
     public partial class MainWindow {
+
+        private readonly IUpdater _updater;
+        
         private static readonly RoutedUICommand CLOSE_WINDOW_COMMAND = new();
         private static readonly RoutedUICommand SWITCH_TO_WINDOW_COMMAND = new();
         private static readonly RoutedUICommand SCROLL_LIST_DOWN_COMMAND = new();
         private static readonly RoutedUICommand SCROLL_LIST_UP_COMMAND = new();
-
-        private readonly IUpdater _updater;
-
+        
         private AboutWindow? _aboutWindow;
         private bool _altTabAutoSwitch;
         private AltTabHook? _altTabHook;
@@ -48,7 +53,7 @@ namespace Switcheroo {
 
         public MainWindow(Updater updater) {
             _updater = updater;
-
+            
             InitializeComponent();
 
             SetUpKeyBindings();
@@ -60,7 +65,7 @@ namespace Switcheroo {
             SetUpAltTabHook();
 
             _updater.CheckForUpdates();
-
+            
             Opacity = 0;
         }
 

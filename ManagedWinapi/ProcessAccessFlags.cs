@@ -1,10 +1,6 @@
 ﻿// Copyright by Switcheroo
 
-#region
-
 using System;
-
-#endregion
 
 namespace ManagedWinapi {
     [Flags]
