@@ -41,9 +41,9 @@ namespace Switcheroo.Core {
             }
         }
 
-        public Icon LargeWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Large);
+        public Icon? LargeWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Large);
 
-        public Icon SmallWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Small);
+        public Icon? SmallWindowIcon => new WindowIconFinder().Find(this, WindowIconSize.Small);
 
         public string ExecutablePath => GetExecutablePath(Process.Id);
 
