@@ -140,8 +140,7 @@ namespace ManagedWinapi.Audio.Mixer {
                 SizeConst = 16)]
             public string szShortName;
 
-            [MarshalAs(UnmanagedType.ByValTStr,
-                SizeConst = 64)]
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
             public string szName;
 
             public int dwType;

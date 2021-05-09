@@ -21,22 +21,21 @@ namespace Switcheroo.Core {
             get {
                 string key = "ProcessTitle-" + HWnd;
                 string? processTitle = MemoryCache.Default.Get(key) as string;
-                if (processTitle == null) {
-                    if (IsApplicationFrameWindow()) {
-                        processTitle = "UWP";
+                if (processTitle != null) return processTitle;
+                if (IsApplicationFrameWindow()) {
+                    processTitle = "UWP";
 
-                        Process? underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
-                            .Select(w => w.Process)
-                            .FirstOrDefault();
+                    Process? underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
+                        .Select(w => w.Process)
+                        .FirstOrDefault();
 
-                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
-                            processTitle = underlyingProcess.ProcessName;
-                    } else {
-                        processTitle = Process.ProcessName;
-                    }
-
-                    MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
+                    if (underlyingProcess != null && underlyingProcess.ProcessName != "")
+                        processTitle = underlyingProcess.ProcessName;
+                } else {
+                    processTitle = Process.ProcessName;
                 }
+
+                MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
 
                 return processTitle;
             }
@@ -51,9 +50,7 @@ namespace Switcheroo.Core {
         public AppWindow? Owner {
             get {
                 IntPtr ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
-                if (ownerHandle == IntPtr.Zero)
-                    return null;
-                return new AppWindow(ownerHandle);
+                return ownerHandle == IntPtr.Zero ? null : new AppWindow(ownerHandle);
             }
         }
 

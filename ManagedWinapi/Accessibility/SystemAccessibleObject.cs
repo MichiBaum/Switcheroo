@@ -18,21 +18,22 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     Create an accessible object from an IAccessible instance and a child ID.
         /// </summary>
-        public SystemAccessibleObject(IAccessible? iacc, int childID) {
+        /// <exception cref="ArgumentNullException"></exception>
+        public SystemAccessibleObject(IAccessible? iacc, int childId) {
             if (iacc == null)
                 throw new ArgumentNullException();
             //if (childID < 0) throw new ArgumentException();
-            if (childID != 0)
+            if (childId != 0)
                 try {
-                    object? realChild = iacc.get_accChild(childID);
+                    object? realChild = iacc.accChild[childId];
                     if (realChild != null) {
                         iacc = (IAccessible)realChild;
-                        childID = 0;
+                        childId = 0;
                     }
                 } catch (ArgumentException) { }
 
             IAccessible = iacc;
-            ChildID = childID;
+            ChildID = childId;
         }
 
         /// <summary>
@@ -148,9 +149,7 @@ namespace ManagedWinapi.Accessibility {
                 if (ChildID != 0)
                     return new SystemAccessibleObject(IAccessible, 0);
                 IAccessible? p = (IAccessible)IAccessible.accParent;
-                if (p == null)
-                    return null;
-                return new SystemAccessibleObject(p, 0);
+                return p == null ? null : new SystemAccessibleObject(p, 0);
             }
         }
 
@@ -191,34 +190,39 @@ namespace ManagedWinapi.Accessibility {
         public SystemAccessibleObject[] SelectedObjects {
             get {
                 if (ChildID != 0)
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
                 object? sel;
                 try {
                     sel = IAccessible.accSelection;
                 } catch (NotImplementedException) {
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
                 } catch (COMException) {
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
                 }
 
-                if (sel == null)
-                    return new SystemAccessibleObject[0];
-                if (sel is IEnumVARIANT enumVARIANT) {
-                    IEnumVARIANT e = enumVARIANT;
-                    e.Reset();
-                    List<SystemAccessibleObject> retval = new();
-                    object[] tmp = new object[1];
-                    while (e.Next(1, tmp, IntPtr.Zero) == 0) {
-                        if (tmp[0] is int && (int)tmp[0] < 0)
-                            break;
-                        retval.Add(ObjectToSAO(tmp[0]));
+                switch (sel)
+                {
+                    case null:
+                        return Array.Empty<SystemAccessibleObject>();
+                    case IEnumVARIANT enumVARIANT:
+                    {
+                        IEnumVARIANT e = enumVARIANT;
+                        e.Reset();
+                        List<SystemAccessibleObject> retval = new();
+                        object[] tmp = new object[1];
+                        while (e.Next(1, tmp, IntPtr.Zero) == 0) {
+                            if (tmp[0] is int && (int)tmp[0] < 0)
+                                break;
+                            retval.Add(ObjectToSAO(tmp[0]));
+                        }
+
+                        return retval.ToArray();
                     }
-
-                    return retval.ToArray();
+                    case < 0:
+                        return Array.Empty<SystemAccessibleObject>();
+                    default:
+                        return new[] {ObjectToSAO(sel)};
                 }
-
-                if (sel is int x && x < 0) return new SystemAccessibleObject[0];
-                return new[] {ObjectToSAO(sel)};
             }
         }
 
@@ -239,21 +243,21 @@ namespace ManagedWinapi.Accessibility {
             get {
                 // ID-referenced objects cannot have children
                 if (ChildID != 0)
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
 
                 int cs = IAccessible.accChildCount, csReal;
                 object[] children = new object[cs * 2];
 
                 uint result = AccessibleChildren(IAccessible, 0, cs * 2, children, out csReal);
                 if (result != 0 && result != 1)
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
                 if (csReal == 1 && children[0] is int && (int)children[0] < 0)
-                    return new SystemAccessibleObject[0];
+                    return Array.Empty<SystemAccessibleObject>();
                 List<SystemAccessibleObject> values = new();
-                for (int i = 0; i < children.Length; i++)
-                    if (children[i] != null)
+                foreach (var child in children)
+                    if (child != null)
                         try {
-                            values.Add(ObjectToSAO(children[i]));
+                            values.Add(ObjectToSAO(child));
                         } catch (InvalidCastException) { }
 
                 return values.ToArray();

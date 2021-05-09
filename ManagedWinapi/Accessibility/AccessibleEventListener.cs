@@ -126,14 +126,11 @@ namespace ManagedWinapi.Accessibility {
                 return;
             AccessibleEventArgs aea =
                 new(eventType, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
-            if (EventOccurred != null)
-                EventOccurred(this, aea);
+            EventOccurred?.Invoke(this, aea);
         }
 
         internal static SystemAccessibleObject GetAccessibleObject(AccessibleEventArgs e) {
-            IAccessible iacc;
-            object child;
-            uint result = AccessibleObjectFromEvent(e.HWnd, e.ObjectID, e.ChildID, out iacc, out child);
+            uint result = AccessibleObjectFromEvent(e.HWnd, e.ObjectID, e.ChildID, out IAccessible iacc, out object child);
             if (result != 0)
                 throw new Exception("AccessibleObjectFromPoint returned " + result);
             return new SystemAccessibleObject(iacc, (int)child);

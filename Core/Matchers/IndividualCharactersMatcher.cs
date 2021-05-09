@@ -29,10 +29,9 @@ namespace Switcheroo.Core.Matchers {
             char? previousChar = null;
             foreach (char p in pattern) {
                 if (previousChar != null)
-                    regexPattern += string.Format("([^{0}]*?)({1})", Regex.Escape(previousChar + ""),
-                        Regex.Escape(p + ""));
+                    regexPattern += $"([^{Regex.Escape(previousChar + "")}]*?)({Regex.Escape(p + "")})";
                 else
-                    regexPattern += string.Format("(.*?)({0})", Regex.Escape(p + ""));
+                    regexPattern += $"(.*?)({Regex.Escape(p + "")})";
                 previousChar = p;
             }
 
