@@ -42,10 +42,10 @@ namespace Switcheroo.Core {
         }
 
         private static List<MatchResult> Score(string title, string filterText) {
-            StartsWithMatcher startsWithMatcher = new();
-            ContainsMatcher containsMatcher = new();
-            SignificantCharactersMatcher significantCharactersMatcher = new();
-            IndividualCharactersMatcher individualCharactersMatcher = new();
+            IMatcher startsWithMatcher = new StartsWithMatcher();
+            IMatcher containsMatcher = new ContainsMatcher();
+            IMatcher significantCharactersMatcher = new SignificantCharactersMatcher();
+            IMatcher individualCharactersMatcher = new IndividualCharactersMatcher();
 
             return new List<MatchResult> {
                 startsWithMatcher.Evaluate(title, filterText),
