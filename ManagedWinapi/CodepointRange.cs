@@ -150,8 +150,6 @@ namespace ManagedWinapi {
             return sb.Append("]").ToString();
         }
 
-        #region Equals and HashCode
-
         ///
         public override bool Equals(object obj) {
             CodepointRange cr = obj as CodepointRange;
@@ -173,10 +171,6 @@ namespace ManagedWinapi {
                    (11 * LastCodepoint);
         }
 
-        #endregion
-
-        #region PInvoke Declarations
-
         [DllImport("gdi32.dll")]
         private static extern uint GetFontUnicodeRanges(IntPtr hdc, IntPtr lpgs);
 
@@ -185,7 +179,5 @@ namespace ManagedWinapi {
 
         [DllImport("gdi32.dll")]
         private static extern bool DeleteObject(IntPtr hObject);
-
-        #endregion
     }
 }

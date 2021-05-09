@@ -61,11 +61,6 @@ namespace Switcheroo {
             PreviousItem
         }
 
-        /// =================================
-
-        #region Private Methods
-
-        /// =================================
         private void SetUpKeyBindings() {
             // Enter and Esc bindings are not executed before the keys have been released.
             // This is done to prevent that the window being focused after the key presses
@@ -295,13 +290,6 @@ namespace Switcheroo {
             Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
 
-        #endregion
-
-        /// =================================
-
-        #region Right-click menu functions
-
-        /// =================================
         /// <summary>
         ///     Show Options dialog.
         /// </summary>
@@ -337,14 +325,7 @@ namespace Switcheroo {
             _hotkey.Dispose();
             Application.Current.Shutdown();
         }
-
-        #endregion
-
-        /// =================================
-
-        #region Event Handlers
-
-        /// =================================
+        
         private void OnClose(object sender, CancelEventArgs e) {
             e.Cancel = true;
             HideWindow();
@@ -560,7 +541,5 @@ namespace Switcheroo {
             int newHeight = HelpPanel.Height > 0 ? 0 : +17;
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
-
-        #endregion
     }
 }

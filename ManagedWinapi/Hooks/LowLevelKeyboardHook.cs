@@ -133,8 +133,6 @@ namespace ManagedWinapi.Hooks {
             return 0;
         }
 
-        #region PInvoke Declarations
-
         [StructLayout(LayoutKind.Sequential)]
         private class KBDLLHOOKSTRUCT {
             public IntPtr dwExtraInfo;
@@ -152,7 +150,5 @@ namespace ManagedWinapi.Hooks {
             [Out] [MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)]
             StringBuilder pwszBuff, int cchBuff,
             uint wFlags);
-
-        #endregion
     }
 }

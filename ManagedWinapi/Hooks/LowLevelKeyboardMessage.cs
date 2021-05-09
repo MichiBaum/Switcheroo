@@ -51,15 +51,11 @@ namespace ManagedWinapi.Hooks {
                 new UIntPtr((ulong)ExtraInfo.ToInt64()));
         }
 
-        #region PInvoke Declarations
-
         private const int KEYEVENTF_KEYUP = 0x2;
 
         private const int WM_KEYDOWN = 0x100,
             WM_KEYUP = 0x101,
             WM_SYSKEYDOWN = 0x104,
             WM_SYSKEYUP = 0x105;
-
-        #endregion
     }
 }

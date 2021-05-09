@@ -640,8 +640,6 @@ namespace ManagedWinapi.Windows {
             SendMessage(new HandleRef(this, HWnd), message, new IntPtr(value), new IntPtr(0));
         }
 
-        #region Equals and HashCode
-
         /// <summary>
         ///     Convertion of obj to SystemWindow.
         ///     If obj is null returns false and else further to Equals(SystemWindow sw)
@@ -684,10 +682,6 @@ namespace ManagedWinapi.Windows {
         public static bool operator !=(SystemWindow? a, SystemWindow? b) {
             return !(a == b);
         }
-
-        #endregion
-
-        #region PInvoke Declarations
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -911,7 +905,5 @@ namespace ManagedWinapi.Windows {
 
         [DllImport("user32.dll")]
         private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RDW flags);
-
-        #endregion
     }
 }

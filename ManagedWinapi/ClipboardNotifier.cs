@@ -76,8 +76,6 @@ namespace ManagedWinapi {
             }
         }
 
-        #region PInvoke Declarations
-
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);
 
@@ -90,7 +88,5 @@ namespace ManagedWinapi {
         private static readonly int
             WM_DRAWCLIPBOARD = 0x0308,
             WM_CHANGECBCHAIN = 0x030D;
-
-        #endregion
     }
 }

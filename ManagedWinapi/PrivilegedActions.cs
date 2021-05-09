@@ -107,8 +107,6 @@ namespace ManagedWinapi {
             ApiHelper.FailIfZero(ExitWindowsEx((uint)action | (uint)forceMode, SHTDN_REASON_FLAG_PLANNED));
         }
 
-        #region PInvoke Declarations
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int ExitWindowsEx(uint uFlags, uint dwReason);
 
@@ -155,7 +153,5 @@ namespace ManagedWinapi {
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern int SetLocalTime(ref SYSTEMTIME lpSystemTime);
-
-        #endregion
     }
 }

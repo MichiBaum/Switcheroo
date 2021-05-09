@@ -52,8 +52,6 @@ namespace ManagedWinapi.Hooks {
             lmh.Unhook();
         }
 
-        #region PInvoke Declarations
-
         private static readonly int WM_CANCELJOURNAL = 0x4B;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -64,7 +62,5 @@ namespace ManagedWinapi.Hooks {
             public int time;
             public IntPtr hWnd;
         }
-
-        #endregion
     }
 }

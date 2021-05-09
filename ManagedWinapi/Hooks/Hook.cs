@@ -144,8 +144,6 @@ namespace ManagedWinapi.Hooks {
             return CallNextHookEx(hHook, code, wParam, lParam);
         }
 
-        #region PInvoke Declarations
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(HookType hook, IntPtr callback,
             IntPtr hMod, uint dwThreadId);
@@ -177,7 +175,5 @@ namespace ManagedWinapi.Hooks {
             HC_NOREMOVE = 3,
             HC_SYSMODALON = 4,
             HC_SYSMODALOFF = 5;
-
-        #endregion
     }
 }

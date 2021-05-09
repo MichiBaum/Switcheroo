@@ -171,8 +171,6 @@ namespace ManagedWinapi {
             }
         }
 
-        #region PInvoke Declarations
-
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
         private static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress,
             uint dwSize, uint flAllocationType, uint flProtect);
@@ -208,7 +206,5 @@ namespace ManagedWinapi {
         [DllImport("kernel32.dll")]
         private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
             IntPtr lpBuffer, UIntPtr nSize, IntPtr lpNumberOfBytesWritten);
-
-        #endregion
     }
 }

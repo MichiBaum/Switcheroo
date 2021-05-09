@@ -155,8 +155,6 @@ namespace ManagedWinapi.Audio.Mixer {
             return null;
         }
 
-        #region PInvoke Declarations
-
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern uint mixerGetNumDevs();
 
@@ -186,7 +184,5 @@ namespace ManagedWinapi.Audio.Mixer {
         private static readonly uint CALLBACK_WINDOW = 0x00010000;
         private static readonly int MM_MIXM_LINE_CHANGE = 0x3D0;
         private static readonly int MM_MIXM_CONTROL_CHANGE = 0x3D1;
-
-        #endregion
     }
 }

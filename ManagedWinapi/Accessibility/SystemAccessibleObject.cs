@@ -336,8 +336,6 @@ namespace ManagedWinapi.Accessibility {
             return new SystemAccessibleObject((IAccessible)obj, 0);
         }
 
-        #region Equals and HashCode
-
         ///
         public override bool Equals(Object? obj) {
             if (obj == null) return false;
@@ -418,10 +416,6 @@ namespace ManagedWinapi.Accessibility {
             }
         }
 
-        #endregion
-
-        #region PInvoke Declarations
-
         [DllImport("oleacc.dll")]
         private static extern IntPtr AccessibleObjectFromPoint(POINT pt, [Out] [MarshalAs(UnmanagedType.Interface)]
             out IAccessible accObj, [Out] out object ChildID);
@@ -446,7 +440,5 @@ namespace ManagedWinapi.Accessibility {
         [DllImport("oleacc.dll")]
         private static extern uint AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren,
             [Out] object[] rgvarChildren, out int pcObtained);
-
-        #endregion
     }
 }

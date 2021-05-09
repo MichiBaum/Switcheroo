@@ -136,8 +136,6 @@ namespace ManagedWinapi.Accessibility {
             return new SystemAccessibleObject(iacc, (int)child);
         }
 
-        #region PInvoke Declarations
-
         [DllImport("user32.dll")]
         private static extern IntPtr SetWinEventHook(AccessibleEventType eventMin, AccessibleEventType eventMax, IntPtr
                 hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
@@ -152,7 +150,5 @@ namespace ManagedWinapi.Accessibility {
         [DllImport("oleacc.dll")]
         private static extern uint AccessibleObjectFromEvent(IntPtr hwnd, uint dwObjectID, uint dwChildID,
             out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
-
-        #endregion
     }
 }
