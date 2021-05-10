@@ -10,7 +10,7 @@ namespace ManagedWinapi.Windows.Contents {
             return cnt != 0;
         }
 
-        internal override WindowContent ParseContent(SystemWindow sw) {
+        internal override WindowContent ParseContent(SystemWindow? sw) {
             SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             if (sao.RoleIndex == 35) {
                 List<string> treeNodes = new();

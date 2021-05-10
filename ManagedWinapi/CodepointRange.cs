@@ -151,8 +151,8 @@ namespace ManagedWinapi {
         }
 
         ///
-        public override bool Equals(object obj) {
-            CodepointRange cr = obj as CodepointRange;
+        public override bool Equals(object? obj) {
+            CodepointRange? cr = obj as CodepointRange;
             if (cr == null)
                 return false;
             if (SupportedCodepointCount != cr.SupportedCodepointCount || ranges.Length != cr.ranges.Length)

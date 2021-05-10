@@ -33,7 +33,7 @@ namespace ManagedWinapi.Windows.Contents {
             (hasMenu ? " Menu" : "") +
             (hasClientArea ? " ClientArea" : "") + ">";
 
-        public string LongDescription {
+        public string? LongDescription {
             get {
                 ParseIfNeeded();
                 string result = ShortDescription + "\n";
@@ -48,7 +48,7 @@ namespace ManagedWinapi.Windows.Contents {
         }
 
         ///
-        public Dictionary<string, string> PropertyList {
+        public Dictionary<string, string?> PropertyList {
             get {
                 Dictionary<string, string> result = new();
                 return result;

@@ -14,7 +14,7 @@ namespace ManagedWinapi {
         ///     Get the icon used for folders.
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetFolderIcon(bool small) {
+        public static Icon? GetFolderIcon(bool small) {
             return GetIconForFilename(Environment.GetFolderPath(Environment.SpecialFolder.System), small);
         }
 
@@ -22,7 +22,7 @@ namespace ManagedWinapi {
         ///     Get the icon used for files that do not have their own icon
         /// </summary>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetFileIcon(bool small) {
+        public static Icon? GetFileIcon(bool small) {
             return GetExtensionIcon("", small);
         }
 
@@ -31,7 +31,7 @@ namespace ManagedWinapi {
         /// </summary>
         /// <param name="extension">The extension without leading dot</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetExtensionIcon(string extension, bool small) {
+        public static Icon? GetExtensionIcon(string extension, bool small) {
             string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             string fn = tmp + "." + extension;
@@ -48,7 +48,7 @@ namespace ManagedWinapi {
         /// </summary>
         /// <param name="fileName">Name of the file</param>
         /// <param name="small">Whether to get the small icon instead of the large one</param>
-        public static Icon GetIconForFilename(string fileName, bool small) {
+        public static Icon? GetIconForFilename(string fileName, bool small) {
             SHFILEINFO shinfo = new();
 
             if (small) {
@@ -87,7 +87,7 @@ namespace ManagedWinapi {
         ///     Get the cluster size for the filesystem that contains the given file.
         /// </summary>
         public static uint GetClusterSize(string filename) {
-            string drive = Path.GetPathRoot(filename);
+            string? drive = Path.GetPathRoot(filename);
 
             bool hasFreeDiskSpace = GetDiskFreeSpace(drive, out uint lpSectorsPerCluster, out uint lpBytesPerSector,
                 out _, out _);
@@ -100,7 +100,7 @@ namespace ManagedWinapi {
         private const uint SHGFI_SMALLICON = 0x1; // 'Small icon
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern bool GetDiskFreeSpace(string lpRootPathName,
+        private static extern bool GetDiskFreeSpace(string? lpRootPathName,
             out uint lpSectorsPerCluster,
             out uint lpBytesPerSector,
             out uint lpNumberOfFreeClusters,

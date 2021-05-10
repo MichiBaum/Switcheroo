@@ -34,14 +34,12 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         ///     Called when a message has been intercepted.
         /// </summary>
-        public event MessageCallback MessageOccurred;
+        public event MessageCallback? MessageOccurred;
 
         private int MessageHookCallback(int code, IntPtr lParam, IntPtr wParam, ref bool callNext) {
-            if (code == HC_ACTION) {
-                Message msg = (Message)Marshal.PtrToStructure(wParam, typeof(Message));
-                if (MessageOccurred != null) MessageOccurred(msg);
-            }
-
+            if (code != HC_ACTION) return 0;
+            Message msg = (Message)(Marshal.PtrToStructure(wParam, typeof(Message)) ?? throw new InvalidOperationException());
+            MessageOccurred?.Invoke(msg);
             return 0;
         }
     }

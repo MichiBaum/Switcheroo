@@ -527,7 +527,7 @@ namespace ManagedWinapi.Windows {
         /// <returns>The list of child windows.</returns>
         public SystemWindow[] FilterDescendantWindows(bool directOnly, Predicate<SystemWindow> predicate) {
             List<SystemWindow> wnds = new();
-            EnumChildWindows(_hwnd, delegate(IntPtr hwnd, IntPtr lParam) {
+            EnumChildWindows(_hwnd, delegate(IntPtr hwnd, IntPtr _) {
                 SystemWindow tmp = new(hwnd);
                 bool add = true;
                 if (directOnly) add = tmp.Parent._hwnd == _hwnd;
@@ -884,6 +884,7 @@ namespace ManagedWinapi.Windows {
         [DllImport("user32.dll")]
         private static extern bool InvalidateRect(IntPtr hWnd, IntPtr lpRect, bool bErase);
 
+        [Flags]
         private enum RDW : uint {
             RDW_INVALIDATE = 0x0001,
             RDW_INTERNALPAINT = 0x0002,

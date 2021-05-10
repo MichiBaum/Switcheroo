@@ -175,66 +175,57 @@ namespace ManagedWinapi {
         }
 
         private void altMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly && key != Keys.None) {
-                Alt = !altMenuItem.Checked;
-                RefreshText();
-            }
+            if (ReadOnly || key == Keys.None) return;
+            Alt = !altMenuItem.Checked;
+            RefreshText();
         }
 
         private void ctrlMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly && key != Keys.None) {
-                Ctrl = !ctrlMenuItem.Checked;
-                RefreshText();
-            }
+            if (ReadOnly || key == Keys.None) return;
+            Ctrl = !ctrlMenuItem.Checked;
+            RefreshText();
         }
 
         private void shiftMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly && key != Keys.None) {
-                Shift = !shiftMenuItem.Checked;
-                RefreshText();
-            }
+            if (ReadOnly || key == Keys.None) return;
+            Shift = !shiftMenuItem.Checked;
+            RefreshText();
         }
 
         private void winMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly && key != Keys.None) {
-                WindowsKey = !winMenuItem.Checked;
-                RefreshText();
-            }
+            if (ReadOnly || key == Keys.None) return;
+            WindowsKey = !winMenuItem.Checked;
+            RefreshText();
         }
 
         private void escMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly) {
-                key = Keys.Escape;
-                RefreshText();
-            }
+            if (ReadOnly) return;
+            key = Keys.Escape;
+            RefreshText();
         }
 
         private void noneMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly) {
-                key = Keys.None;
-                RefreshText();
-            }
+            if (ReadOnly) return;
+            key = Keys.None;
+            RefreshText();
         }
 
         private void prtscMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly) {
-                key = Keys.PrintScreen;
-                RefreshText();
-            }
+            if (ReadOnly) return;
+            key = Keys.PrintScreen;
+            RefreshText();
         }
 
         private void returnMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly) {
-                key = Keys.Return;
-                RefreshText();
-            }
+            if (ReadOnly) return;
+            key = Keys.Return;
+            RefreshText();
         }
 
         private void tabMenuItem_Click(object sender, EventArgs e) {
-            if (!ReadOnly) {
-                key = Keys.Tab;
-                RefreshText();
-            }
+            if (ReadOnly) return;
+            key = Keys.Tab;
+            RefreshText();
         }
     }
 }

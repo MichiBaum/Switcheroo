@@ -103,9 +103,9 @@ namespace ManagedWinapi {
         /// </summary>
         public void Write(int offset, IntPtr ptr, int length) {
             if (offset < 0)
-                throw new ArgumentException("Offset may not be negative", "offset");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Offset_may_not_be_negative, "offset");
             if (offset + length > Size)
-                throw new ArgumentException("Exceeding chunk size");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Exceeding_chunk_size);
             WriteProcessMemory(hProcess, new IntPtr(Location.ToInt64() + offset), ptr, new UIntPtr((uint)length),
                 IntPtr.Zero);
         }
@@ -115,9 +115,9 @@ namespace ManagedWinapi {
         /// </summary>
         public void Write(int offset, byte[] ptr) {
             if (offset < 0)
-                throw new ArgumentException("Offset may not be negative", "offset");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Offset_may_not_be_negative, "offset");
             if (offset + ptr.Length > Size)
-                throw new ArgumentException("Exceeding chunk size");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Exceeding_chunk_size);
             WriteProcessMemory(hProcess, new IntPtr(Location.ToInt64() + offset), ptr, new UIntPtr((uint)ptr.Length),
                 IntPtr.Zero);
         }
@@ -133,7 +133,7 @@ namespace ManagedWinapi {
         /// </summary>
         public byte[] Read(int offset, int length) {
             if (offset + length > Size)
-                throw new ArgumentException("Exceeding chunk size");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Exceeding_chunk_size);
             byte[] result = new byte[length];
             ReadProcessMemory(hProcess, new IntPtr(Location.ToInt64() + offset), result, new UIntPtr((uint)length),
                 IntPtr.Zero);
@@ -152,7 +152,7 @@ namespace ManagedWinapi {
         /// </summary>
         public void ReadToPtr(int offset, int length, IntPtr ptr) {
             if (offset + length > Size)
-                throw new ArgumentException("Exceeding chunk size");
+                throw new ArgumentException(language_en.ProcessMemoryChunk_Write_Exceeding_chunk_size);
             ReadProcessMemory(hProcess, new IntPtr(Location.ToInt64() + offset), ptr, new UIntPtr((uint)length),
                 IntPtr.Zero);
         }
@@ -160,7 +160,7 @@ namespace ManagedWinapi {
         /// <summary>
         ///     Read a part of this chunk to a structure.
         /// </summary>
-        public object ReadToStructure(int offset, Type structureType) {
+        public object? ReadToStructure(int offset, Type structureType) {
             int size = Marshal.SizeOf(structureType);
             IntPtr localPtr = Marshal.AllocHGlobal(size);
             try {

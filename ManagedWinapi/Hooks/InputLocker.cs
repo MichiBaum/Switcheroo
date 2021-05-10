@@ -45,7 +45,7 @@ namespace ManagedWinapi.Hooks {
             hook.StartHook();
         }
 
-        private JournalMessage Hook_GetNextJournalMessage(ref int timestamp) {
+        private JournalMessage? Hook_GetNextJournalMessage(ref int timestamp) {
             if (count == 0)
                 return null;
             timestamp = Environment.TickCount + interval;
@@ -70,7 +70,7 @@ namespace ManagedWinapi.Hooks {
         ///     by pressing Control+Alt+Delete
         /// </param>
         public static void LockInputFor(int millis, bool force) {
-            new InputLocker(millis, 1, force);
+            InputLocker _ = new InputLocker(millis, 1, force);
         }
     }
 }

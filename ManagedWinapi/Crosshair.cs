@@ -21,9 +21,9 @@ namespace ManagedWinapi {
         public Crosshair() {
             InitializeComponent();
             myImage = new Bitmap(Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("ManagedWinapi.crosshair.ico"));
+                .GetManifestResourceStream("ManagedWinapi.crosshair.ico") ?? throw new InvalidOperationException());
             myCursor = new Cursor(Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("ManagedWinapi.crosshair.ico"));
+                .GetManifestResourceStream("ManagedWinapi.crosshair.ico") ?? throw new InvalidOperationException());
             dragger.Image = myImage;
         }
 

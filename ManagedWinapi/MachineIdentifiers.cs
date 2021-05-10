@@ -30,7 +30,7 @@ namespace ManagedWinapi {
                     out IntPtr policyHandle);
                 LsaQueryInformationPolicy(policyHandle, PolicyAccountDomainInformation, out IntPtr pInfo);
                 POLICY_ACCOUNT_DOMAIN_INFO info =
-                    (POLICY_ACCOUNT_DOMAIN_INFO)Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO));
+                    (POLICY_ACCOUNT_DOMAIN_INFO)(Marshal.PtrToStructure(pInfo, typeof(POLICY_ACCOUNT_DOMAIN_INFO)) ?? throw new InvalidOperationException());
                 SecurityIdentifier sid = new(info.DomainSid);
                 LsaFreeMemory(ref info);
                 LsaClose(policyHandle);
@@ -60,12 +60,15 @@ namespace ManagedWinapi {
         ///     changes his MAC deliberately (for example) to bypass access
         ///     restrictions.
         /// </summary>
-        public static string[] MacAddresses {
+        public static string?[] MacAddresses {
             get {
-                List<string> result = new();
-                foreach (ManagementObject mo in new ManagementClass("Win32_NetworkAdapterConfiguration").GetInstances())
+                List<string?> result = new();
+                foreach (var o in new ManagementClass("Win32_NetworkAdapterConfiguration").GetInstances()) {
+                    var mo = (ManagementObject) o;
                     if ((bool)mo["IPEnabled"])
                         result.Add(mo["MacAddress"].ToString());
+                }
+
                 return result.ToArray();
             }
         }
@@ -85,12 +88,12 @@ namespace ManagedWinapi {
         ///     be written). Today these are easily tweakable and of no real use,
         ///     except for badly-designed software licensing schemes.
         /// </summary>
-        public static Dictionary<string, string> VolumeSerialNumbers {
+        public static Dictionary<string, string?> VolumeSerialNumbers {
             get {
-                Dictionary<string, string> result = new();
+                Dictionary<string, string?> result = new();
                 foreach (string drive in Directory.GetLogicalDrives()) {
                     ManagementObject disk =
-                        new("win32_logicaldisk.deviceid=\"" + drive.Substring(0, 2) + "\"");
+                        new("win32_logicaldisk.deviceid=\"" + drive[..2] + "\"");
                     disk.Get();
                     result.Add(drive, disk["VolumeSerialNumber"]?.ToString());
                 }
@@ -103,11 +106,14 @@ namespace ManagedWinapi {
         ///     Return the ID of all CPUs in this machine. Depending on BIOS configuration,
         ///     CPU IDs might not be readable.
         /// </summary>
-        public static string[] CPUIDs {
+        public static string?[] CPUIDs {
             get {
-                List<string> result = new();
-                foreach (ManagementObject mo in new ManagementClass("Win32_Processor").GetInstances())
+                List<string?> result = new();
+                foreach (var o in new ManagementClass("Win32_Processor").GetInstances()) {
+                    var mo = (ManagementObject) o;
                     result.Add(mo.Properties["ProcessorId"].Value.ToString());
+                }
+
                 return result.ToArray();
             }
         }

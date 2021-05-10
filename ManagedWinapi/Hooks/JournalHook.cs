@@ -22,14 +22,13 @@ namespace ManagedWinapi.Hooks {
         ///     Occurs when the journal activity has been cancelled by
         ///     CTRL+ALT+DEL or CTRL+ESC.
         /// </summary>
-        public event EventHandler JournalCancelled;
+        public event EventHandler? JournalCancelled;
 
         private void Lmh_Callback(Message msg) {
-            if (msg.Msg == WM_CANCELJOURNAL) {
-                hooked = false;
-                lmh.Unhook();
-                JournalCancelled?.Invoke(this, EventArgs.Empty);
-            }
+            if (msg.Msg != WM_CANCELJOURNAL) return;
+            hooked = false;
+            lmh.Unhook();
+            JournalCancelled?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         ///     Represents a method that yields the next journal message.
         /// </summary>
-        public delegate JournalMessage JournalQuery(ref int timestamp);
+        public delegate JournalMessage? JournalQuery(ref int timestamp);
 
         private JournalMessage? nextEvent;
         private int nextEventTime;
@@ -25,13 +25,13 @@ namespace ManagedWinapi.Hooks {
         ///     Occurs when a system modal dialog appears. This may be used to
         ///     stop playback.
         /// </summary>
-        public event EventHandler SystemModalDialogAppeared;
+        public event EventHandler? SystemModalDialogAppeared;
 
         /// <summary>
         ///     Occurs when a system modal dialog disappears. This may be used
         ///     to continue playback.
         /// </summary>
-        public event EventHandler SystemModalDialogDisappeared;
+        public event EventHandler? SystemModalDialogDisappeared;
 
         /// <summary>
         ///     Occurs when the next journal message is needed. If the message is
@@ -63,7 +63,7 @@ namespace ManagedWinapi.Hooks {
                 }
 
                 // now we have the next event, which should be sent
-                EVENTMSG em = (EVENTMSG)Marshal.PtrToStructure(lParam, typeof(EVENTMSG));
+                EVENTMSG em = (EVENTMSG)(Marshal.PtrToStructure(lParam, typeof(EVENTMSG)) ?? throw new InvalidOperationException());
                 em.hWnd = nextEvent.HWnd;
                 em.time = nextEvent.Time;
                 em.message = nextEvent.Message;

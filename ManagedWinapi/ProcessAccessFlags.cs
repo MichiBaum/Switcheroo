@@ -1,4 +1,7 @@
-﻿namespace ManagedWinapi {
+﻿using System;
+
+namespace ManagedWinapi {
+    [Flags]
     internal enum ProcessAccessFlags {
         All = 0x001F0FFF,
         Terminate = 0x00000001,

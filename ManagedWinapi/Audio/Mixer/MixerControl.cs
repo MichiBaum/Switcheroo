@@ -11,7 +11,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <summary>
         ///     Occurs when the value of this control is changed
         /// </summary>
-        public EventHandler Changed;
+        public EventHandler? Changed;
 
         internal MIXERCONTROL ctrl;
         internal MixerLine ml;
@@ -121,8 +121,8 @@ namespace ManagedWinapi.Audio.Mixer {
             if ((err = mixerGetLineControlsA(mx.Handle, ref mlc, MIXER_GETLINECONTROLSF_ALL)) != 0)
                 throw new Win32Exception("Error #" + err + " calling mixerGetLineControls()\n");
             for (int i = 0; i < controlCount; i++)
-                mc[i] = (MIXERCONTROL)Marshal.PtrToStructure(new IntPtr(mlc.pamxctrl.ToInt64() + (mxsize * i)),
-                    typeof(MIXERCONTROL));
+                mc[i] = (MIXERCONTROL)(Marshal.PtrToStructure(new IntPtr(mlc.pamxctrl.ToInt64() + (mxsize * i)),
+                    typeof(MIXERCONTROL)) ?? throw new InvalidOperationException());
             Marshal.FreeCoTaskMem(mlc.pamxctrl);
             MixerControl[] result = new MixerControl[controlCount];
             for (int i = 0; i < controlCount; i++) result[i] = GetControl(mx, line, mc[i]);

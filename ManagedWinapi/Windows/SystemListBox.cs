@@ -62,7 +62,7 @@ namespace ManagedWinapi.Windows {
         /// <summary>
         ///     Get a SystemListBox reference from a SystemWindow (which is a list box)
         /// </summary>
-        public static SystemListBox? FromSystemWindow(SystemWindow sw) {
+        public static SystemListBox? FromSystemWindow(SystemWindow? sw) {
             if (sw.SendGetMessage(LB_GETCOUNT) == 0)
                 return null;
             return new SystemListBox(sw);

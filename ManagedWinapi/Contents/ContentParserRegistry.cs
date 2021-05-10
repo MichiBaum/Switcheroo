@@ -25,7 +25,7 @@ namespace ManagedWinapi.Contents {
             }
         }
 
-        public WindowContentParser? GetParser(SystemWindow sw) {
+        public WindowContentParser? GetParser(SystemWindow? sw) {
             foreach (WindowContentParser p in parsers)
                 if (p.CanParseContent(sw))
                     return p;

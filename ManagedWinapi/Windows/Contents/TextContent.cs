@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ManagedWinapi.Windows.Contents {
     /// <summary>
@@ -7,9 +8,9 @@ namespace ManagedWinapi.Windows.Contents {
     public class TextContent : WindowContent {
         private readonly bool password;
         private readonly bool strict;
-        private readonly string text;
+        private readonly string? text;
 
-        internal TextContent(string text, bool password, bool strict) {
+        internal TextContent(string? text, bool password, bool strict) {
             this.text = text;
             this.password = password;
             this.strict = strict;
@@ -22,7 +23,7 @@ namespace ManagedWinapi.Windows.Contents {
         public string ShortDescription {
             get {
                 string s = strict ? " <TextBox>" : "";
-                if (text.IndexOf("\n") != -1)
+                if (text != null && text.IndexOf("\n", StringComparison.Ordinal) != -1)
                     return "<MultiLine>" + s;
                 if (password)
                     return text + " <Password>" + s;
@@ -31,7 +32,7 @@ namespace ManagedWinapi.Windows.Contents {
         }
 
         ///
-        public string LongDescription {
+        public string? LongDescription {
             get {
                 if (password)
                     return text + " <Password>";
@@ -40,11 +41,11 @@ namespace ManagedWinapi.Windows.Contents {
         }
 
         ///
-        public Dictionary<string, string> PropertyList {
+        public Dictionary<string, string?> PropertyList {
             get {
-                Dictionary<string, string> result = new();
+                Dictionary<string, string?> result = new();
                 result.Add("Password", password ? "True" : "False");
-                result.Add("MultiLine", text.IndexOf('\n') != -1 ? "True" : "False");
+                result.Add("MultiLine", text != null && text.IndexOf('\n') != -1 ? "True" : "False");
                 result.Add("Text", text);
                 return result;
             }

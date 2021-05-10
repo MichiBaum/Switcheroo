@@ -9,7 +9,7 @@ namespace ManagedWinapi.Windows.Contents {
     public class ListContent : WindowContent {
         private readonly string[] values;
 
-        internal ListContent(string type, int selected, string current, string[] values) {
+        internal ListContent(string type, int selected, string? current, string[] values) {
             ComponentType = type;
             SelectedIndex = selected;
             SelectedValue = current;
@@ -48,7 +48,7 @@ namespace ManagedWinapi.Windows.Contents {
             (SelectedValue == null ? "" : SelectedValue + " ") + "<" + ComponentType + ">";
 
         ///
-        public string LongDescription {
+        public string? LongDescription {
             get {
                 StringBuilder sb = new();
                 sb.Append('<').Append(ComponentType).Append('>');
@@ -68,7 +68,7 @@ namespace ManagedWinapi.Windows.Contents {
         }
 
         ///
-        public Dictionary<string, string> PropertyList {
+        public Dictionary<string, string?> PropertyList {
             get {
                 Dictionary<string, string> result = new();
                 result.Add("SelectedValue", SelectedValue);

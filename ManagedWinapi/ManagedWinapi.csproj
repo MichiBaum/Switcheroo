@@ -46,9 +46,18 @@
     <Compile Update="Hooks\LowLevelKeyboardHook.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="language_en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>language_en.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="crosshair.ico" />
+    <EmbeddedResource Update="language_en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>language_en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="crosshair.cur" />

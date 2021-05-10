@@ -38,9 +38,9 @@ namespace ManagedWinapi.Audio.Mixer {
                 if ((err = mixerGetControlDetailsA(mx.Handle, ref mcd, 0)) != 0)
                     throw new Win32Exception("Error #" + err + " calling mixerGetControlDetails()");
                 for (int i = 0; i < result.Length; i++) {
-                    mcdu = (MIXERCONTROLDETAILS_UNSIGNED)Marshal.PtrToStructure(
+                    mcdu = (MIXERCONTROLDETAILS_UNSIGNED)(Marshal.PtrToStructure(
                         new IntPtr(mcd.paDetails.ToInt64() + (Marshal.SizeOf(mcdu) * i)),
-                        typeof(MIXERCONTROLDETAILS_UNSIGNED));
+                        typeof(MIXERCONTROLDETAILS_UNSIGNED)) ?? throw new InvalidOperationException());
                     result[i] = mcdu.dwValue;
                 }
 

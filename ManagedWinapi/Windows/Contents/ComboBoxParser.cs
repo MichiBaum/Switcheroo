@@ -4,8 +4,8 @@
             return SystemComboBox.FromSystemWindow(sw) != null;
         }
 
-        internal override WindowContent ParseContent(SystemWindow sw) {
-            SystemComboBox slb = SystemComboBox.FromSystemWindow(sw);
+        internal override WindowContent ParseContent(SystemWindow? sw) {
+            SystemComboBox? slb = SystemComboBox.FromSystemWindow(sw);
             int c = slb.Count;
             string[] values = new string[c];
             for (int i = 0; i < c; i++) values[i] = slb[i];

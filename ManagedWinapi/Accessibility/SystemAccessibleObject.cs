@@ -69,7 +69,7 @@ namespace ManagedWinapi.Accessibility {
         /// <summary>
         ///     The description of this accessible object.
         /// </summary>
-        public string Description => IAccessible.get_accDescription(ChildID);
+        public string? Description => IAccessible.get_accDescription(ChildID);
 
         /// <summary>
         ///     The name of this accessible object.
@@ -345,7 +345,7 @@ namespace ManagedWinapi.Accessibility {
 
         ///
         public bool Equals(SystemAccessibleObject? sao) {
-            if ((object)sao == null) return false;
+            if (!(sao is object)) return false;
             return ChildID == sao.ChildID && DeepEquals(IAccessible, sao.IAccessible);
         }
 

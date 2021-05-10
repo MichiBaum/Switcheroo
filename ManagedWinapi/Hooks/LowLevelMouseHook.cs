@@ -33,31 +33,23 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         ///     Called when a mouse action has been intercepted.
         /// </summary>
-        public event MouseCallback MouseIntercepted;
+        public event MouseCallback? MouseIntercepted;
 
         /// <summary>
         ///     Called when a mouse message has been intercepted.
         /// </summary>
-        public event LowLevelMessageCallback MessageIntercepted;
+        public event LowLevelMessageCallback? MessageIntercepted;
 
         private int LowLevelMouseHook_Callback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext) {
-            if (code == HC_ACTION) {
-                MSLLHOOKSTRUCT llh = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-                bool handled = false;
-                if (MouseIntercepted != null)
-                    MouseIntercepted((int)wParam, llh.pt, llh.mouseData, llh.flags, llh.time, llh.dwExtraInfo,
-                        ref handled);
-                if (MessageIntercepted != null)
-                    MessageIntercepted(
-                        new LowLevelMouseMessage((int)wParam, llh.pt, llh.mouseData, llh.flags, llh.time,
-                            llh.dwExtraInfo), ref handled);
-                if (handled) {
-                    callNext = false;
-                    return 1;
-                }
-            }
+            if (code != HC_ACTION) return 0;
+            MSLLHOOKSTRUCT? llh = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
+            bool handled = false;
+            MouseIntercepted?.Invoke((int)wParam, llh.pt, llh.mouseData, llh.flags, llh.time, llh.dwExtraInfo, ref handled);
+            MessageIntercepted?.Invoke(new LowLevelMouseMessage((int)wParam, llh.pt, llh.mouseData, llh.flags, llh.time, llh.dwExtraInfo), ref handled);
+            if (!handled) return 0;
+            callNext = false;
+            return 1;
 
-            return 0;
         }
 
         [StructLayout(LayoutKind.Sequential)]

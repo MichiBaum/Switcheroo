@@ -2,6 +2,7 @@ using ManagedWinapi.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -17,7 +18,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <summary>
         ///     Occurs when a control of this mixer changes value.
         /// </summary>
-        public MixerEventHandler ControlChanged;
+        public MixerEventHandler? ControlChanged;
 
         private IList<DestinationLine>? destLines;
 
@@ -111,17 +112,16 @@ namespace ManagedWinapi.Audio.Mixer {
             if (m.Msg == MM_MIXM_CONTROL_CHANGE && m.WParam == hMixer) {
                 int ctrlID = m.LParam.ToInt32();
                 MixerControl? c = FindControl(ctrlID);
-                if (c != null) {
-                    ControlChanged?.Invoke(this, new MixerEventArgs(this, c.Line, c));
-                    c.OnChanged();
-                }
+                if (c == null) return;
+                ControlChanged?.Invoke(this, new MixerEventArgs(this, c.Line, c));
+                c.OnChanged();
             } else if (m.Msg == MM_MIXM_LINE_CHANGE && m.WParam == hMixer) {
                 int lineID = m.LParam.ToInt32();
-                MixerLine l = FindLine(lineID);
-                if (l != null) {
-                    if (ControlChanged != null) LineChanged(this, new MixerEventArgs(this, l, null));
-                    l.OnChanged();
-                }
+                MixerLine? l = FindLine(lineID);
+                if (l == null) return;
+                if (ControlChanged != null) 
+                    LineChanged(this, new MixerEventArgs(this, l, null));
+                l.OnChanged();
             }
         }
 
@@ -130,14 +130,8 @@ namespace ManagedWinapi.Audio.Mixer {
         /// </summary>
         /// <param name="lineId">ID of the line to find</param>
         /// <returns>The line, or <code>null</code> if no line was found.</returns>
-        public MixerLine FindLine(int lineId) {
-            foreach (DestinationLine dl in DestinationLines) {
-                MixerLine found = dl.FindLine(lineId);
-                if (found != null)
-                    return found;
-            }
-
-            return null;
+        public MixerLine? FindLine(int lineId) {
+            return DestinationLines.Select(dl => dl.FindLine(lineId)).FirstOrDefault(found => found != null);
         }
 
         /// <summary>
@@ -146,13 +140,7 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <param name="ctrlId">ID of the control to find.</param>
         /// <returns>The control, or <code>null</code> if no control was found.</returns>
         public MixerControl? FindControl(int ctrlId) {
-            foreach (DestinationLine dl in DestinationLines) {
-                MixerControl? found = dl.FindControl(ctrlId);
-                if (found != null)
-                    return found;
-            }
-
-            return null;
+            return DestinationLines.Select(dl => dl.FindControl(ctrlId)).FirstOrDefault(found => found != null);
         }
 
         [DllImport("winmm.dll", SetLastError = true)]

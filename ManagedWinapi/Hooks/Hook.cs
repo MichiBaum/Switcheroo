@@ -70,7 +70,7 @@ namespace ManagedWinapi.Hooks {
         /// <summary>
         ///     Occurs when the hook's callback is called.
         /// </summary>
-        public event HookCallback Callback;
+        public event HookCallback? Callback;
 
         /// <summary>
         ///     Hooks the hook.
@@ -134,14 +134,10 @@ namespace ManagedWinapi.Hooks {
         ///     a different return value. For most hooks this is not needed.
         /// </summary>
         protected virtual int InternalCallback(int code, IntPtr wParam, IntPtr lParam) {
-            if (code >= 0 && Callback != null) {
-                bool callNext = true;
-                int retval = Callback(code, wParam, lParam, ref callNext);
-                if (!callNext)
-                    return retval;
-            }
-
-            return CallNextHookEx(hHook, code, wParam, lParam);
+            if (code < 0 || Callback == null) return CallNextHookEx(hHook, code, wParam, lParam);
+            bool callNext = true;
+            int retval = Callback(code, wParam, lParam, ref callNext);
+            return !callNext ? retval : CallNextHookEx(hHook, code, wParam, lParam);
         }
 
         [DllImport("user32.dll", SetLastError = true)]

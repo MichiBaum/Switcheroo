@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace ManagedWinapi.Audio.Mixer {
@@ -8,9 +9,9 @@ namespace ManagedWinapi.Audio.Mixer {
     ///     one for playback and one for recording.
     /// </summary>
     public class DestinationLine : MixerLine {
-        private IList<MixerLine> childLines;
+        private IList<MixerLine>? childLines;
 
-        private IList<SourceLine> srcLines;
+        private IList<SourceLine>? srcLines;
         private DestinationLine(Mixer mixer, MIXERLINE line) : base(mixer, line) { }
 
         /// <summary>
@@ -21,13 +22,12 @@ namespace ManagedWinapi.Audio.Mixer {
         /// <summary>
         ///     Gets all source lines of this destination line.
         /// </summary>
-        public IList<SourceLine> SourceLines {
+        public IEnumerable<SourceLine> SourceLines {
             get {
-                if (srcLines == null) {
-                    List<SourceLine> sls = new(SourceLineCount);
-                    for (int i = 0; i < SourceLineCount; i++) sls.Add(SourceLine.GetLine(mixer, line.dwDestination, i));
-                    srcLines = sls.AsReadOnly();
-                }
+                if (srcLines != null) return srcLines;
+                List<SourceLine> sls = new(SourceLineCount);
+                for (int i = 0; i < SourceLineCount; i++) sls.Add(SourceLine.GetLine(mixer, line.dwDestination, i));
+                srcLines = sls.AsReadOnly();
 
                 return srcLines;
             }
@@ -35,11 +35,9 @@ namespace ManagedWinapi.Audio.Mixer {
 
         internal override IList<MixerLine> ChildLines {
             get {
-                if (childLines == null) {
-                    List<MixerLine> cl = new();
-                    foreach (MixerLine ml in SourceLines) cl.Add(ml);
-                    childLines = cl.AsReadOnly();
-                }
+                if (childLines != null) return childLines;
+                List<MixerLine> cl = SourceLines.Cast<MixerLine>().ToList();
+                childLines = cl.AsReadOnly();
 
                 return childLines;
             }
@@ -49,7 +47,7 @@ namespace ManagedWinapi.Audio.Mixer {
             MIXERLINE m = new();
             m.cbStruct = Marshal.SizeOf(m);
             m.dwDestination = index;
-            mixerGetLineInfoA(mixer.Handle, ref m, MIXER_GETLINEINFOF_DESTINATION);
+            int _ = mixerGetLineInfoA(mixer.Handle, ref m, MIXER_GETLINEINFOF_DESTINATION);
             return new DestinationLine(mixer, m);
         }
 
