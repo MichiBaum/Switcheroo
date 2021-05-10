@@ -40,17 +40,16 @@ namespace Switcheroo {
         }
 
         private static void RunAsAdministratorIfConfigured() {
-            if (RunAsAdminRequested() && !IsRunAsAdmin()) {
-                ProcessStartInfo proc = new() {
-                    UseShellExecute = true,
-                    WorkingDirectory = Environment.CurrentDirectory,
-                    FileName = Assembly.GetEntryAssembly().CodeBase,
-                    Verb = "runas"
-                };
+            if (!RunAsAdminRequested() || IsRunAsAdmin()) return;
+            ProcessStartInfo proc = new() {
+                UseShellExecute = true,
+                WorkingDirectory = Environment.CurrentDirectory,
+                FileName = Assembly.GetEntryAssembly().CodeBase,
+                Verb = "runas"
+            };
 
-                Process.Start(proc);
-                Environment.Exit(0);
-            }
+            Process.Start(proc);
+            Environment.Exit(0);
         }
 
         private static bool RunAsAdminRequested() {

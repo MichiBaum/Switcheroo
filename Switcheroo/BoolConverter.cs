@@ -7,7 +7,7 @@ namespace Switcheroo {
         public T IfTrue { get; set; }
         public T IfFalse { get; set; }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             return (bool)value ? IfTrue : IfFalse;
         }
 

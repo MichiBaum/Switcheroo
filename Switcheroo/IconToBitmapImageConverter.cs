@@ -8,17 +8,16 @@ namespace Switcheroo {
         public BitmapImage? Convert(Icon? icon) {
             if (icon == null) return null;
 
-            using (MemoryStream memory = new()) {
-                Bitmap bitmap = icon.ToBitmap();
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
-            }
+            using MemoryStream memory = new();
+            Bitmap bitmap = icon.ToBitmap();
+            bitmap.Save(memory, ImageFormat.Png);
+            memory.Position = 0;
+            BitmapImage bitmapImage = new();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = memory;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.EndInit();
+            return bitmapImage;
         }
     }
 }

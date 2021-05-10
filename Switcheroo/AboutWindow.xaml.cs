@@ -11,8 +11,7 @@ namespace Switcheroo {
         }
 
         private void HandleRequestNavigate(object sender, RoutedEventArgs e) {
-            Hyperlink hyperlink = e.OriginalSource as Hyperlink;
-            if (hyperlink == null)
+            if (e.OriginalSource is not Hyperlink hyperlink)
                 return;
 
             string navigateUri = hyperlink.NavigateUri.ToString();

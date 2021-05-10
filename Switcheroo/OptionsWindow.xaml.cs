@@ -90,10 +90,7 @@ namespace Switcheroo {
             Key key = e.Key == Key.System ? e.SystemKey : e.Key;
 
             // Ignore modifier keys
-            if (key == Key.LeftShift || key == Key.RightShift
-                                     || key == Key.LeftCtrl || key == Key.RightCtrl
-                                     || key == Key.LeftAlt || key == Key.RightAlt
-                                     || key == Key.LWin || key == Key.RWin)
+            if (key is Key.LeftShift or Key.RightShift or Key.LeftCtrl or Key.RightCtrl or Key.LeftAlt or Key.RightAlt or Key.LWin or Key.RWin)
                 return;
 
             HotkeyViewModel previewHotkeyModel = new() {

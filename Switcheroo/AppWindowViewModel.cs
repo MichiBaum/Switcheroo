@@ -11,7 +11,7 @@ namespace Switcheroo {
 
         public AppWindow AppWindow { get; }
 
-        public string WindowTitle => AppWindow.Title;
+        public string? WindowTitle => AppWindow.Title;
 
         public string ProcessTitle => AppWindow.ProcessTitle;
 
@@ -47,7 +47,7 @@ namespace Switcheroo {
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void NotifyOfPropertyChange<T>(Expression<Func<T>> property) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(GetPropertyName(property)));

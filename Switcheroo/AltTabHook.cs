@@ -13,8 +13,8 @@ namespace Switcheroo {
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardHook _lowLevelKeyboardHook;
         private readonly KeyboardKey _shiftKey = new(Keys.LShiftKey);
-        private readonly int WM_KEYDOWN = 0x0100;
-        private readonly int WM_SYSKEYDOWN = 0x0104;
+        private const int WmKeydown = 0x0100;
+        private const int WmSyskeydown = 0x0104;
 
         public AltTabHook() {
             _lowLevelKeyboardHook = new LowLevelKeyboardHook();
@@ -29,7 +29,7 @@ namespace Switcheroo {
         public event AltTabHookEventHandler Pressed;
 
         private void OnMessageIntercepted(LowLevelMessage lowLevelMessage, ref bool handled) {
-            if (handled || !(lowLevelMessage is LowLevelKeyboardMessage keyboardMessage)) return;
+            if (handled || lowLevelMessage is not LowLevelKeyboardMessage keyboardMessage) return;
 
             if (!IsTabKeyDown(keyboardMessage)) return;
 
@@ -49,7 +49,7 @@ namespace Switcheroo {
 
         private bool IsTabKeyDown(LowLevelKeyboardMessage keyboardMessage) {
             return keyboardMessage.VirtualKeyCode == (int)Keys.Tab &&
-                   (keyboardMessage.Message == WM_KEYDOWN || keyboardMessage.Message == WM_SYSKEYDOWN);
+                   (keyboardMessage.Message == WmKeydown || keyboardMessage.Message == WmSyskeydown);
         }
 
         private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown) {

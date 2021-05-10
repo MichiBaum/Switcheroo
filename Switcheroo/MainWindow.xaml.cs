@@ -29,16 +29,16 @@ namespace Switcheroo {
         public static readonly RoutedUICommand SwitchToWindowCommand = new();
         public static readonly RoutedUICommand ScrollListDownCommand = new();
         public static readonly RoutedUICommand ScrollListUpCommand = new();
-        private AboutWindow _aboutWindow;
+        private AboutWindow? _aboutWindow;
         private bool _altTabAutoSwitch;
         private AltTabHook _altTabHook;
         private ObservableCollection<AppWindowViewModel> _filteredWindowList;
         private SystemWindow _foregroundWindow;
         private HotKey _hotkey;
-        private NotifyIcon _notifyIcon;
-        private OptionsWindow _optionsWindow;
+        private NotifyIcon? _notifyIcon;
+        private OptionsWindow? _optionsWindow;
         private List<AppWindowViewModel> _unfilteredWindowList;
-        private WindowCloser _windowCloser;
+        private WindowCloser? _windowCloser;
 
         public MainWindow() {
             InitializeComponent();
@@ -67,28 +67,43 @@ namespace Switcheroo {
             // to get 'KeyUp' messages.
 
             KeyDown += (sender, args) => {
-                // Opacity is set to 0 right away so it appears that action has been taken right away...
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
-                    Opacity = 0;
-                } else if (args.Key == Key.Escape) {
-                    Opacity = 0;
-                } else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) {
-                    _altTabAutoSwitch = false;
-                    tb.Text = "";
-                    tb.IsEnabled = true;
-                    tb.Focus();
+                switch (args.Key)
+                {
+                    // Opacity is set to 0 right away so it appears that action has been taken right away...
+                    case Key.Enter when !Keyboard.Modifiers.HasFlag(ModifierKeys.Control):
+                    case Key.Escape:
+                        Opacity = 0;
+                        break;
+                    default: {
+                        if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)) {
+                            _altTabAutoSwitch = false;
+                            tb.Text = "";
+                            tb.IsEnabled = true;
+                            tb.Focus();
+                        }
+
+                        break;
+                    }
                 }
             };
 
             KeyUp += (sender, args) => {
-                // ... But only when the keys are release, the action is actually executed
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    Switch();
-                else if (args.Key == Key.Escape)
-                    HideWindow();
-                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    Switch();
-                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) Switch();
+                switch (args.Key)
+                {
+                    // ... But only when the keys are release, the action is actually executed
+                    case Key.Enter when !Keyboard.Modifiers.HasFlag(ModifierKeys.Control):
+                        Switch();
+                        break;
+                    case Key.Escape:
+                        HideWindow();
+                        break;
+                    default: {
+                        if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                            Switch();
+                        else if (args.Key == Key.LeftAlt && _altTabAutoSwitch) Switch();
+                        break;
+                    }
+                }
             };
         }
 
@@ -147,10 +162,11 @@ namespace Switcheroo {
             };
         }
 
-        private static void RunOnStartup(ToolStripMenuItem menuItem) {
+        private static void RunOnStartup(ToolStripMenuItem? menuItem) {
             try {
-                AutoStart autoStart = new() {IsEnabled = !menuItem.Checked};
-                menuItem.Checked = autoStart.IsEnabled;
+                AutoStart autoStart = new() {IsEnabled = menuItem != null && !menuItem.Checked};
+                if (menuItem != null) 
+                    menuItem.Checked = autoStart.IsEnabled;
             } catch (AutoStartException e) {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -164,7 +180,7 @@ namespace Switcheroo {
 
             timer.Tick += async (sender, args) => {
                 timer.Stop();
-                Version latestVersion = await GetLatestVersion();
+                Version? latestVersion = await GetLatestVersion();
                 if (latestVersion != null && latestVersion > currentVersion) {
                     MessageBoxResult result = MessageBox.Show(
                         string.Format(
@@ -191,7 +207,7 @@ namespace Switcheroo {
                 string versionAsString = await new WebClient()
                     .DownloadStringTaskAsync("https://raw.github.com/MichiBaum/Switcheroo/update/version.txt")
                     .ConfigureAwait(false);
-                if (Version.TryParse(versionAsString, out Version newVersion)) return newVersion;
+                if (Version.TryParse(versionAsString, out Version? newVersion)) return newVersion;
             } catch (WebException) {
             }
 
@@ -205,7 +221,7 @@ namespace Switcheroo {
             _unfilteredWindowList =
                 new WindowFinder().GetWindows().ConvertAll(window => new AppWindowViewModel(window));
 
-            AppWindowViewModel firstWindow = _unfilteredWindowList.FirstOrDefault();
+            AppWindowViewModel? firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             bool foregroundWindowMovedToBottom = false;
 
@@ -320,7 +336,7 @@ namespace Switcheroo {
         ///     Quit Switcheroo
         /// </summary>
         private void Quit() {
-            _notifyIcon.Dispose();
+            _notifyIcon?.Dispose();
             _notifyIcon = null;
             _hotkey.Dispose();
             Application.Current.Shutdown();
@@ -456,7 +472,7 @@ namespace Switcheroo {
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e) {
             List<AppWindowViewModel> windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
             foreach (AppWindowViewModel win in windows) {
-                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                bool isClosed = await _windowCloser?.TryCloseAsync(win);
                 if (isClosed)
                     RemoveWindow(win);
             }
@@ -491,14 +507,13 @@ namespace Switcheroo {
         }
 
         private void PreviousItem() {
-            if (lb.Items.Count > 0) {
-                if (lb.SelectedIndex != 0)
-                    lb.SelectedIndex--;
-                else
-                    lb.SelectedIndex = lb.Items.Count - 1;
+            if (lb.Items.Count <= 0) return;
+            if (lb.SelectedIndex != 0)
+                lb.SelectedIndex--;
+            else
+                lb.SelectedIndex = lb.Items.Count - 1;
 
-                ScrollSelectedItemIntoView();
-            }
+            ScrollSelectedItemIntoView();
         }
 
         private void ScrollListDown(object sender, ExecutedRoutedEventArgs e) {
@@ -533,7 +548,7 @@ namespace Switcheroo {
         private void DisableSystemMenu() {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
             SystemWindow window = new(windowHandle);
-            window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
+            window.Style &= ~WindowStyleFlags.SYSMENU;
         }
 
         private void ShowHelpTextBlock_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {

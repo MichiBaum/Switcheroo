@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -23,10 +24,9 @@ namespace Switcheroo {
                 XmlNode settingsNode = GetSettingsNode(_localSettingsNodeName);
                 XmlNode? machineNode = settingsNode.SelectSingleNode(Environment.MachineName.ToLowerInvariant());
 
-                if (machineNode == null) {
-                    machineNode = RootDocument.CreateElement(Environment.MachineName.ToLowerInvariant());
-                    settingsNode.AppendChild(machineNode);
-                }
+                if (machineNode != null) return machineNode;
+                machineNode = RootDocument.CreateElement(Environment.MachineName.ToLowerInvariant());
+                settingsNode.AppendChild(machineNode);
 
                 return machineNode;
             }
@@ -38,19 +38,18 @@ namespace Switcheroo {
 
         private XmlDocument RootDocument {
             get {
-                if (_xmlDocument == null) {
-                    try {
-                        _xmlDocument = new XmlDocument();
-                        _xmlDocument.Load(_filePath);
-                    } catch (Exception) {
-                        // TODO do something with the exception
-                    }
-
-                    if (_xmlDocument?.SelectSingleNode(_rootNodeName) != null)
-                        return _xmlDocument;
-
-                    _xmlDocument = GetBlankXmlDocument();
+                if (_xmlDocument != null) return _xmlDocument;
+                try {
+                    _xmlDocument = new XmlDocument();
+                    _xmlDocument.Load(_filePath);
+                } catch (Exception) {
+                    // TODO do something with the exception
                 }
+
+                if (_xmlDocument?.SelectSingleNode(_rootNodeName) != null)
+                    return _xmlDocument;
+
+                _xmlDocument = GetBlankXmlDocument();
 
                 return _xmlDocument;
             }
@@ -142,20 +141,17 @@ namespace Switcheroo {
         }
 
         private bool IsGlobal(SettingsProperty property) {
-            foreach (DictionaryEntry attribute in property.Attributes)
-                if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
-                    return true;
-
-            return false;
+            return property.Attributes
+                .Cast<DictionaryEntry>()
+                .Any(attribute => (Attribute)attribute.Value is SettingsManageabilityAttribute);
         }
 
         private XmlNode GetSettingsNode(string name) {
             XmlNode? settingsNode = RootNode?.SelectSingleNode(name);
 
-            if (settingsNode == null) {
-                settingsNode = RootDocument.CreateElement(name);
-                RootNode?.AppendChild(settingsNode);
-            }
+            if (settingsNode != null) return settingsNode;
+            settingsNode = RootDocument.CreateElement(name);
+            RootNode?.AppendChild(settingsNode);
 
             return settingsNode;
         }

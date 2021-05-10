@@ -49,11 +49,13 @@ namespace Switcheroo {
                 string exeLocation = Assembly.GetEntryAssembly().Location;
 
                 //Windows Script Host Shell Object
-                Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
-                dynamic shell = Activator.CreateInstance(t);
+                Type? t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8"));
+                if (t == null) return;
+                dynamic? shell = Activator.CreateInstance(t);
                 try {
-                    dynamic lnk = shell.CreateShortcut(appLink);
+                    dynamic? lnk = shell?.CreateShortcut(appLink);
                     try {
+                        if (lnk == null) return;
                         lnk.TargetPath = exeLocation;
                         lnk.Save();
                     } finally {
